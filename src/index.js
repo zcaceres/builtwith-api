@@ -6,6 +6,7 @@ const VALID_RESPONSE_TYPES = {
   JSON: 'json',
   TXT: 'txt'
 }
+
 /**
  *  Convert a parameters object into a query string, joined by the `&` char
  * { paramOne: 'hello', paramTwo: 'goodbye' }
@@ -237,15 +238,22 @@ function BuiltWith(apiKey, moduleParams = {}) {
       }
     },
 
+    /**
+     *
+     */
     companyToUrl: async function(companyName, params) {
       const tld = _.get(params, "tld");
       const amount = _.get(params, "noMetaData");
 
-      const bwURL = constructBuiltWithURL("ctu1", {
-        COMPANY: companyName,
-        TLD: tld,
-        AMOUNT: amount
-      }, 'ctu');
+      const bwURL = constructBuiltWithURL(
+        "ctu1",
+        {
+          COMPANY: encodeURIComponent(companyName),
+          TLD: tld,
+          AMOUNT: amount
+        },
+        "ctu"
+      );
 
       const res = await fetch(bwURL, {}).then(res => {
         if (responseFormat === VALID_RESPONSE_TYPES.XML) {
@@ -256,7 +264,29 @@ function BuiltWith(apiKey, moduleParams = {}) {
       });
 
       return res;
-    }
+    },
+
+    /**
+     * Make a request to the BuiltWith Domain Live API
+     *
+     * @see https://api.builtwith.com/domain-live-api
+     * @param {String} url
+     */
+    domainLive: async function(url) {
+      const bwURL = constructBuiltWithURL("dlv1", {
+        LOOKUP: url
+      });
+
+      const res = await fetch(bwURL, {}).then(res => {
+        if (responseFormat === VALID_RESPONSE_TYPES.XML) {
+          return res.text();
+        } else {
+          return res.json();
+        }
+      });
+
+      return res;
+    },
   };
 }
 

@@ -46,7 +46,13 @@ async function companyToURLTest() {
   console.log(JSON.stringify(bwData));
 }
 
+async function domainLiveTest() {
+  const bwData = await builtwith.domainLive(url);
+  console.log(JSON.stringify(bwData));
+}
+
 // trendsTest()
 // relationshipsTest()
 // keywordsTest()
-companyToURLTest()
+// companyToURLTest()
+domainLiveTest()

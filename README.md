@@ -1,51 +1,46 @@
+TODO
+
+- [ ] package for NPM
+- [ ] comment modules
+- [ ] refactoring/cleanup
+
 # Builtwith API
 
-## How to Use
+`builtwith-api` is a utility wrapper for the BuiltWith API suite.
 
-JSON
+## Features
 
+Response Formats
+- JSON support
+- XML support
+- TXT support (only for lists API)
 
-```
-builtwith.[api](url, {
-  ...apiSpecificCustomParams,
-  isXMLRequest: true
-})
-```
-____________________
-
-## TODO
-
-- [X] JSON support
-- [X] XML support
-
-- [X] free
-- [X] domain
-- [X] lists
-  - [X] TXT support
-- [X] relationships
-- [X] keywords
-- [X] trends
-- [ ] companyToUrl
-- [ ] domainLive
-
-- [ ] PARSERS for responses
+APIS
+- free
+- domain
+- lists
+- relationships
+- keywords
+- trends
+- companyToUrl
+- domainLive
 
 ________________
 
-Use:
+## How To Use
 
 ```js
 const builtwith = require('builtwith')
 
-const builtwith = BuiltWith(process.env.BW_API_KEY, {
-  responseFormat: 'txt'
+const builtwith = BuiltWith(process.env.YOUR_BUILTWITH_API_KEY, {
+  responseFormat: 'json' // 'json' 'xml' 'txt' (only for lists API)
 })
 
 const url = 'facebook.com'
 
-builtwith.free(url)
+await builtwith.free(url)
 
-builtwith.domain(url, {
+await builtwith.domain(url, {
   // This will hide technology description, link, tag and category fields
   hideAll: false,
   // This will hide technology description and link fields (but keep tag and categories)
@@ -59,7 +54,7 @@ builtwith.domain(url, {
 })
 
 // The name of a technology, replaces spaces with dashes (-).
-builtwith.lists(technology, {
+await builtwith.lists(technology, {
   // Brings back meta data with the results, which includes names, titles, social links, addresses, emails, telephone numbers, traffic ranks etc.
   includeMetaData: true,
   // Gets the next page of results - use the exact value from NextOffset in response. If the value of NextOffset is END there are no more results.
@@ -68,16 +63,16 @@ builtwith.lists(technology, {
   since: '2016-01-20'
 })
 
-builtwith.relationships(url)
+await builtwith.relationships(url)
 
-builtwith.keywords(url)
+await builtwith.keywords(url)
 
-builtwith.trends(technology, {
+await builtwith.trends(technology, {
   // Totals will be the closest to this date - providing the ability to get historical totals
   date: '2016-01-20'
 })
 
-builtwith.companyToUrl(url, {
+await builtwith.companyToUrl(url, {
   // Company name URL encoded
   companyName: 'Shell',
   // Bring back domains in order of priority - the first result is generally the one we think the website is
@@ -86,8 +81,7 @@ builtwith.companyToUrl(url, {
   tld: 'com'
 })
 
-builtwith.domainLive(url, {
-
-})
-
+await builtwith.domainLive(url)
 ```
+
+Made live on Facebook by Zach Caceres during Covid-2020 Quarantine
