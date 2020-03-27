@@ -1,9 +1,3 @@
-TODO
-
-- [ ] package for NPM
-- [ ] comment modules
-- [ ] refactoring/cleanup
-
 # Builtwith API
 
 `builtwith-api` is a utility wrapper for the BuiltWith API suite.
