@@ -78,4 +78,4 @@ await builtwith.companyToUrl(url, {
 await builtwith.domainLive(url)
 ```
 
-Made live on Facebook by Zach Caceres during Covid-2020 Quarantine
+Made live on Facebook by Zach Caceres during Covid-19 Quarantine
