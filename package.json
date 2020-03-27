@@ -1,6 +1,6 @@
 {
   "name": "builtwith-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Wrapper for the BuiltWith API",
   "main": "src/index.js",
   "scripts": {},
