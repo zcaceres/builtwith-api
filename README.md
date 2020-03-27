@@ -15,7 +15,10 @@ ____________________
 
 ## TODO
 
-- [ ] free
+- [X] JSON support
+- [X] XML support
+
+- [X] free
 - [ ] domain
 - [ ] lists
 - [ ] relationships
@@ -24,6 +27,8 @@ ____________________
 - [ ] companyToUrl
 - [ ] domainLive
 
+- [ ] PARSERS for responses
+
 ________________
 
 Use:
@@ -31,11 +36,13 @@ Use:
 ```js
 const builtwith = require('builtwith')
 
+const builtwith = BuiltWith(process.env.BW_API_KEY, {
+  responseFormat: 'xml'
+})
+
 const url = 'facebook.com'
 
-builtwith.free(url, {
-
-})
+builtwith.free(url)
 
 builtwith.domain(url, {
 

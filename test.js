@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-require("dotenv").config()
+require('dotenv').config()
 
 const BuiltWith = require('./src/index')
 
 const url = 'facebook.com'
 
-const builtwith = BuiltWith(process.env.BW_API_KEY)
+const builtwith = BuiltWith(process.env.BW_API_KEY, { responseFormat: 'jsl' })
 
 async function test() {
   const bwData = await builtwith.free(url)
