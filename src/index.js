@@ -38,9 +38,10 @@ function BuiltWith(apiKey, moduleParams = {}) {
 
   function constructBuiltWithURL(
     apiName,
-    requestParams = {}
+    requestParams = {},
+    subdomain = 'api'
   ) {
-    let bwURL = `https://api.builtwith.com/${apiName}/api.${responseFormat}?KEY=${apiKey}`
+    let bwURL = `https://${subdomain}.builtwith.com/${apiName}/api.${responseFormat}?KEY=${apiKey}`
 
     if (!_.isEmpty(requestParams)) {
       bwURL += `&${paramsObjToQueryString(requestParams)}`
@@ -212,7 +213,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
 
       const bwURL = constructBuiltWithURL("trends/v6", {
         TECH: technology,
-        DATE: date,
+        DATE: date
       });
 
       const res = await fetch(bwURL, {});
@@ -235,6 +236,27 @@ function BuiltWith(apiKey, moduleParams = {}) {
         }
       }
     },
+
+    companyToUrl: async function(companyName, params) {
+      const tld = _.get(params, "tld");
+      const amount = _.get(params, "noMetaData");
+
+      const bwURL = constructBuiltWithURL("ctu1", {
+        COMPANY: companyName,
+        TLD: tld,
+        AMOUNT: amount
+      }, 'ctu');
+
+      const res = await fetch(bwURL, {}).then(res => {
+        if (responseFormat === VALID_RESPONSE_TYPES.XML) {
+          return res.text();
+        } else {
+          return res.json();
+        }
+      });
+
+      return res;
+    }
   };
 }
 

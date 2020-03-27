@@ -23,8 +23,8 @@ ____________________
 - [X] lists
   - [X] TXT support
 - [X] relationships
-- [ ] keywords
-- [ ] trends
+- [X] keywords
+- [X] trends
 - [ ] companyToUrl
 - [ ] domainLive
 
@@ -78,7 +78,12 @@ builtwith.trends(technology, {
 })
 
 builtwith.companyToUrl(url, {
-
+  // Company name URL encoded
+  companyName: 'Shell',
+  // Bring back domains in order of priority - the first result is generally the one we think the website is
+  amount: 1,
+  // Set the priority extension - if you know the country of the company supply the most likely TLD. i.e. for United Kingdom use 'uk'
+  tld: 'com'
 })
 
 builtwith.domainLive(url, {

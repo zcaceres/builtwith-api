@@ -5,6 +5,7 @@ const BuiltWith = require('./src/index')
 
 const url = 'lisasaysgah.com'
 const tech = 'Shopify'
+const company = 'lisa says gah'
 
 const builtwith = BuiltWith(process.env.BW_API_KEY, { responseFormat: 'json' })
 
@@ -40,8 +41,12 @@ async function trendsTest() {
   console.log(JSON.stringify(bwData));
 }
 
+async function companyToURLTest() {
+  const bwData = await builtwith.companyToUrl(company);
+  console.log(JSON.stringify(bwData));
+}
 
-trendsTest()
-
+// trendsTest()
 // relationshipsTest()
 // keywordsTest()
+companyToURLTest()
