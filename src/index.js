@@ -45,21 +45,55 @@ function BuiltWith(apiKey, moduleParams = {}) {
 
 
   return {
+    /**
+     *
+     * @param {*} url
+     */
     free: async function(url) {
-      const bwURL = constructBuiltWithURL('free1', url)
+      const bwURL = constructBuiltWithURL("free1", url);
 
-      const res = await fetch(bwURL, {})
-        .then(res => {
-          if (responseFormat === VALID_RESPONSE_TYPES.XML) {
-            return res.text()
-          } else {
-            return res.json()
-          }
-        })
+      const res = await fetch(bwURL, {}).then(res => {
+        if (responseFormat === VALID_RESPONSE_TYPES.XML) {
+          return res.text();
+        } else {
+          return res.json();
+        }
+      });
 
-      return res
+      return res;
+    },
+
+    /**
+     *
+     * @param {*} url
+     * @param {*} params
+     */
+    domain: async function(url, params) {
+      const hideAll = _.get(params, 'hideAll', false)
+      const noMetaData = _.get(params, "noMetaData", false);
+      const noAttributeData = _.get(params, "noAttributeData", false);
+      const hideDescriptionAndLinks = _.get(params, "hideDescriptionAndLinks", false)
+      const onlyLiveTechnologies = _.get(params, "onlyLiveTechnologies", false);
+
+      const bwURL = constructBuiltWithURL("v14", url, {
+        HIDETEXT: hideAll,
+        HIDEDL: hideDescriptionAndLinks,
+        LIVEONLY: onlyLiveTechnologies,
+        NOMETA: noMetaData,
+        NOATTR: noAttributeData
+      })
+
+      const res = await fetch(bwURL, {}).then(res => {
+        if (responseFormat === VALID_RESPONSE_TYPES.XML) {
+          return res.text();
+        } else {
+          return res.json();
+        }
+      });
+
+      return res;
     }
-  }
+  };
 }
 
 // Constructor to authenticate and get module

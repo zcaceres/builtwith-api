@@ -1,0 +1,197 @@
+{
+  "Results": [
+    {
+      "Result": {
+        "IsDB": "Msleading",
+        "Spend": 1700,
+        "Paths": [
+          {
+            "FirstIndexed": 1585263600000,
+            "LastIndexed": 1585263600000,
+            "Domain": "facebook.com",
+            "Url": "dd",
+            "SubDomain": "",
+            "Technologies": [
+              {
+                "IsPremium": "no",
+                "Name": "Content Delivery Network",
+                "Tag": "CDN",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "Facebook CDN",
+                "Tag": "cdn",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "yes",
+                "Name": "Netmining",
+                "Tag": "analytics",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "DoubleClick.Net",
+                "Tag": "ads",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "WordPress Grid",
+                "Tag": "cdn",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "MediaMind",
+                "Tag": "analytics",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "yes",
+                "Name": "Kenshoo",
+                "Tag": "analytics",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "Atlas",
+                "Tag": "ads",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "SSL by Default",
+                "Tag": "ssl",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "Organization Schema",
+                "Tag": "framework",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "English HREF LANG",
+                "Tag": "language",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "AggregateRating Schema",
+                "Tag": "framework",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "Euro",
+                "Tag": "payment",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "Google Remarketing",
+                "Tag": "ads",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "Min Width",
+                "Tag": "css",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "Device Pixel Ratio",
+                "Tag": "css",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "Resolution",
+                "Tag": "css",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "Max Width",
+                "Tag": "css",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "Cart Functionality",
+                "Tag": "shop",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              },
+              {
+                "IsPremium": "no",
+                "Name": "COVID-19",
+                "Tag": "widgets",
+                "FirstDetected": 1585263600000,
+                "LastDetected": 1585263600000
+              }
+            ]
+          }
+        ]
+      },
+      "Meta": {
+        "Majestic": 1,
+        "Umbrella": 6,
+        "Vertical": "",
+        "Social": null,
+        "CompanyName": null,
+        "Telephones": null,
+        "Emails": [],
+        "City": null,
+        "State": null,
+        "Postcode": null,
+        "Country": "",
+        "Names": null,
+        "ARank": -1,
+        "QRank": -1
+      },
+      "Attributes": {
+        "MJRank": 0,
+        "MJTLDRank": 0,
+        "RefSN": 0,
+        "RefIP": 0,
+        "TTFB": 0,
+        "Sitemap": 0,
+        "GTMTags": 0,
+        "QubitTags": 0,
+        "TealiumTags": 0,
+        "AdobeTags": 0,
+        "CDimensions": 0,
+        "CGoals": 0,
+        "CMetrics": 0,
+        "SourceBytes": 0
+      },
+      "FirstIndexed": 1585263600000,
+      "LastIndexed": 1585263600000,
+      "Lookup": "facebook.com"
+    }
+  ],
+  "Errors": []
+}

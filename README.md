@@ -19,7 +19,7 @@ ____________________
 - [X] XML support
 
 - [X] free
-- [ ] domain
+- [X] domain
 - [ ] lists
 - [ ] relationships
 - [ ] keywords
@@ -45,7 +45,16 @@ const url = 'facebook.com'
 builtwith.free(url)
 
 builtwith.domain(url, {
-
+  // This will hide technology description, link, tag and category fields
+  hideAll: false,
+  // This will hide technology description and link fields (but keep tag and categories)
+  hideDescriptionAndLinks: false,
+  // This will only return technologies we consider to be live
+  onlyLiveTechnologies: true,
+  // No meta data (like address, names etc..) will be returned. Improves performance.
+  noMetaData: true,
+  // No attributes data will be returned
+  noAttributeData: true
 })
 
 builtwith.lists(url, {
