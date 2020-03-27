@@ -7,7 +7,7 @@ const url = 'lisasaysgah.com'
 const tech = 'Shopify'
 const company = 'lisa says gah'
 
-const builtwith = BuiltWith(process.env.BW_API_KEY, { responseFormat: 'json' })
+const builtwith = BuiltWith(process.env.BW_API_KEY)
 
 async function freeTest() {
   const bwData = await builtwith.free(url);
@@ -51,8 +51,10 @@ async function domainLiveTest() {
   console.log(JSON.stringify(bwData));
 }
 
+freeTest()
+// listsTest()
 // trendsTest()
 // relationshipsTest()
 // keywordsTest()
 // companyToURLTest()
-domainLiveTest()
+// domainLiveTest()

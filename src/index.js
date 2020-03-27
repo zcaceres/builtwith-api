@@ -1,33 +1,11 @@
-const fetch = require('node-fetch')
 const _ = require('lodash')
 
-const VALID_RESPONSE_TYPES = {
-  XML: 'xml',
-  JSON: 'json',
-  TXT: 'txt'
-}
-
-/**
- *  Convert a parameters object into a query string, joined by the `&` char
- * { paramOne: 'hello', paramTwo: 'goodbye' }
- * @param {Object} params
- */
-function paramsObjToQueryString(params) {
-  // '&paramOne=hello&paramTwo=goodbye
-  return Object.entries(params) // [['paramOne', 'hello'], ['paramTwo', 'goodbye]]
-    .filter(([, value]) => {
-      if (value === undefined) return false
-      else return true
-    })
-    .map(([key, value]) => {
-      return `${key}=${value}` // ['paramOne=hello', 'paramTwo=goodbye']
-    })
-    .join('&') // 'paramOne=hello&paramTwo=goodBye'
-}
+const utils = require("./utils")
+const { VALID_RESPONSE_TYPES } = require("./config")
 
 
 function BuiltWith(apiKey, moduleParams = {}) {
-  const responseFormat = _.get(moduleParams, 'responseFormat')
+  const responseFormat = _.get(moduleParams, 'responseFormat', 'json')
 
   if (!Object.values(VALID_RESPONSE_TYPES).includes(responseFormat)) {
     throw new Error(`Invalid 'responseFormat'. Valid format are 'xml', 'txt', and 'json'. You input ${responseFormat}`)
@@ -45,7 +23,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
     let bwURL = `https://${subdomain}.builtwith.com/${apiName}/api.${responseFormat}?KEY=${apiKey}`
 
     if (!_.isEmpty(requestParams)) {
-      bwURL += `&${paramsObjToQueryString(requestParams)}`
+      bwURL += `&${utils.paramsObjToQueryString(requestParams)}`
     }
 
     return bwURL
@@ -64,14 +42,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
         LOOKUP: url
       });
 
-      const res = await fetch(bwURL, {}).then(res => {
-        if (responseFormat === VALID_RESPONSE_TYPES.XML) {
-          return res.text();
-        } else {
-          return res.json();
-        }
-      });
-
+      const res = await utils.makeStandardRequest(bwURL, responseFormat)
       return res;
     },
 
@@ -102,13 +73,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
         NOATTR: noAttributeData
       });
 
-      const res = await fetch(bwURL, {}).then(res => {
-        if (responseFormat === VALID_RESPONSE_TYPES.XML) {
-          return res.text();
-        } else {
-          return res.json();
-        }
-      });
+      const res = await utils.makeStandardRequest(bwURL, responseFormat);
 
       return res;
     },
@@ -117,43 +82,23 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * Make a request to the BuiltWith Lists API
      *
      * @see: https://api.builtwith.com/lists-api
-     * @param {String} url
+     * @param {String} technology
      * @param {Object} params
      */
-    lists: async function(technologies, params) {
+    lists: async function(technology, params) {
       const includeMetaData = _.get(params, "includeMetaData", false);
       const offset = _.get(params, "offset");
       const since = _.get(params, "since");
 
       const bwURL = constructBuiltWithURL("lists5", {
-        TECH: technologies,
+        TECH: technology,
         META: includeMetaData,
         OFFSET: offset,
         SINCE: since
       });
 
-      const res = await fetch(bwURL, {});
-
-      if (
-        responseFormat === VALID_RESPONSE_TYPES.TXT ||
-        responseFormat === VALID_RESPONSE_TYPES.XML
-      ) {
-        return res.text();
-      } else {
-        /**
-         * BuiltWith sends invalid formats as errors, which break JSON parsing.
-         */
-        let parsed = await res.text();
-
-        try {
-          return JSON.parse(parsed);
-        } catch (e) {
-          console.warn(
-            "BuiltWith sent an invalid JSON payload. Falling back to text parsing."
-          );
-          return parsed;
-        }
-      }
+      const res = await utils.makeBulletProofRequest(bwURL)
+      return res
     },
 
     /**
@@ -169,19 +114,13 @@ function BuiltWith(apiKey, moduleParams = {}) {
         LOOKUP: url
       });
 
-      const res = await fetch(bwURL, {}).then(res => {
-        if (responseFormat === VALID_RESPONSE_TYPES.XML) {
-          return res.text();
-        } else {
-          return res.json();
-        }
-      });
+      const res = await utils.makeStandardRequest(bwURL, responseFormat);
 
       return res;
     },
 
     /**
-     * Make a request to the BuiltWith Keyword API
+     * Make a request to the BuiltWith Keywords API
      *
      * @see https://api.builtwith.com/keywords-api
      * @param {String} url
@@ -191,22 +130,15 @@ function BuiltWith(apiKey, moduleParams = {}) {
         LOOKUP: url
       });
 
-      const res = await fetch(bwURL, {}).then(res => {
-        if (responseFormat === VALID_RESPONSE_TYPES.XML) {
-          return res.text();
-        } else {
-          return res.json();
-        }
-      });
-
+      const res = await utils.makeStandardRequest(bwURL, responseFormat)
       return res;
     },
 
     /**
-     * Make a request to the BuiltWith trends API
+     * Make a request to the BuiltWith Trends API
      *
      * @see: https://api.builtwith.com/trends-api
-     * @param {String} url
+     * @param {String} technology
      * @param {Object} params
      */
     trends: async function(technology, params) {
@@ -217,29 +149,16 @@ function BuiltWith(apiKey, moduleParams = {}) {
         DATE: date
       });
 
-      const res = await fetch(bwURL, {});
-
-      if (responseFormat === VALID_RESPONSE_TYPES.XML) {
-        return res.text();
-      } else {
-        /**
-         * BuiltWith sends invalid formats as errors, which break JSON parsing.
-         */
-        let parsed = await res.text();
-
-        try {
-          return JSON.parse(parsed);
-        } catch (e) {
-          console.warn(
-            "BuiltWith sent an invalid JSON payload. Falling back to text parsing."
-          );
-          return parsed;
-        }
-      }
+      const res = await utils.makeBulletProofRequest(bwURL);
+      return res
     },
 
     /**
+     * Make a request to the BuiltWith Company to URL API
      *
+     * @see: https://api.builtwith.com/trends-api
+     * @param {String} companyName
+     * @param {Object} params
      */
     companyToUrl: async function(companyName, params) {
       const tld = _.get(params, "tld");
@@ -255,14 +174,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
         "ctu"
       );
 
-      const res = await fetch(bwURL, {}).then(res => {
-        if (responseFormat === VALID_RESPONSE_TYPES.XML) {
-          return res.text();
-        } else {
-          return res.json();
-        }
-      });
-
+      const res = await utils.makeStandardRequest(bwURL, responseFormat)
       return res;
     },
 
@@ -277,20 +189,16 @@ function BuiltWith(apiKey, moduleParams = {}) {
         LOOKUP: url
       });
 
-      const res = await fetch(bwURL, {}).then(res => {
-        if (responseFormat === VALID_RESPONSE_TYPES.XML) {
-          return res.text();
-        } else {
-          return res.json();
-        }
-      });
-
+      const res = await utils.makeStandardRequest(bwURL, responseFormat)
       return res;
-    },
+    }
   };
 }
 
 // Constructor to authenticate and get module
 module.exports = function(apiKey, moduleParams) {
+  if (!apiKey) {
+    throw new Error('You must initialize the BuiltWith module with an api key')
+  }
   return BuiltWith(apiKey, moduleParams)
 }
