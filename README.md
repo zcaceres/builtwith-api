@@ -20,7 +20,8 @@ ____________________
 
 - [X] free
 - [X] domain
-- [ ] lists
+- [X] lists
+  - [X] TXT support
 - [ ] relationships
 - [ ] keywords
 - [ ] trends
@@ -37,7 +38,7 @@ Use:
 const builtwith = require('builtwith')
 
 const builtwith = BuiltWith(process.env.BW_API_KEY, {
-  responseFormat: 'xml'
+  responseFormat: 'txt'
 })
 
 const url = 'facebook.com'
@@ -57,8 +58,14 @@ builtwith.domain(url, {
   noAttributeData: true
 })
 
-builtwith.lists(url, {
-
+// The name of a technology, replaces spaces with dashes (-).
+builtwith.lists(technology, {
+  // Brings back meta data with the results, which includes names, titles, social links, addresses, emails, telephone numbers, traffic ranks etc.
+  includeMetaData: true,
+  // Gets the next page of results - use the exact value from NextOffset in response. If the value of NextOffset is END there are no more results.
+  offset: 'oQEwEnH2FJuIzeXOEk2T',
+  // Gets live sites using the technology since a certain time, accepts dates and queries i.e. 30 Days Ago or Last January for example.
+  since: '2016-01-20'
 })
 
 builtwith.relationships(url, {
@@ -80,4 +87,5 @@ builtwith.companyToUrl(url, {
 builtwith.domainLive(url, {
 
 })
+
 ```
