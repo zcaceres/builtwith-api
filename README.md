@@ -22,7 +22,7 @@ ____________________
 - [X] domain
 - [X] lists
   - [X] TXT support
-- [ ] relationships
+- [X] relationships
 - [ ] keywords
 - [ ] trends
 - [ ] companyToUrl
@@ -68,16 +68,13 @@ builtwith.lists(technology, {
   since: '2016-01-20'
 })
 
-builtwith.relationships(url, {
+builtwith.relationships(url)
 
-})
+builtwith.keywords(url)
 
-builtwith.keywords(url, {
-
-})
-
-builtwith.trends(url, {
-
+builtwith.trends(technology, {
+  // Totals will be the closest to this date - providing the ability to get historical totals
+  date: '2016-01-20'
 })
 
 builtwith.companyToUrl(url, {

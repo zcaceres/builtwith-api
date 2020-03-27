@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const BuiltWith = require('./src/index')
 
-const url = 'facebook.com'
+const url = 'lisasaysgah.com'
 const tech = 'Shopify'
 
 const builtwith = BuiltWith(process.env.BW_API_KEY, { responseFormat: 'json' })
@@ -25,5 +25,23 @@ async function listsTest() {
   console.log(JSON.stringify(bwData));
 }
 
+async function relationshipsTest() {
+  const bwData = await builtwith.relationships(url);
+  console.log(JSON.stringify(bwData));
+}
 
-listsTest()
+async function keywordsTest() {
+  const bwData = await builtwith.keywords(url);
+  console.log(JSON.stringify(bwData));
+}
+
+async function trendsTest() {
+  const bwData = await builtwith.trends(tech);
+  console.log(JSON.stringify(bwData));
+}
+
+
+trendsTest()
+
+// relationshipsTest()
+// keywordsTest()

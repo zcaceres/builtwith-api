@@ -152,7 +152,89 @@ function BuiltWith(apiKey, moduleParams = {}) {
           return parsed;
         }
       }
-    }
+    },
+
+    /**
+     * Make a request to the BuiltWith Relationships API
+     *
+     * @note Relationships API may throw an error related to the maxJSONLength property for certain URLs. This is thrown in BuiltWith and cannot be handled here.
+     *
+     * @see https://api.builtwith.com/relationships-api
+     * @param {String} url
+     */
+    relationships: async function(url) {
+      const bwURL = constructBuiltWithURL("rv1", {
+        LOOKUP: url
+      });
+
+      const res = await fetch(bwURL, {}).then(res => {
+        if (responseFormat === VALID_RESPONSE_TYPES.XML) {
+          return res.text();
+        } else {
+          return res.json();
+        }
+      });
+
+      return res;
+    },
+
+    /**
+     * Make a request to the BuiltWith Keyword API
+     *
+     * @see https://api.builtwith.com/keywords-api
+     * @param {String} url
+     */
+    keywords: async function(url) {
+      const bwURL = constructBuiltWithURL("kw2", {
+        LOOKUP: url
+      });
+
+      const res = await fetch(bwURL, {}).then(res => {
+        if (responseFormat === VALID_RESPONSE_TYPES.XML) {
+          return res.text();
+        } else {
+          return res.json();
+        }
+      });
+
+      return res;
+    },
+
+    /**
+     * Make a request to the BuiltWith trends API
+     *
+     * @see: https://api.builtwith.com/trends-api
+     * @param {String} url
+     * @param {Object} params
+     */
+    trends: async function(technology, params) {
+      const date = _.get(params, "date");
+
+      const bwURL = constructBuiltWithURL("trends/v6", {
+        TECH: technology,
+        DATE: date,
+      });
+
+      const res = await fetch(bwURL, {});
+
+      if (responseFormat === VALID_RESPONSE_TYPES.XML) {
+        return res.text();
+      } else {
+        /**
+         * BuiltWith sends invalid formats as errors, which break JSON parsing.
+         */
+        let parsed = await res.text();
+
+        try {
+          return JSON.parse(parsed);
+        } catch (e) {
+          console.warn(
+            "BuiltWith sent an invalid JSON payload. Falling back to text parsing."
+          );
+          return parsed;
+        }
+      }
+    },
   };
 }
 
