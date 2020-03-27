@@ -5,7 +5,7 @@ const BuiltWith = require('./src/index')
 
 const url = 'facebook.com'
 
-const builtwith = BuiltWith(process.env.BW_API_KEY, { responseFormat: 'jsl' })
+const builtwith = BuiltWith(process.env.BW_API_KEY, { responseFormat: 'json' })
 
 async function test() {
   const bwData = await builtwith.free(url)
