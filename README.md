@@ -47,7 +47,8 @@ await builtwith.domain(url, {
   noAttributeData: true
 })
 
-// The name of a technology, replaces spaces with dashes (-).
+const technologies = 'Shopify'
+// The name of a technology. Spaces automatically replaced with dashes (-).
 await builtwith.lists(technology, {
   // Brings back meta data with the results, which includes names, titles, social links, addresses, emails, telephone numbers, traffic ranks etc.
   includeMetaData: true,
@@ -66,9 +67,8 @@ await builtwith.trends(technology, {
   date: '2016-01-20'
 })
 
-await builtwith.companyToUrl(url, {
-  // Company name URL encoded
-  companyName: 'Shell',
+const companyName = 'Shell'
+await builtwith.companyToUrl(companyName, {
   // Bring back domains in order of priority - the first result is generally the one we think the website is
   amount: 1,
   // Set the priority extension - if you know the country of the company supply the most likely TLD. i.e. for United Kingdom use 'uk'
