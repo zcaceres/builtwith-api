@@ -191,7 +191,30 @@ function BuiltWith(apiKey, moduleParams = {}) {
 
       const res = await utils.makeStandardRequest(bwURL, responseFormat)
       return res;
-    }
+    },
+
+    /**
+     * Make a request to the BuiltWith Domain Live API
+     *
+     * @see https://api.builtwith.com/trust-api
+     * @param {String} url
+     * @param {Object} params
+     */
+    trust: async function(url, params) {
+      const words = _.get(params, "words", "")
+      const live = _.get(params, "live", false)
+
+      const bwURL = constructBuiltWithURL("trustv1", {
+        LOOKUP: url,
+        // 'wordOne, wordTwo' ==> 'wordOne,wordTwo'
+        WORDS: words.split(',').map(wrd => wrd.trim()).join(','),
+        LIVE: live
+      });
+
+      const res = await utils.makeStandardRequest(bwURL, responseFormat)
+      return res;
+    },
+
   };
 }
 

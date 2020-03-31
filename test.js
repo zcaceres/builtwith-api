@@ -51,6 +51,11 @@ async function domainLiveTest() {
   console.log(JSON.stringify(bwData));
 }
 
+async function trustTest() {
+  const bwData = await builtwith.trust(url, { live: true, words: 'clothes,  medicine'});
+  console.log(JSON.stringify(bwData));
+}
+
 freeTest()
 // listsTest()
 // trendsTest()
@@ -58,3 +63,4 @@ freeTest()
 // keywordsTest()
 // companyToURLTest()
 // domainLiveTest()
+// trustTest()

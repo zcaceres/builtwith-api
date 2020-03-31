@@ -18,6 +18,7 @@ APIS
 - trends
 - companyToUrl
 - domainLive
+- trust
 
 ________________
 
@@ -76,6 +77,13 @@ await builtwith.companyToUrl(companyName, {
 })
 
 await builtwith.domainLive(url)
+
+await builtwith.trust(url, {
+  // If the words specified here are in the HTML of the website the result will have Stopwords set to true for LIVE lookups.
+  words: 'medicine,masks',
+  // Performs a live lookup of the website in question. This slows down the response. A result with a status of 'needLive' requires the LIVE option to determine if the website is suspect or not. Live lookups slow down the response of the API, you should consider calling this if the non-LIVE lookup response status is 'needLive'.
+  live: false
+})
 ```
 
 Made live on Facebook by Zach Caceres during Covid-19 Quarantine
