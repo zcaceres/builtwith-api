@@ -135,7 +135,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * Make a request to the BuiltWith Keywords API
      *
      * @see https://api.builtwith.com/keywords-api
-     * @param {String} url
+     * @param {(string|string[])} url
      */
     keywords: async function (url) {
       checkUrlData(url)
