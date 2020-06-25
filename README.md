@@ -2,6 +2,11 @@
 
 `builtwith-api` is a utility wrapper for the BuiltWith API suite.
 
+Install using
+```
+npm install builtwith-api
+```
+
 ## Features
 
 Response Formats
@@ -25,7 +30,7 @@ ________________
 ## How To Use
 
 ```js
-const builtwith = require('builtwith')
+const BuiltWith = require('builtwith-api')
 
 const builtwith = BuiltWith(process.env.YOUR_BUILTWITH_API_KEY, {
   responseFormat: 'json' // 'json' 'xml' 'txt' (only for lists API)
@@ -61,7 +66,9 @@ await builtwith.lists(technology, {
 
 await builtwith.relationships(url)
 
-await builtwith.keywords(url)
+const urls = ['hotelscombined.com', 'builtwith.com']
+// Multi-domain lookup. Will automatically be converted into URI encoded array (hotelscombined.com,builtwith.com).
+await builtwith.keywords(urls)
 
 await builtwith.trends(technology, {
   // Totals will be the closest to this date - providing the ability to get historical totals
