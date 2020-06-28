@@ -4,6 +4,10 @@
 
 Install using
 ```
+yarn install builtwith-api
+
+or
+
 npm install builtwith-api
 ```
 

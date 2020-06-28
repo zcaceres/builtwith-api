@@ -4,6 +4,7 @@ require('dotenv').config()
 const BuiltWith = require('./src/index')
 
 const url = 'lisasaysgah.com'
+const multi_test = ['lisasaysgah.com', 'stacynolan.com']
 const tech = 'Shopify'
 const company = 'lisa says gah'
 
@@ -36,6 +37,11 @@ async function keywordsTest() {
   console.log(JSON.stringify(bwData));
 }
 
+async function multiTest() {
+  const bwData = await builtwith.keywords(multi_test);
+  console.log(JSON.stringify(bwData));
+}
+
 async function trendsTest() {
   const bwData = await builtwith.trends(tech);
   console.log(JSON.stringify(bwData));
@@ -56,11 +62,12 @@ async function trustTest() {
   console.log(JSON.stringify(bwData));
 }
 
-freeTest()
+// freeTest()
 // listsTest()
 // trendsTest()
 // relationshipsTest()
 // keywordsTest()
+// multiTest()
 // companyToURLTest()
 // domainLiveTest()
 // trustTest()
