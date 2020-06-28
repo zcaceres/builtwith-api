@@ -29,6 +29,14 @@ function BuiltWith(apiKey, moduleParams = {}) {
     return bwURL
   }
 
+  function checkUrlData(url, isMultiDomain = true) {
+    let isArray = Array.isArray(url)
+    if (isArray) {
+      if (!isMultiDomain) throw 'API does not allow for multi-domain LOOKUP'
+      if (url.length > 16) throw 'Domain LOOKUP size to big (16 max)'
+    }
+  }
+
 
   return {
     /**
@@ -37,7 +45,9 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * @see https://api.builtwith.com/free-api
      * @param {String} url
      */
-    free: async function(url) {
+    free: async function (url) {
+      checkUrlData(url, false)
+
       const bwURL = constructBuiltWithURL("free1", {
         LOOKUP: url
       });
@@ -50,10 +60,11 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * Make a request to the BuiltWith Domain API
      *
      * @see https://api.builtwith.com/domain-api
-     * @param {String} url
+     * @param {(string|string[])} url
      * @param {Object} params
      */
-    domain: async function(url, params) {
+    domain: async function (url, params) {
+      checkUrlData(url)
       const hideAll = _.get(params, "hideAll", false);
       const noMetaData = _.get(params, "noMetaData", false);
       const noAttributeData = _.get(params, "noAttributeData", false);
@@ -85,7 +96,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * @param {String} technology
      * @param {Object} params
      */
-    lists: async function(technology, params) {
+    lists: async function (technology, params) {
       const includeMetaData = _.get(params, "includeMetaData", false);
       const offset = _.get(params, "offset");
       const since = _.get(params, "since");
@@ -107,9 +118,10 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * @note Relationships API may throw an error related to the maxJSONLength property for certain URLs. This is thrown in BuiltWith and cannot be handled here.
      *
      * @see https://api.builtwith.com/relationships-api
-     * @param {String} url
+     * @param {(string|string[])} url
      */
-    relationships: async function(url) {
+    relationships: async function (url) {
+      checkUrlData(url)
       const bwURL = constructBuiltWithURL("rv1", {
         LOOKUP: url
       });
@@ -123,9 +135,10 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * Make a request to the BuiltWith Keywords API
      *
      * @see https://api.builtwith.com/keywords-api
-     * @param {String} url
+     * @param {(string|string[])} url
      */
-    keywords: async function(url) {
+    keywords: async function (url) {
+      checkUrlData(url)
       const bwURL = constructBuiltWithURL("kw2", {
         LOOKUP: url
       });
@@ -141,7 +154,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * @param {String} technology
      * @param {Object} params
      */
-    trends: async function(technology, params) {
+    trends: async function (technology, params) {
       const date = _.get(params, "date");
 
       const bwURL = constructBuiltWithURL("trends/v6", {
@@ -160,7 +173,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * @param {String} companyName
      * @param {Object} params
      */
-    companyToUrl: async function(companyName, params) {
+    companyToUrl: async function (companyName, params) {
       const tld = _.get(params, "tld");
       const amount = _.get(params, "noMetaData");
 
@@ -184,7 +197,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * @see https://api.builtwith.com/domain-live-api
      * @param {String} url
      */
-    domainLive: async function(url) {
+    domainLive: async function (url) {
       const bwURL = constructBuiltWithURL("dlv1", {
         LOOKUP: url
       });
@@ -200,7 +213,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * @param {String} url
      * @param {Object} params
      */
-    trust: async function(url, params) {
+    trust: async function (url, params) {
       const words = _.get(params, "words", "")
       const live = _.get(params, "live", false)
 
@@ -219,7 +232,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
 }
 
 // Constructor to authenticate and get module
-module.exports = function(apiKey, moduleParams) {
+module.exports = function (apiKey, moduleParams) {
   if (!apiKey) {
     throw new Error('You must initialize the BuiltWith module with an api key')
   }
