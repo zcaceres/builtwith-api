@@ -75,7 +75,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
       );
       const onlyLiveTechnologies = _.get(params, "onlyLiveTechnologies", false);
 
-      const bwURL = constructBuiltWithURL("v14", {
+      const bwURL = constructBuiltWithURL("v15", {
         LOOKUP: url,
         HIDETEXT: hideAll,
         HIDEDL: hideDescriptionAndLinks,
