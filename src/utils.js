@@ -1,21 +1,21 @@
-const {VALID_RESPONSE_TYPES} = require('./config');
-const {getFetch} = require('./utils/fetch');
+const { VALID_RESPONSE_TYPES } = require("./config");
 
 module.exports = {
-  makeStandardRequest: async function(url, responseFormat) {
-    const fetchFn = getFetch();
-    return fetchFn(url).then(res => {
-      if (responseFormat === VALID_RESPONSE_TYPES.XML) {
-        return res.text();
-      } else {
-        return res.json();
-      }
-    });
+  makeStandardRequest: async function (url, responseFormat) {
+    const res = await fetch(url);
+    if (responseFormat === VALID_RESPONSE_TYPES.XML) {
+      return res.text();
+    } else {
+      return res.json();
+    }
   },
 
-  makeBulletProofRequest: async function(url, responseFormat) {
+  makeBulletProofRequest: async function (url, responseFormat) {
     const res = await fetch(url);
-    if (responseFormat === VALID_RESPONSE_TYPES.TXT || responseFormat === VALID_RESPONSE_TYPES.XML) {
+    if (
+      responseFormat === VALID_RESPONSE_TYPES.TXT ||
+      responseFormat === VALID_RESPONSE_TYPES.XML
+    ) {
       return res.text();
     } else {
       /**
@@ -26,7 +26,9 @@ module.exports = {
       try {
         return JSON.parse(parsed);
       } catch (e) {
-        console.warn('BuiltWith sent an invalid JSON payload. Falling back to text parsing.');
+        console.warn(
+          "BuiltWith sent an invalid JSON payload. Falling back to text parsing.",
+        );
         return parsed;
       }
     }
@@ -37,13 +39,16 @@ module.exports = {
    * { paramOne: 'hello', paramTwo: 'goodbye' }
    * @param {Object} params
    */
-  paramsObjToQueryString: function(params) {
+  paramsObjToQueryString: function (params) {
     // '&paramOne=hello&paramTwo=goodbye
     return Object.entries(params) // [['paramOne', 'hello'], ['paramTwo', 'goodbye]]
-        .filter(([, value]) => {
-          if (value === undefined) return false; else return true;
-        }).map(([key, value]) => {
-          return `${key}=${value}`; // ['paramOne=hello', 'paramTwo=goodbye']
-        }).join('&'); // 'paramOne=hello&paramTwo=goodBye'
+      .filter(([, value]) => {
+        if (value === undefined) return false;
+        else return true;
+      })
+      .map(([key, value]) => {
+        return `${key}=${value}`; // ['paramOne=hello', 'paramTwo=goodbye']
+      })
+      .join("&"); // 'paramOne=hello&paramTwo=goodBye'
   },
 };

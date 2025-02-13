@@ -1,6 +1,6 @@
 {
   "name": "builtwith-api",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Wrapper for the BuiltWith API",
   "main": "src/index.js",
   "scripts": {},
@@ -25,11 +25,5 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0"
-  },
-  "peerDependencies": {
-    "node-fetch": "^2.6.1"
-  },
-  "peerDependenciesOptional": {
-    "node-fetch": true
   }
 }
