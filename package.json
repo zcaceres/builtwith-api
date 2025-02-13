@@ -4,10 +4,10 @@
   "description": "Wrapper for the BuiltWith API",
   "main": "src/index.js",
   "scripts": {},
-  "homepage": "https://github.com/JWpapi/builtwith-api",
+  "homepage": "https://github.com/zcaceres/builtwith-api",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JWpapi/builtwith-api.git"
+    "url": "https://github.com/zcaceres/builtwith-api.git"
   },
   "keywords": [
     "utilities",
