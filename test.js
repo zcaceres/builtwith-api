@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-require('dotenv').config()
+require("dotenv").config();
 
-const BuiltWith = require('./src/index')
+const BuiltWith = require("./src/index");
 
-const url = 'lisasaysgah.com'
-const multi_test = ['lisasaysgah.com', 'stacynolan.com']
-const tech = 'Shopify'
-const company = 'lisa says gah'
+const url = "lisasaysgah.com";
+const multi_test = ["lisasaysgah.com", "stacynolan.com"];
+const tech = "Shopify";
+const company = "lisa says gah";
 
-const builtwith = BuiltWith(process.env.BW_API_KEY)
+const builtwith = BuiltWith(process.env.BW_API_KEY);
 
 async function freeTest() {
   const bwData = await builtwith.free(url);
@@ -19,7 +19,7 @@ async function domainTest() {
   const bwData = await builtwith.domain(url, {
     // noAttributeData: true
   });
-  console.log(JSON.stringify(bwData))
+  console.log(JSON.stringify(bwData));
 }
 
 async function listsTest() {
@@ -58,16 +58,19 @@ async function domainLiveTest() {
 }
 
 async function trustTest() {
-  const bwData = await builtwith.trust(url, { live: true, words: 'clothes,  medicine'});
+  const bwData = await builtwith.trust(url, {
+    live: true,
+    words: "clothes,  medicine",
+  });
   console.log(JSON.stringify(bwData));
 }
 
-// freeTest()
-// listsTest()
-// trendsTest()
-// relationshipsTest()
-// keywordsTest()
-// multiTest()
-// companyToURLTest()
-// domainLiveTest()
-// trustTest()
+// freeTest();
+// listsTest();
+// trendsTest();
+// relationshipsTest();
+// keywordsTest();
+// multiTest();
+// companyToURLTest();
+// domainLiveTest();
+// trustTest();

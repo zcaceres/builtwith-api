@@ -1,18 +1,16 @@
-const fetch = require("node-fetch")
-const { VALID_RESPONSE_TYPES } = require("./config")
+const { VALID_RESPONSE_TYPES } = require("./config");
 
 module.exports = {
-  makeStandardRequest: async function(url, responseFormat) {
-    return fetch(url).then(res => {
-      if (responseFormat === VALID_RESPONSE_TYPES.XML) {
-        return res.text();
-      } else {
-        return res.json();
-      }
-    });
+  makeStandardRequest: async function (url, responseFormat) {
+    const res = await fetch(url);
+    if (responseFormat === VALID_RESPONSE_TYPES.XML) {
+      return res.text();
+    } else {
+      return res.json();
+    }
   },
 
-  makeBulletProofRequest: async function(url, responseFormat) {
+  makeBulletProofRequest: async function (url, responseFormat) {
     const res = await fetch(url);
     if (
       responseFormat === VALID_RESPONSE_TYPES.TXT ||
@@ -29,7 +27,7 @@ module.exports = {
         return JSON.parse(parsed);
       } catch (e) {
         console.warn(
-          "BuiltWith sent an invalid JSON payload. Falling back to text parsing."
+          "BuiltWith sent an invalid JSON payload. Falling back to text parsing.",
         );
         return parsed;
       }
@@ -41,7 +39,7 @@ module.exports = {
    * { paramOne: 'hello', paramTwo: 'goodbye' }
    * @param {Object} params
    */
-  paramsObjToQueryString: function(params) {
+  paramsObjToQueryString: function (params) {
     // '&paramOne=hello&paramTwo=goodbye
     return Object.entries(params) // [['paramOne', 'hello'], ['paramTwo', 'goodbye]]
       .filter(([, value]) => {
@@ -52,5 +50,5 @@ module.exports = {
         return `${key}=${value}`; // ['paramOne=hello', 'paramTwo=goodbye']
       })
       .join("&"); // 'paramOne=hello&paramTwo=goodBye'
-  }
-}
+  },
+};
