@@ -1,5 +1,7 @@
 # Builtwith API
 
+![Builtwith API logo](./logo.webp)
+
 `builtwith-api` is a utility wrapper for the BuiltWith API suite.
 
 Install using
