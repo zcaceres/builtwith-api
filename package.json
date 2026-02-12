@@ -1,29 +1,32 @@
 {
   "name": "builtwith-api",
-  "version": "1.0.8",
+  "version": "2.0.0",
   "description": "Wrapper for the BuiltWith API",
   "main": "src/index.js",
-  "scripts": {},
-  "homepage": "https://github.com/zcaceres/builtwith-api",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "homepage": "https://github.com/builtwith/builtwith-node-api",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zcaceres/builtwith-api.git"
+    "url": "https://github.com/builtwith/builtwith-node-api.git"
   },
   "keywords": [
     "utilities",
     "BuiltWith",
-    "apis"
+    "apis",
+    "technology-detection",
+    "web-intelligence"
   ],
   "files": [
-    "src",
-    "src/utils"
+    "src"
   ],
   "author": "Zach Caceres (@zachcaceres)",
   "license": "MIT",
-  "dependencies": {
-    "lodash": "^4.17.15"
+  "engines": {
+    "node": ">=18.0.0"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0"
+    "dotenv": "^16.4.7"
   }
 }

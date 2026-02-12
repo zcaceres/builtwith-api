@@ -3,10 +3,10 @@ require("dotenv").config();
 
 const BuiltWith = require("./src/index");
 
-const url = "lisasaysgah.com";
-const multi_test = ["lisasaysgah.com", "stacynolan.com"];
+const url = "builtwith.com";
+const multi_test = ["builtwith.com", "google.com"];
 const tech = "Shopify";
-const company = "lisa says gah";
+const company = "BuiltWith";
 
 const builtwith = BuiltWith(process.env.BW_API_KEY);
 
@@ -60,12 +60,33 @@ async function domainLiveTest() {
 async function trustTest() {
   const bwData = await builtwith.trust(url, {
     live: true,
-    words: "clothes,  medicine",
+    words: "technology,  data",
   });
   console.log(JSON.stringify(bwData));
 }
 
+async function tagsTest() {
+  const bwData = await builtwith.tags(url);
+  console.log(JSON.stringify(bwData));
+}
+
+async function recommendationsTest() {
+  const bwData = await builtwith.recommendations(url);
+  console.log(JSON.stringify(bwData));
+}
+
+async function redirectsTest() {
+  const bwData = await builtwith.redirects(url);
+  console.log(JSON.stringify(bwData));
+}
+
+async function productTest() {
+  const bwData = await builtwith.product("shoes");
+  console.log(JSON.stringify(bwData));
+}
+
 // freeTest();
+// domainTest();
 // listsTest();
 // trendsTest();
 // relationshipsTest();
@@ -74,3 +95,7 @@ async function trustTest() {
 // companyToURLTest();
 // domainLiveTest();
 // trustTest();
+// tagsTest();
+// recommendationsTest();
+// redirectsTest();
+// productTest();

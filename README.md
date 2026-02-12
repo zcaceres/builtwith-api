@@ -1,24 +1,28 @@
-# Builtwith API
+# BuiltWith API
 
 `builtwith-api` is a utility wrapper for the BuiltWith API suite.
 
 Install using
 ```
-yarn install builtwith-api
+yarn add builtwith-api
 
 or
 
 npm install builtwith-api
 ```
 
+Requires Node.js >= 18 (uses native `fetch`).
+
 ## Features
 
 Response Formats
 - JSON support
 - XML support
-- TXT support (only for lists API)
+- CSV support
+- TSV support (lists, relationships)
+- TXT support (lists only)
 
-APIS
+APIs
 - free
 - domain
 - lists
@@ -28,6 +32,10 @@ APIS
 - companyToUrl
 - domainLive
 - trust
+- tags
+- recommendations
+- redirects
+- product
 
 ________________
 
@@ -37,7 +45,7 @@ ________________
 const BuiltWith = require('builtwith-api')
 
 const builtwith = BuiltWith(process.env.YOUR_BUILTWITH_API_KEY, {
-  responseFormat: 'json' // 'json' 'xml' 'txt' (only for lists API)
+  responseFormat: 'json' // 'json' 'xml' 'csv' 'tsv' 'txt' (txt only for lists API)
 })
 
 const url = 'facebook.com'
@@ -54,10 +62,16 @@ await builtwith.domain(url, {
   // No meta data (like address, names etc..) will be returned. Improves performance.
   noMetaData: true,
   // No attributes data will be returned
-  noAttributeData: true
+  noAttributeData: true,
+  // No personally identifiable information will be returned
+  noPII: true,
+  // Filter by first detected date range (e.g. '2020-01-01-2024-12-31')
+  firstDetectedRange: undefined,
+  // Filter by last detected date range
+  lastDetectedRange: undefined
 })
 
-const technologies = 'Shopify'
+const technology = 'Shopify'
 // The name of a technology. Spaces automatically replaced with dashes (-).
 await builtwith.lists(technology, {
   // Brings back meta data with the results, which includes names, titles, social links, addresses, emails, telephone numbers, traffic ranks etc.
@@ -92,9 +106,19 @@ await builtwith.domainLive(url)
 await builtwith.trust(url, {
   // If the words specified here are in the HTML of the website the result will have Stopwords set to true for LIVE lookups.
   words: 'medicine,masks',
-  // Performs a live lookup of the website in question. This slows down the response. A result with a status of 'needLive' requires the LIVE option to determine if the website is suspect or not. Live lookups slow down the response of the API, you should consider calling this if the non-LIVE lookup response status is 'needLive'.
+  // Performs a live lookup of the website in question. This slows down the response. A result with a status of 'needLive' requires the LIVE option to determine if the website is suspect or not.
   live: false
 })
-```
 
-Made live on Facebook by Zach Caceres during Covid-19 Quarantine
+// Get domains related to IPs and site attributes. Use 'IP-1.2.3.4' format for IP lookups.
+await builtwith.tags(url)
+
+// Get technology recommendations for a domain
+await builtwith.recommendations(url)
+
+// Get live and historical redirect data for a domain
+await builtwith.redirects(url)
+
+// Search for e-commerce sites selling specific products
+await builtwith.product('shoes')
+```
