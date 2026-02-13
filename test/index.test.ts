@@ -1,5 +1,6 @@
-const { describe, it } = require("node:test");
-const assert = require("node:assert/strict");
+import { describe, it, expect } from "bun:test";
+
+// Use require() because src/index.ts uses `export =` (CJS pattern)
 const createClient = require("../src/index");
 
 const EXPECTED_METHODS = [
@@ -16,32 +17,34 @@ const EXPECTED_METHODS = [
   "recommendations",
   "redirects",
   "product",
-];
+] as const;
 
 describe("createClient", () => {
   it("throws when apiKey is missing", () => {
-    assert.throws(() => createClient(), {
-      message: "You must initialize the BuiltWith module with an api key",
-    });
+    // @ts-expect-error testing missing required argument
+    expect(() => createClient()).toThrow(
+      "You must initialize the BuiltWith module with an api key",
+    );
   });
 
   it("throws for invalid responseFormat", () => {
-    assert.throws(() => createClient("key", { responseFormat: "yaml" }), {
-      message: /Invalid 'responseFormat'.*yaml/,
-    });
+    // @ts-expect-error testing invalid responseFormat
+    expect(() => createClient("key", { responseFormat: "yaml" })).toThrow(
+      /Invalid 'responseFormat'.*yaml/,
+    );
   });
 
   it("returns an object with all 13 method names", () => {
     const client = createClient("test-key");
     for (const name of EXPECTED_METHODS) {
-      assert.ok(name in client, `missing method: ${name}`);
+      expect(name in client).toBe(true);
     }
   });
 
   it("each method is a function", () => {
     const client = createClient("test-key");
     for (const name of EXPECTED_METHODS) {
-      assert.equal(typeof client[name], "function", `${name} is not a function`);
+      expect(typeof client[name]).toBe("function");
     }
   });
 });

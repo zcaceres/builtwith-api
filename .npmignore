@@ -1,4 +1,6 @@
 .env
-test.js
+test.ts
+test/
+src/
 .idea
 .claude

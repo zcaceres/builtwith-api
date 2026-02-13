@@ -1,13 +1,17 @@
-const { VALID_RESPONSE_TYPES } = require("./config");
+import { VALID_RESPONSE_TYPES } from "./config";
+import type { ResponseFormat } from "./types";
 
-const TEXT_FORMATS = [
+const TEXT_FORMATS: readonly ResponseFormat[] = [
   VALID_RESPONSE_TYPES.TXT,
   VALID_RESPONSE_TYPES.XML,
   VALID_RESPONSE_TYPES.CSV,
   VALID_RESPONSE_TYPES.TSV,
 ];
 
-const request = async (url, format) => {
+export const request = async (
+  url: string,
+  format: ResponseFormat,
+): Promise<unknown> => {
   const res = await fetch(url);
   if (!res.ok) {
     const body = await res.text();
@@ -16,7 +20,10 @@ const request = async (url, format) => {
   return TEXT_FORMATS.includes(format) ? res.text() : res.json();
 };
 
-const requestSafe = async (url, format) => {
+export const requestSafe = async (
+  url: string,
+  format: ResponseFormat,
+): Promise<unknown> => {
   const res = await fetch(url);
   if (!res.ok) {
     const body = await res.text();
@@ -28,12 +35,10 @@ const requestSafe = async (url, format) => {
   const parsed = await res.text();
   try {
     return JSON.parse(parsed);
-  } catch (e) {
+  } catch {
     console.warn(
       "BuiltWith sent an invalid JSON payload. Falling back to text parsing.",
     );
     return parsed;
   }
 };
-
-module.exports = { request, requestSafe };
