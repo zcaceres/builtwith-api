@@ -17,7 +17,7 @@ export interface DomainParams {
 
 export interface ListsParams {
   includeMetaData?: boolean;
-  offset?: number;
+  offset?: string;
   since?: string;
 }
 
