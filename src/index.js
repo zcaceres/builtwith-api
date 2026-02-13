@@ -64,12 +64,12 @@ function BuiltWith(apiKey, moduleParams = {}) {
      */
     domain: async function (url, params) {
       checkUrlData(url);
-      const hideAll = params && params.hideAll !== undefined ? params.hideAll : false;
-      const noMetaData = params && params.noMetaData !== undefined ? params.noMetaData : false;
-      const noAttributeData = params && params.noAttributeData !== undefined ? params.noAttributeData : false;
-      const hideDescriptionAndLinks = params && params.hideDescriptionAndLinks !== undefined ? params.hideDescriptionAndLinks : false;
-      const onlyLiveTechnologies = params && params.onlyLiveTechnologies !== undefined ? params.onlyLiveTechnologies : false;
-      const noPII = params && params.noPII !== undefined ? params.noPII : undefined;
+      const hideAll = params && params.hideAll ? "yes" : undefined;
+      const noMetaData = params && params.noMetaData ? "yes" : undefined;
+      const noAttributeData = params && params.noAttributeData ? "yes" : undefined;
+      const hideDescriptionAndLinks = params && params.hideDescriptionAndLinks ? "yes" : undefined;
+      const onlyLiveTechnologies = params && params.onlyLiveTechnologies ? "yes" : undefined;
+      const noPII = params && params.noPII ? "yes" : undefined;
       const firstDetectedRange = params && params.firstDetectedRange !== undefined ? params.firstDetectedRange : undefined;
       const lastDetectedRange = params && params.lastDetectedRange !== undefined ? params.lastDetectedRange : undefined;
 
@@ -96,7 +96,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * @param {Object} params
      */
     lists: async function (technology, params) {
-      const includeMetaData = params && params.includeMetaData !== undefined ? params.includeMetaData : false;
+      const includeMetaData = params && params.includeMetaData ? "yes" : undefined;
       const offset = params && params.offset;
       const since = params && params.since;
 
@@ -170,7 +170,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
       const amount = params && params.amount;
 
       const bwURL = constructBuiltWithURL("ctu3", {
-        COMPANY: encodeURIComponent(companyName),
+        COMPANY: companyName,
         TLD: tld,
         AMOUNT: amount,
       });
@@ -185,6 +185,7 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * @param {String} url
      */
     domainLive: async function (url) {
+      checkUrlData(url, false);
       const bwURL = constructBuiltWithURL("ddlv2", {
         LOOKUP: url,
       });
@@ -200,15 +201,15 @@ function BuiltWith(apiKey, moduleParams = {}) {
      * @param {Object} params
      */
     trust: async function (url, params) {
-      const words = (params && params.words) || "";
-      const live = params && params.live !== undefined ? params.live : false;
+      checkUrlData(url, false);
+      const words = params && params.words
+        ? params.words.split(",").map((wrd) => wrd.trim()).join(",")
+        : undefined;
+      const live = params && params.live ? "yes" : undefined;
 
       const bwURL = constructBuiltWithURL("trustv1", {
         LOOKUP: url,
-        WORDS: words
-          .split(",")
-          .map((wrd) => wrd.trim())
-          .join(","),
+        WORDS: words,
         LIVE: live,
       });
 

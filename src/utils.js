@@ -10,6 +10,10 @@ const TEXT_FORMATS = [
 module.exports = {
   makeStandardRequest: async function (url, responseFormat) {
     const res = await fetch(url);
+    if (!res.ok) {
+      const body = await res.text();
+      throw new Error(`BuiltWith API error ${res.status}: ${body}`);
+    }
     if (TEXT_FORMATS.includes(responseFormat)) {
       return res.text();
     } else {
@@ -19,6 +23,10 @@ module.exports = {
 
   makeBulletProofRequest: async function (url, responseFormat) {
     const res = await fetch(url);
+    if (!res.ok) {
+      const body = await res.text();
+      throw new Error(`BuiltWith API error ${res.status}: ${body}`);
+    }
     if (TEXT_FORMATS.includes(responseFormat)) {
       return res.text();
     } else {
@@ -42,7 +50,7 @@ module.exports = {
   paramsObjToQueryString: function (params) {
     return Object.entries(params)
       .filter(([, value]) => value !== undefined)
-      .map(([key, value]) => `${key}=${value}`)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value).replace(/%2C/gi, ",")}`)
       .join("&");
   },
 };
