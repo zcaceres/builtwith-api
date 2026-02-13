@@ -2,9 +2,21 @@
   "name": "builtwith-api",
   "version": "2.0.0",
   "description": "Wrapper for the BuiltWith API",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "test": "node test.js"
+    "build": "tsc",
+    "prepublishOnly": "tsc",
+    "test": "bun test",
+    "smoke": "bun test.ts",
+    "clean": "rm -rf dist"
   },
   "homepage": "https://github.com/builtwith/builtwith-node-api",
   "repository": {
@@ -19,7 +31,7 @@
     "web-intelligence"
   ],
   "files": [
-    "src"
+    "dist"
   ],
   "author": "Zach Caceres (@zachcaceres)",
   "license": "MIT",
@@ -27,6 +39,7 @@
     "node": ">=18.0.0"
   },
   "devDependencies": {
-    "dotenv": "^16.4.7"
+    "@types/bun": "latest",
+    "typescript": "^5"
   }
 }

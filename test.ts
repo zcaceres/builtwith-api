@@ -1,14 +1,12 @@
-#!/usr/bin/env node
-require("dotenv").config();
-
-const BuiltWith = require("./src/index");
+// Use require() because src/index.ts uses `export =` (CJS pattern)
+const createClient = require("./src/index");
 
 const url = "builtwith.com";
 const multi_test = ["builtwith.com", "google.com"];
 const tech = "Shopify";
 const company = "BuiltWith";
 
-const builtwith = BuiltWith(process.env.BW_API_KEY);
+const builtwith = createClient(process.env.BW_API_KEY!);
 
 async function freeTest() {
   const bwData = await builtwith.free(url);
