@@ -1,9 +1,16 @@
 const { VALID_RESPONSE_TYPES } = require("./config");
 
+const TEXT_FORMATS = [
+  VALID_RESPONSE_TYPES.TXT,
+  VALID_RESPONSE_TYPES.XML,
+  VALID_RESPONSE_TYPES.CSV,
+  VALID_RESPONSE_TYPES.TSV,
+];
+
 module.exports = {
   makeStandardRequest: async function (url, responseFormat) {
     const res = await fetch(url);
-    if (responseFormat === VALID_RESPONSE_TYPES.XML) {
+    if (TEXT_FORMATS.includes(responseFormat)) {
       return res.text();
     } else {
       return res.json();
@@ -12,17 +19,10 @@ module.exports = {
 
   makeBulletProofRequest: async function (url, responseFormat) {
     const res = await fetch(url);
-    if (
-      responseFormat === VALID_RESPONSE_TYPES.TXT ||
-      responseFormat === VALID_RESPONSE_TYPES.XML
-    ) {
+    if (TEXT_FORMATS.includes(responseFormat)) {
       return res.text();
     } else {
-      /**
-       * BuiltWith sends invalid formats as errors, which break JSON parsing.
-       */
       let parsed = await res.text();
-
       try {
         return JSON.parse(parsed);
       } catch (e) {
@@ -35,20 +35,14 @@ module.exports = {
   },
 
   /**
-   *  Convert a parameters object into a query string, joined by the `&` char
-   * { paramOne: 'hello', paramTwo: 'goodbye' }
+   * Convert a parameters object into a query string, joined by the `&` char
+   * { paramOne: 'hello', paramTwo: 'goodbye' } => 'paramOne=hello&paramTwo=goodbye'
    * @param {Object} params
    */
   paramsObjToQueryString: function (params) {
-    // '&paramOne=hello&paramTwo=goodbye
-    return Object.entries(params) // [['paramOne', 'hello'], ['paramTwo', 'goodbye]]
-      .filter(([, value]) => {
-        if (value === undefined) return false;
-        else return true;
-      })
-      .map(([key, value]) => {
-        return `${key}=${value}`; // ['paramOne=hello', 'paramTwo=goodbye']
-      })
-      .join("&"); // 'paramOne=hello&paramTwo=goodBye'
+    return Object.entries(params)
+      .filter(([, value]) => value !== undefined)
+      .map(([key, value]) => `${key}=${value}`)
+      .join("&");
   },
 };
