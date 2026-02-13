@@ -1,289 +1,124 @@
-const utils = require("./utils");
 const { VALID_RESPONSE_TYPES } = require("./config");
+const { buildURL, booleanParams, cleanWords, validateLookup } = require("./params");
+const { request, requestSafe } = require("./request");
 
-function BuiltWith(apiKey, moduleParams = {}) {
-  const responseFormat = moduleParams.responseFormat || "json";
+const DOMAIN_BOOLEANS = {
+  hideAll: "HIDETEXT",
+  hideDescriptionAndLinks: "HIDEDL",
+  onlyLiveTechnologies: "LIVEONLY",
+  noMetaData: "NOMETA",
+  noAttributeData: "NOATTR",
+  noPII: "NOPII",
+};
 
-  if (!Object.values(VALID_RESPONSE_TYPES).includes(responseFormat)) {
+module.exports = function createClient(apiKey, moduleParams = {}) {
+  if (!apiKey) {
+    throw new Error("You must initialize the BuiltWith module with an api key");
+  }
+
+  const format = moduleParams.responseFormat || "json";
+
+  if (!Object.values(VALID_RESPONSE_TYPES).includes(format)) {
     throw new Error(
-      `Invalid 'responseFormat'. Valid formats are 'xml', 'txt', 'csv', 'tsv', and 'json'. You input ${responseFormat}`,
+      `Invalid 'responseFormat'. Valid formats are 'xml', 'txt', 'csv', 'tsv', and 'json'. You input ${format}`,
     );
   }
 
-  if (responseFormat === VALID_RESPONSE_TYPES.TXT) {
+  if (format === VALID_RESPONSE_TYPES.TXT) {
     console.warn(
       "TXT response format is only supported for the BuiltWith Lists API. See: https://api.builtwith.com/lists-api",
     );
   }
 
-  function constructBuiltWithURL(
-    apiName,
-    requestParams = {},
-    subdomain = "api",
-  ) {
-    let bwURL = `https://${subdomain}.builtwith.com/${apiName}/api.${responseFormat}?KEY=${apiKey}`;
-
-    const qs = utils.paramsObjToQueryString(requestParams);
-    if (qs) {
-      bwURL += `&${qs}`;
-    }
-
-    return bwURL;
-  }
-
-  function checkUrlData(url, isMultiDomain = true) {
-    if (Array.isArray(url)) {
-      if (!isMultiDomain) throw new Error("API does not allow for multi-domain LOOKUP");
-      if (url.length > 16) throw new Error("Domain LOOKUP size too big (16 max)");
-    }
-  }
+  const url = (path, params) => buildURL(apiKey, format, path, params);
+  const get = (bwURL) => request(bwURL, format);
+  const getSafe = (bwURL) => requestSafe(bwURL, format);
 
   return {
-    /**
-     * Make a request to the BuiltWith Free API
-     *
-     * @see https://api.builtwith.com/free-api
-     * @param {String} url
-     */
-    free: async function (url) {
-      checkUrlData(url, false);
-
-      const bwURL = constructBuiltWithURL("free1", {
-        LOOKUP: url,
-      });
-
-      return utils.makeStandardRequest(bwURL, responseFormat);
+    free: async (lookup) => {
+      validateLookup(lookup);
+      return get(url("free1", { LOOKUP: lookup }));
     },
 
-    /**
-     * Make a request to the BuiltWith Domain API
-     *
-     * @see https://api.builtwith.com/domain-api
-     * @param {(string|string[])} url
-     * @param {Object} params
-     */
-    domain: async function (url, params) {
-      checkUrlData(url);
-      const hideAll = params && params.hideAll ? "yes" : undefined;
-      const noMetaData = params && params.noMetaData ? "yes" : undefined;
-      const noAttributeData = params && params.noAttributeData ? "yes" : undefined;
-      const hideDescriptionAndLinks = params && params.hideDescriptionAndLinks ? "yes" : undefined;
-      const onlyLiveTechnologies = params && params.onlyLiveTechnologies ? "yes" : undefined;
-      const noPII = params && params.noPII ? "yes" : undefined;
-      const firstDetectedRange = params && params.firstDetectedRange !== undefined ? params.firstDetectedRange : undefined;
-      const lastDetectedRange = params && params.lastDetectedRange !== undefined ? params.lastDetectedRange : undefined;
-
-      const bwURL = constructBuiltWithURL("v22", {
-        LOOKUP: url,
-        HIDETEXT: hideAll,
-        HIDEDL: hideDescriptionAndLinks,
-        LIVEONLY: onlyLiveTechnologies,
-        NOMETA: noMetaData,
-        NOATTR: noAttributeData,
-        NOPII: noPII,
-        FDRANGE: firstDetectedRange,
-        LDRANGE: lastDetectedRange,
-      });
-
-      return utils.makeStandardRequest(bwURL, responseFormat);
+    domain: async (lookup, params) => {
+      validateLookup(lookup, { multi: true });
+      return get(url("v22", {
+        LOOKUP: Array.isArray(lookup) ? lookup.join(",") : lookup,
+        ...booleanParams(params, DOMAIN_BOOLEANS),
+        FDRANGE: params?.firstDetectedRange,
+        LDRANGE: params?.lastDetectedRange,
+      }));
     },
 
-    /**
-     * Make a request to the BuiltWith Lists API
-     *
-     * @see https://api.builtwith.com/lists-api
-     * @param {String} technology
-     * @param {Object} params
-     */
-    lists: async function (technology, params) {
-      const includeMetaData = params && params.includeMetaData ? "yes" : undefined;
-      const offset = params && params.offset;
-      const since = params && params.since;
-
-      const bwURL = constructBuiltWithURL("lists12", {
+    lists: async (technology, params) => {
+      return getSafe(url("lists12", {
         TECH: technology,
-        META: includeMetaData,
-        OFFSET: offset,
-        SINCE: since,
-      });
-
-      return utils.makeBulletProofRequest(bwURL, responseFormat);
+        META: params?.includeMetaData ? "yes" : undefined,
+        OFFSET: params?.offset,
+        SINCE: params?.since,
+      }));
     },
 
-    /**
-     * Make a request to the BuiltWith Relationships API
-     *
-     * @see https://api.builtwith.com/relationships-api
-     * @param {(string|string[])} url
-     */
-    relationships: async function (url) {
-      checkUrlData(url);
-      const bwURL = constructBuiltWithURL("rv4", {
-        LOOKUP: url,
-      });
-
-      return utils.makeStandardRequest(bwURL, responseFormat);
+    relationships: async (lookup) => {
+      validateLookup(lookup, { multi: true });
+      return get(url("rv4", {
+        LOOKUP: Array.isArray(lookup) ? lookup.join(",") : lookup,
+      }));
     },
 
-    /**
-     * Make a request to the BuiltWith Keywords API
-     *
-     * @see https://api.builtwith.com/keywords-api
-     * @param {(string|string[])} url
-     */
-    keywords: async function (url) {
-      checkUrlData(url);
-      const bwURL = constructBuiltWithURL("kw2", {
-        LOOKUP: url,
-      });
-
-      return utils.makeStandardRequest(bwURL, responseFormat);
+    keywords: async (lookup) => {
+      validateLookup(lookup, { multi: true });
+      return get(url("kw2", {
+        LOOKUP: Array.isArray(lookup) ? lookup.join(",") : lookup,
+      }));
     },
 
-    /**
-     * Make a request to the BuiltWith Trends API
-     *
-     * @see https://api.builtwith.com/trends-api
-     * @param {String} technology
-     * @param {Object} params
-     */
-    trends: async function (technology, params) {
-      const date = params && params.date;
-
-      const bwURL = constructBuiltWithURL("trends/v6", {
+    trends: async (technology, params) => {
+      return getSafe(url("trends/v6", {
         TECH: technology,
-        DATE: date,
-      });
-
-      return utils.makeBulletProofRequest(bwURL, responseFormat);
+        DATE: params?.date,
+      }));
     },
 
-    /**
-     * Make a request to the BuiltWith Company to URL API
-     *
-     * @see https://api.builtwith.com/company-to-url-api
-     * @param {String} companyName
-     * @param {Object} params
-     */
-    companyToUrl: async function (companyName, params) {
-      const tld = params && params.tld;
-      const amount = params && params.amount;
-
-      const bwURL = constructBuiltWithURL("ctu3", {
+    companyToUrl: async (companyName, params) => {
+      return get(url("ctu3", {
         COMPANY: companyName,
-        TLD: tld,
-        AMOUNT: amount,
-      });
-
-      return utils.makeStandardRequest(bwURL, responseFormat);
+        TLD: params?.tld,
+        AMOUNT: params?.amount,
+      }));
     },
 
-    /**
-     * Make a request to the BuiltWith Domain Live API
-     *
-     * @see https://api.builtwith.com/domain-live-api
-     * @param {String} url
-     */
-    domainLive: async function (url) {
-      checkUrlData(url, false);
-      const bwURL = constructBuiltWithURL("ddlv2", {
-        LOOKUP: url,
-      });
-
-      return utils.makeStandardRequest(bwURL, responseFormat);
+    domainLive: async (lookup) => {
+      validateLookup(lookup);
+      return get(url("ddlv2", { LOOKUP: lookup }));
     },
 
-    /**
-     * Make a request to the BuiltWith Trust API
-     *
-     * @see https://api.builtwith.com/trust-api
-     * @param {String} url
-     * @param {Object} params
-     */
-    trust: async function (url, params) {
-      checkUrlData(url, false);
-      const words = params && params.words
-        ? params.words.split(",").map((wrd) => wrd.trim()).join(",")
-        : undefined;
-      const live = params && params.live ? "yes" : undefined;
-
-      const bwURL = constructBuiltWithURL("trustv1", {
-        LOOKUP: url,
-        WORDS: words,
-        LIVE: live,
-      });
-
-      return utils.makeStandardRequest(bwURL, responseFormat);
-    },
-
-    /**
-     * Make a request to the BuiltWith Tags API
-     *
-     * @see https://api.builtwith.com/tags-api
-     * @param {String} lookup - domain or IP (use format IP-1.2.3.4 for IP lookups)
-     */
-    tags: async function (lookup) {
-      checkUrlData(lookup, false);
-
-      const bwURL = constructBuiltWithURL("tag1", {
+    trust: async (lookup, params) => {
+      validateLookup(lookup);
+      return get(url("trustv1", {
         LOOKUP: lookup,
-      });
-
-      return utils.makeStandardRequest(bwURL, responseFormat);
+        WORDS: cleanWords(params?.words),
+        LIVE: params?.live ? "yes" : undefined,
+      }));
     },
 
-    /**
-     * Make a request to the BuiltWith Recommendations API
-     *
-     * @see https://api.builtwith.com/recommendations-api
-     * @param {String} url
-     */
-    recommendations: async function (url) {
-      checkUrlData(url, false);
-
-      const bwURL = constructBuiltWithURL("rec1", {
-        LOOKUP: url,
-      });
-
-      return utils.makeStandardRequest(bwURL, responseFormat);
+    tags: async (lookup) => {
+      validateLookup(lookup);
+      return get(url("tag1", { LOOKUP: lookup }));
     },
 
-    /**
-     * Make a request to the BuiltWith Redirects API
-     *
-     * @see https://api.builtwith.com/redirects-api
-     * @param {String} url
-     */
-    redirects: async function (url) {
-      checkUrlData(url, false);
-
-      const bwURL = constructBuiltWithURL("redirect1", {
-        LOOKUP: url,
-      });
-
-      return utils.makeStandardRequest(bwURL, responseFormat);
+    recommendations: async (lookup) => {
+      validateLookup(lookup);
+      return get(url("rec1", { LOOKUP: lookup }));
     },
 
-    /**
-     * Make a request to the BuiltWith Product API
-     *
-     * @see https://api.builtwith.com/product-api
-     * @param {String} query - product search query
-     */
-    product: async function (query) {
-      const bwURL = constructBuiltWithURL("productv1", {
-        QUERY: query,
-      });
+    redirects: async (lookup) => {
+      validateLookup(lookup);
+      return get(url("redirect1", { LOOKUP: lookup }));
+    },
 
-      return utils.makeStandardRequest(bwURL, responseFormat);
+    product: async (query) => {
+      return get(url("productv1", { QUERY: query }));
     },
   };
-}
-
-// Constructor to authenticate and get module
-module.exports = function (apiKey, moduleParams) {
-  if (!apiKey) {
-    throw new Error("You must initialize the BuiltWith module with an api key");
-  }
-  return BuiltWith(apiKey, moduleParams);
 };
