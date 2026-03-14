@@ -9,10 +9,10 @@ const TEXT_FORMATS: readonly ResponseFormat[] = [
   VALID_RESPONSE_TYPES.TSV,
 ];
 
-export const request = async <T = unknown>(
+export const request = async <T>(
   url: string,
   format: ResponseFormat,
-  schema?: z.ZodType<T>,
+  schema: z.ZodType<T>,
 ): Promise<T | string> => {
   const res = await fetch(url);
   if (!res.ok) {
@@ -22,22 +22,14 @@ export const request = async <T = unknown>(
   if (TEXT_FORMATS.includes(format)) {
     return res.text();
   }
-  const data = await res.json();
-  if (schema) {
-    const result = schema.safeParse(data);
-    if (!result.success) {
-      console.warn("BuiltWith API response did not match expected schema:", result.error);
-      return data as T;
-    }
-    return result.data;
-  }
-  return data as T;
+  const data: unknown = await res.json();
+  return schema.parse(data);
 };
 
-export const requestSafe = async <T = unknown>(
+export const requestSafe = async <T>(
   url: string,
   format: ResponseFormat,
-  schema?: z.ZodType<T>,
+  schema: z.ZodType<T>,
 ): Promise<T | string> => {
   const res = await fetch(url);
   if (!res.ok) {
@@ -47,23 +39,15 @@ export const requestSafe = async <T = unknown>(
   if (TEXT_FORMATS.includes(format)) {
     return res.text();
   }
-  const parsed = await res.text();
+  const raw = await res.text();
   let data: unknown;
   try {
-    data = JSON.parse(parsed);
+    data = JSON.parse(raw);
   } catch {
     console.warn(
       "BuiltWith sent an invalid JSON payload. Falling back to text parsing.",
     );
-    return parsed;
+    return raw;
   }
-  if (schema) {
-    const result = schema.safeParse(data);
-    if (!result.success) {
-      console.warn("BuiltWith API response did not match expected schema:", result.error);
-      return data as T;
-    }
-    return result.data;
-  }
-  return data as T;
+  return schema.parse(data);
 };
