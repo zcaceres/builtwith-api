@@ -1,7 +1,12 @@
 #!/usr/bin/env node
+import { createRequire } from "node:module";
 import { parseArgs } from "node:util";
 import { createClient } from "./index.js";
 import { commands } from "./commands.js";
+import { formatError } from "./errors.js";
+
+const require = createRequire(import.meta.url);
+const { version } = require("../package.json");
 
 const USAGE = `Usage: builtwith <command> <primary-arg> [--flag value ...]
 
@@ -10,6 +15,8 @@ ${commands.map((c) => `  ${c.name.padEnd(16)} ${c.description}`).join("\n")}
 
 Options:
   --api-key <key>  BuiltWith API key (or set BUILTWITH_API_KEY env var)
+  --version        Show version number
+  --help           Show help
 
 Examples:
   builtwith free example.com
@@ -34,6 +41,11 @@ function printCommandHelp(cmd: (typeof commands)[number]): void {
 
 function run(): void {
   const argv = process.argv.slice(2);
+
+  if (argv.includes("--version") || argv.includes("-V")) {
+    console.log(version);
+    process.exit(0);
+  }
 
   if (argv.length === 0 || argv[0] === "--help" || argv[0] === "-h") {
     console.log(USAGE);
@@ -105,8 +117,8 @@ function run(): void {
     .then((result) => {
       console.log(JSON.stringify(result, null, 2));
     })
-    .catch((err: Error) => {
-      console.error(`Error: ${err.message}`);
+    .catch((err) => {
+      console.error(formatError(err));
       process.exit(1);
     });
 }

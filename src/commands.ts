@@ -14,7 +14,7 @@ export interface CommandDefinition {
   execute: (client: BuiltWithClient, args: Record<string, unknown>) => Promise<unknown>;
 }
 
-function splitLookup(value: unknown): string | string[] {
+export function splitLookup(value: unknown): string | string[] {
   const str = String(value);
   return str.includes(",") ? str.split(",").map((s) => s.trim()) : str;
 }

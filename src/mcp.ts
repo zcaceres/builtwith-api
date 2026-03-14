@@ -1,9 +1,14 @@
 #!/usr/bin/env node
+import { createRequire } from "node:module";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod/v4";
 import { createClient } from "./index.js";
 import { commands } from "./commands.js";
+import { formatError } from "./errors.js";
+
+const require = createRequire(import.meta.url);
+const { version } = require("../package.json");
 
 // Accept --api-key flag or BUILTWITH_API_KEY env var
 const keyFlagIndex = process.argv.indexOf("--api-key");
@@ -19,7 +24,7 @@ const client = createClient(apiKey);
 
 const server = new McpServer({
   name: "builtwith",
-  version: "3.0.0",
+  version,
 });
 
 for (const cmd of commands) {
@@ -46,15 +51,17 @@ for (const cmd of commands) {
     cmd.description,
     shape,
     async (params) => {
-      const result = await cmd.execute(client, params);
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify(result, null, 2),
-          },
-        ],
-      };
+      try {
+        const result = await cmd.execute(client, params);
+        return {
+          content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }],
+        };
+      } catch (err) {
+        return {
+          content: [{ type: "text" as const, text: formatError(err) }],
+          isError: true,
+        };
+      }
     },
   );
 }

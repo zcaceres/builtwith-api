@@ -21,7 +21,7 @@
   },
   "scripts": {
     "build": "bun run build:js && bun run build:types && chmod +x dist/cli.js dist/mcp.js",
-    "build:js": "bun build ./src/index.ts ./src/cli.ts ./src/mcp.ts --outdir dist --target node --format esm --sourcemap=external --external zod --external @modelcontextprotocol/sdk",
+    "build:js": "bun build ./src/index.ts ./src/cli.ts ./src/mcp.ts ./src/errors.ts --outdir dist --target node --format esm --sourcemap=external --external zod --external @modelcontextprotocol/sdk",
     "build:types": "tsc --emitDeclarationOnly",
     "cli": "bun run src/cli.ts",
     "mcp": "bun run src/mcp.ts",
