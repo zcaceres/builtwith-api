@@ -5,9 +5,13 @@ import { z } from "zod/v4";
 import { createClient } from "./index.js";
 import { commands } from "./commands.js";
 
-const apiKey = process.env.BUILTWITH_API_KEY;
+// Accept --api-key flag or BUILTWITH_API_KEY env var
+const keyFlagIndex = process.argv.indexOf("--api-key");
+const apiKey =
+  (keyFlagIndex !== -1 ? process.argv[keyFlagIndex + 1] : undefined) ||
+  process.env.BUILTWITH_API_KEY;
 if (!apiKey) {
-  console.error("Error: BUILTWITH_API_KEY environment variable is required.");
+  console.error("Error: pass --api-key or set BUILTWITH_API_KEY environment variable.");
   process.exit(1);
 }
 

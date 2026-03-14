@@ -8,8 +8,8 @@ const USAGE = `Usage: builtwith <command> <primary-arg> [--flag value ...]
 Commands:
 ${commands.map((c) => `  ${c.name.padEnd(16)} ${c.description}`).join("\n")}
 
-Environment:
-  BUILTWITH_API_KEY  Required. Your BuiltWith API key.
+Options:
+  --api-key <key>  BuiltWith API key (or set BUILTWITH_API_KEY env var)
 
 Examples:
   builtwith free example.com
@@ -54,12 +54,6 @@ function run(): void {
     process.exit(0);
   }
 
-  const apiKey = process.env.BUILTWITH_API_KEY;
-  if (!apiKey) {
-    console.error("Error: BUILTWITH_API_KEY environment variable is required.");
-    process.exit(1);
-  }
-
   const primaryArg = cmd.args.find((a) => a.required);
   const primaryValue = argv[1];
 
@@ -68,9 +62,11 @@ function run(): void {
     process.exit(1);
   }
 
-  // Build parseArgs options from the command's optional flags
+  // Build parseArgs options from the command's optional flags + global --api-key
   const flagArgs = cmd.args.filter((a) => !a.required);
-  const options: Record<string, { type: "string" | "boolean" }> = {};
+  const options: Record<string, { type: "string" | "boolean" }> = {
+    "api-key": { type: "string" },
+  };
   for (const f of flagArgs) {
     options[f.name] = { type: f.type === "boolean" ? "boolean" : "string" };
   }
@@ -80,6 +76,12 @@ function run(): void {
     options,
     strict: false,
   });
+
+  const apiKey = (values["api-key"] as string) || process.env.BUILTWITH_API_KEY;
+  if (!apiKey) {
+    console.error("Error: pass --api-key or set BUILTWITH_API_KEY environment variable.");
+    process.exit(1);
+  }
 
   // Build the args record
   const args: Record<string, unknown> = {};
