@@ -5,16 +5,33 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "builtwith": "./dist/cli.js",
+    "builtwith-mcp": "./dist/mcp.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./mcp": {
+      "types": "./dist/mcp.d.ts",
+      "import": "./dist/mcp.js"
     }
   },
   "scripts": {
-    "build": "bun run build:js && bun run build:types",
-    "build:js": "bun build ./src/index.ts --outdir dist --target node --format esm --sourcemap=external --external zod",
+    "build": "bun run build:js && bun run build:types && chmod +x dist/cli.js dist/mcp.js",
+    "build:js": "bun build ./src/index.ts ./src/cli.ts ./src/mcp.ts --outdir dist --target node --format esm --sourcemap=external --external zod --external @modelcontextprotocol/sdk",
     "build:types": "tsc --emitDeclarationOnly",
+    "cli": "bun run src/cli.ts",
+    "mcp": "bun run src/mcp.ts",
+    "mcp:inspect": "npx @modelcontextprotocol/inspector node dist/mcp.js",
+    "compile": "bun run compile:linux-x64 && bun run compile:linux-arm64 && bun run compile:darwin-x64 && bun run compile:darwin-arm64 && bun run compile:windows-x64",
+    "compile:linux-x64": "bun build src/cli.ts --compile --target bun-linux-x64 --outfile dist/builtwith-linux-x64",
+    "compile:linux-arm64": "bun build src/cli.ts --compile --target bun-linux-arm64 --outfile dist/builtwith-linux-arm64",
+    "compile:darwin-x64": "bun build src/cli.ts --compile --target bun-darwin-x64 --outfile dist/builtwith-darwin-x64",
+    "compile:darwin-arm64": "bun build src/cli.ts --compile --target bun-darwin-arm64 --outfile dist/builtwith-darwin-arm64",
+    "compile:windows-x64": "bun build src/cli.ts --compile --target bun-windows-x64 --outfile dist/builtwith-windows-x64.exe",
     "prepublishOnly": "bun run build",
     "test": "bun test",
     "smoke": "bun test.ts",
@@ -45,6 +62,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
     "zod": "^4.3.6"
   }
 }
