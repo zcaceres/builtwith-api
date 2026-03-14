@@ -106,9 +106,7 @@ describe("validateLookup", () => {
   });
 
   it("throws for array input when multi is false (default)", () => {
-    expect(() => validateLookup(["a.com", "b.com"])).toThrow(
-      "API does not allow for multi-domain LOOKUP",
-    );
+    expect(() => validateLookup(["a.com", "b.com"])).toThrow();
   });
 
   it("does not throw for array input when multi is true and length <= 16", () => {
@@ -118,8 +116,6 @@ describe("validateLookup", () => {
 
   it("throws when array length > 16", () => {
     const domains = Array.from({ length: 17 }, (_, i) => `d${i}.com`);
-    expect(() => validateLookup(domains, { multi: true })).toThrow(
-      "Domain LOOKUP size too big (16 max)",
-    );
+    expect(() => validateLookup(domains, { multi: true })).toThrow();
   });
 });

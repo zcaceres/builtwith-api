@@ -1,4 +1,5 @@
-import type { BooleanMapping, QueryParams } from "./types";
+import { SingleLookupSchema, MultiLookupSchema } from "./schemas.js";
+import type { BooleanMapping, QueryParams } from "./schemas.js";
 
 export const toQueryString = (params: QueryParams): string =>
   Object.entries(params)
@@ -44,7 +45,13 @@ export const validateLookup = (
   url: string | string[],
   { multi = false }: { multi?: boolean } = {},
 ): void => {
-  if (!Array.isArray(url)) return;
-  if (!multi) throw new Error("API does not allow for multi-domain LOOKUP");
-  if (url.length > 16) throw new Error("Domain LOOKUP size too big (16 max)");
+  if (multi) {
+    MultiLookupSchema.parse(url);
+  } else {
+    SingleLookupSchema.parse(url);
+  }
+  if (Array.isArray(url)) {
+    if (!multi) throw new Error("API does not allow for multi-domain LOOKUP");
+    if (url.length > 16) throw new Error("Domain LOOKUP size too big (16 max)");
+  }
 };

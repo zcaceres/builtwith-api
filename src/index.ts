@@ -1,10 +1,27 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-// Runtime imports use require() for CJS compat with `export =`.
-// Type-only imports use `import type` (erased at runtime).
-const { VALID_RESPONSE_TYPES } = require("./config") as typeof import("./config");
-const { buildURL, booleanParams, cleanWords, validateLookup } = require("./params") as typeof import("./params");
-const { request, requestSafe } = require("./request") as typeof import("./request");
-
+import { VALID_RESPONSE_TYPES } from "./config.js";
+import { buildURL, booleanParams, cleanWords, validateLookup } from "./params.js";
+import { request, requestSafe } from "./request.js";
+import {
+  ResponseFormatSchema,
+  ClientOptionsSchema,
+  DomainParamsSchema,
+  ListsParamsSchema,
+  TrendsParamsSchema,
+  CompanyToUrlParamsSchema,
+  TrustParamsSchema,
+  FreeResponseSchema,
+  DomainResponseSchema,
+  ListsResponseSchema,
+  RelationshipsResponseSchema,
+  KeywordsResponseSchema,
+  TrendsResponseSchema,
+  CompanyToUrlResponseSchema,
+  TrustResponseSchema,
+  TagsResponseSchema,
+  RecommendationsResponseSchema,
+  RedirectsResponseSchema,
+  ProductResponseSchema,
+} from "./schemas.js";
 import type {
   ResponseFormat,
   ClientOptions,
@@ -16,7 +33,7 @@ import type {
   BuiltWithClient,
   BooleanMapping,
   QueryParams,
-} from "./types";
+} from "./schemas.js";
 
 const DOMAIN_BOOLEANS: BooleanMapping = {
   hideAll: "HIDETEXT",
@@ -27,7 +44,7 @@ const DOMAIN_BOOLEANS: BooleanMapping = {
   noPII: "NOPII",
 };
 
-function createClient(
+export function createClient(
   apiKey: string,
   moduleParams: ClientOptions = {},
 ): BuiltWithClient {
@@ -35,15 +52,8 @@ function createClient(
     throw new Error("You must initialize the BuiltWith module with an api key");
   }
 
-  const format: ResponseFormat = moduleParams.responseFormat || "json";
-
-  if (
-    !(Object.values(VALID_RESPONSE_TYPES) as string[]).includes(format)
-  ) {
-    throw new Error(
-      `Invalid 'responseFormat'. Valid formats are 'xml', 'txt', 'csv', 'tsv', and 'json'. You input ${format}`,
-    );
-  }
+  const parsed = ClientOptionsSchema.parse(moduleParams);
+  const format: ResponseFormat = parsed.responseFormat || "json";
 
   if (format === VALID_RESPONSE_TYPES.TXT) {
     console.warn(
@@ -53,17 +63,20 @@ function createClient(
 
   const url = (path: string, params: QueryParams) =>
     buildURL(apiKey, format, path, params);
-  const get = (bwURL: string) => request(bwURL, format);
-  const getSafe = (bwURL: string) => requestSafe(bwURL, format);
+  const get = <T>(bwURL: string, schema: import("zod/v4").ZodType<T>) =>
+    request(bwURL, format, schema);
+  const getSafe = <T>(bwURL: string, schema: import("zod/v4").ZodType<T>) =>
+    requestSafe(bwURL, format, schema);
 
   return {
     free: async (lookup: string) => {
       validateLookup(lookup);
-      return get(url("free1", { LOOKUP: lookup }));
+      return get(url("free1", { LOOKUP: lookup }), FreeResponseSchema);
     },
 
     domain: async (lookup: string | string[], params?: DomainParams) => {
       validateLookup(lookup, { multi: true });
+      if (params) DomainParamsSchema.parse(params);
       return get(
         url("v22", {
           LOOKUP: Array.isArray(lookup) ? lookup.join(",") : lookup,
@@ -71,10 +84,12 @@ function createClient(
           FDRANGE: params?.firstDetectedRange,
           LDRANGE: params?.lastDetectedRange,
         }),
+        DomainResponseSchema,
       );
     },
 
     lists: async (technology: string, params?: ListsParams) => {
+      if (params) ListsParamsSchema.parse(params);
       return getSafe(
         url("lists12", {
           TECH: technology,
@@ -82,6 +97,7 @@ function createClient(
           OFFSET: params?.offset,
           SINCE: params?.since,
         }),
+        ListsResponseSchema,
       );
     },
 
@@ -91,6 +107,7 @@ function createClient(
         url("rv4", {
           LOOKUP: Array.isArray(lookup) ? lookup.join(",") : lookup,
         }),
+        RelationshipsResponseSchema,
       );
     },
 
@@ -100,78 +117,81 @@ function createClient(
         url("kw2", {
           LOOKUP: Array.isArray(lookup) ? lookup.join(",") : lookup,
         }),
+        KeywordsResponseSchema,
       );
     },
 
     trends: async (technology: string, params?: TrendsParams) => {
+      if (params) TrendsParamsSchema.parse(params);
       return getSafe(
         url("trends/v6", {
           TECH: technology,
           DATE: params?.date,
         }),
+        TrendsResponseSchema,
       );
     },
 
     companyToUrl: async (companyName: string, params?: CompanyToUrlParams) => {
+      if (params) CompanyToUrlParamsSchema.parse(params);
       return get(
         url("ctu3", {
           COMPANY: companyName,
           TLD: params?.tld,
           AMOUNT: params?.amount,
         }),
+        CompanyToUrlResponseSchema,
       );
     },
 
     domainLive: async (lookup: string) => {
       validateLookup(lookup);
-      return get(url("ddlv2", { LOOKUP: lookup }));
+      return get(url("ddlv2", { LOOKUP: lookup }), DomainResponseSchema);
     },
 
     trust: async (lookup: string, params?: TrustParams) => {
       validateLookup(lookup);
+      if (params) TrustParamsSchema.parse(params);
       return get(
         url("trustv1", {
           LOOKUP: lookup,
           WORDS: cleanWords(params?.words),
           LIVE: params?.live ? "yes" : undefined,
         }),
+        TrustResponseSchema,
       );
     },
 
     tags: async (lookup: string) => {
       validateLookup(lookup);
-      return get(url("tag1", { LOOKUP: lookup }));
+      return get(url("tag1", { LOOKUP: lookup }), TagsResponseSchema);
     },
 
     recommendations: async (lookup: string) => {
       validateLookup(lookup);
-      return get(url("rec1", { LOOKUP: lookup }));
+      return get(url("rec1", { LOOKUP: lookup }), RecommendationsResponseSchema);
     },
 
     redirects: async (lookup: string) => {
       validateLookup(lookup);
-      return get(url("redirect1", { LOOKUP: lookup }));
+      return get(url("redirect1", { LOOKUP: lookup }), RedirectsResponseSchema);
     },
 
     product: async (query: string) => {
-      return get(url("productv1", { QUERY: query }));
+      return get(url("productv1", { QUERY: query }), ProductResponseSchema);
     },
   };
 }
 
-declare namespace createClient {
-  export type {
-    ResponseFormat,
-    ClientOptions,
-    DomainParams,
-    ListsParams,
-    TrendsParams,
-    CompanyToUrlParams,
-    TrustParams,
-    BuiltWithClient,
-    BooleanMapping,
-    QueryParams,
-  };
-}
-
-export = createClient;
+export type {
+  ResponseFormat,
+  ClientOptions,
+  DomainParams,
+  ListsParams,
+  TrendsParams,
+  CompanyToUrlParams,
+  TrustParams,
+  BuiltWithClient,
+  BooleanMapping,
+  QueryParams,
+} from "./schemas.js";

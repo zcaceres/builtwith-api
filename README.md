@@ -14,6 +14,13 @@ npm install builtwith-api
 
 Requires Node.js >= 18 (uses native `fetch`).
 
+## Breaking Changes in v3
+
+- **ESM-only** - no more CommonJS/`require()` support
+- **Named export** - `import { createClient } from 'builtwith-api'` (not default/`require`)
+- **Zod validation** - invalid inputs throw `ZodError` instead of manual error messages
+- **Typed responses** - methods return typed response objects (when using JSON format)
+
 ## Features
 
 ### Response Formats
@@ -45,10 +52,10 @@ ________________
 ## How To Use
 
 ```js
-const BuiltWith = require('builtwith-api')
+import { createClient } from 'builtwith-api'
 
 // Initialize with your API key
-const builtwith = BuiltWith(process.env.YOUR_BUILTWITH_API_KEY, {
+const builtwith = createClient(process.env.YOUR_BUILTWITH_API_KEY, {
   responseFormat: 'json' // 'json' 'xml' 'csv' 'tsv' 'txt' (txt only for lists API)
 })
 
@@ -138,3 +145,5 @@ await builtwith.product('shoes')
 ## Learn More
 
 Check out the full API docs at [api.builtwith.com](https://api.builtwith.com)
+
+For LLM-friendly API documentation, see [api.builtwith.com/llms.txt](https://api.builtwith.com/llms.txt)
