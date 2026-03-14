@@ -18,7 +18,7 @@
 ### Breaking Changes
 
 - **ESM-only** — dropped CommonJS/`require()` support
-- **Named export** — use `import { createClient } from 'builtwith'` instead of default export
+- **Named export** — use `import { createClient } from 'builtwith-api'` instead of default export
 - **Zod validation** — invalid inputs throw `ZodError`; invalid API responses throw `ZodError` instead of silently returning unvalidated data
 - **Typed responses** — all 13 endpoints return fully typed response objects (when using JSON format), matching the BuiltWith API documentation
 - **Node.js >= 18** — uses native `fetch`, no more `node-fetch` dependency

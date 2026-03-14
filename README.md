@@ -1,13 +1,13 @@
 # BuiltWith API
 
-`builtwith` is a utility wrapper for the BuiltWith API suite. Find out what any website is built with!
+`builtwith-api` is a utility wrapper for the BuiltWith API suite. Find out what any website is built with!
 
 Available as a **library**, **CLI**, and **MCP server**.
 
 ## Installation
 
 ```
-npm install builtwith
+npm install builtwith-api
 ```
 
 Requires Node.js >= 18 (uses native `fetch`).
@@ -15,7 +15,7 @@ Requires Node.js >= 18 (uses native `fetch`).
 ## Breaking Changes in v3
 
 - **ESM-only** - no more CommonJS/`require()` support
-- **Named export** - `import { createClient } from 'builtwith'` (not default/`require`)
+- **Named export** - `import { createClient } from 'builtwith-api'` (not default/`require`)
 - **Zod validation** - invalid inputs throw `ZodError` instead of manual error messages
 - **Typed responses** - methods return typed response objects (when using JSON format)
 
@@ -50,7 +50,7 @@ ________________
 ## Library Usage
 
 ```js
-import { createClient } from 'builtwith'
+import { createClient } from 'builtwith-api'
 
 // Initialize with your API key
 const builtwith = createClient(process.env.YOUR_BUILTWITH_API_KEY, {
@@ -190,7 +190,7 @@ The package includes an [MCP](https://modelcontextprotocol.io) server that expos
 First install the package globally:
 
 ```bash
-npm install -g builtwith
+npm install -g builtwith-api
 ```
 
 Then add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
