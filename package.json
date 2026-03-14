@@ -1,5 +1,5 @@
 {
-  "name": "builtwith-api",
+  "name": "builtwith",
   "version": "3.0.0",
   "description": "Wrapper for the BuiltWith API",
   "type": "module",
