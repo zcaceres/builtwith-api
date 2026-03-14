@@ -187,19 +187,14 @@ The package includes an [MCP](https://modelcontextprotocol.io) server that expos
 
 ### Claude Desktop Configuration
 
-First install the package globally:
-
-```bash
-npm install -g builtwith-api
-```
-
-Then add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
 
 ```json
 {
   "mcpServers": {
     "builtwith": {
-      "command": "builtwith-mcp",
+      "command": "npx",
+      "args": ["-y", "-p", "builtwith-api", "builtwith-mcp"],
       "env": {
         "BUILTWITH_API_KEY": "YOUR_KEY"
       }
@@ -214,8 +209,8 @@ Or passing the key directly:
 {
   "mcpServers": {
     "builtwith": {
-      "command": "builtwith-mcp",
-      "args": ["--api-key", "YOUR_KEY"]
+      "command": "npx",
+      "args": ["-y", "-p", "builtwith-api", "builtwith-mcp", "--api-key", "YOUR_KEY"]
     }
   }
 }
