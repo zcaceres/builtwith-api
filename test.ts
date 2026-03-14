@@ -1,5 +1,4 @@
-// Use require() because src/index.ts uses `export =` (CJS pattern)
-const createClient = require("./src/index");
+import { createClient } from "./src/index";
 
 const url = "builtwith.com";
 const multi_test = ["builtwith.com", "google.com"];

@@ -2,17 +2,22 @@
 
 `builtwith-api` is a utility wrapper for the BuiltWith API suite. Find out what any website is built with!
 
+Available as a **library**, **CLI**, and **MCP server**.
+
 ## Installation
 
 ```
-yarn add builtwith-api
-
-or
-
 npm install builtwith-api
 ```
 
 Requires Node.js >= 18 (uses native `fetch`).
+
+## Breaking Changes in v3
+
+- **ESM-only** - no more CommonJS/`require()` support
+- **Named export** - `import { createClient } from 'builtwith-api'` (not default/`require`)
+- **Zod validation** - invalid inputs throw `ZodError` instead of manual error messages
+- **Typed responses** - methods return typed response objects (when using JSON format)
 
 ## Features
 
@@ -42,13 +47,13 @@ Requires Node.js >= 18 (uses native `fetch`).
 
 ________________
 
-## How To Use
+## Library Usage
 
 ```js
-const BuiltWith = require('builtwith-api')
+import { createClient } from 'builtwith-api'
 
 // Initialize with your API key
-const builtwith = BuiltWith(process.env.YOUR_BUILTWITH_API_KEY, {
+const builtwith = createClient(process.env.YOUR_BUILTWITH_API_KEY, {
   responseFormat: 'json' // 'json' 'xml' 'csv' 'tsv' 'txt' (txt only for lists API)
 })
 
@@ -135,6 +140,110 @@ await builtwith.redirects(url)
 await builtwith.product('shoes')
 ```
 
+## CLI
+
+The CLI wraps all 13 API methods. No extra dependencies beyond the package itself.
+
+```bash
+builtwith <command> <primary-arg> [--flag value ...]
+```
+
+### Authentication
+
+Pass your API key via `--api-key` or the `BUILTWITH_API_KEY` environment variable:
+
+```bash
+# Flag
+builtwith free example.com --api-key YOUR_KEY
+
+# Environment variable
+export BUILTWITH_API_KEY=YOUR_KEY
+builtwith free example.com
+```
+
+### Examples
+
+```bash
+builtwith free example.com
+builtwith domain example.com --hideAll --onlyLiveTechnologies
+builtwith domain "example.com,other.com"
+builtwith lists Shopify --since 2024-01-01
+builtwith companyToUrl "Acme Corp" --amount 5 --tld com
+builtwith trust example.com --words "shop,buy" --live
+builtwith trends React --date 2024-06-01
+```
+
+Use `--help` for full usage or `builtwith <command> --help` for command-specific options:
+
+```bash
+builtwith --help
+builtwith domain --help
+builtwith --version
+```
+
+## MCP Server
+
+The package includes an [MCP](https://modelcontextprotocol.io) server that exposes all 13 API methods as tools for LLM clients (Claude Desktop, etc.).
+
+### Claude Desktop Configuration
+
+Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "builtwith": {
+      "command": "npx",
+      "args": ["-y", "-p", "builtwith-api", "builtwith-mcp"],
+      "env": {
+        "BUILTWITH_API_KEY": "YOUR_KEY"
+      }
+    }
+  }
+}
+```
+
+Or passing the key directly:
+
+```json
+{
+  "mcpServers": {
+    "builtwith": {
+      "command": "npx",
+      "args": ["-y", "-p", "builtwith-api", "builtwith-mcp", "--api-key", "YOUR_KEY"]
+    }
+  }
+}
+```
+
+### Tools
+
+All tools are prefixed with `builtwith_`:
+
+| Tool | Description |
+|------|-------------|
+| `builtwith_free` | Free technology profile for a domain |
+| `builtwith_domain` | Detailed technology profile (supports comma-separated multi-domain) |
+| `builtwith_lists` | List domains using a specific technology |
+| `builtwith_relationships` | Find related domains via shared identifiers |
+| `builtwith_keywords` | Get keywords for domains |
+| `builtwith_trends` | Technology adoption trends |
+| `builtwith_companyToUrl` | Find domains for a company name |
+| `builtwith_domainLive` | Live technology lookup |
+| `builtwith_trust` | Trust/verification score |
+| `builtwith_tags` | Tracking/analytics tags |
+| `builtwith_recommendations` | Technology recommendations |
+| `builtwith_redirects` | Redirect chain history |
+| `builtwith_product` | E-commerce product search |
+
+### Testing with MCP Inspector
+
+```bash
+npx @modelcontextprotocol/inspector node dist/mcp.js
+```
+
 ## Learn More
 
 Check out the full API docs at [api.builtwith.com](https://api.builtwith.com)
+
+For LLM-friendly API documentation, see [api.builtwith.com/llms.txt](https://api.builtwith.com/llms.txt)

@@ -1,0 +1,84 @@
+name: Release Binaries
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: write
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag_exists: ${{ steps.check_tag.outputs.exists }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read version from package.json
+        id: version
+        run: echo "version=v$(jq -r .version package.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Check if tag already exists
+        id: check_tag
+        run: |
+          if git ls-remote --tags origin "refs/tags/${{ steps.version.outputs.version }}" | grep -q .; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  release:
+    needs: check-version
+    if: needs.check-version.outputs.tag_exists == 'false'
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ needs.check-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create GitHub release
+        run: gh release create "${{ needs.check-version.outputs.version }}" --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+    needs: release
+    strategy:
+      matrix:
+        include:
+          - target: bun-linux-x64
+            os: ubuntu-latest
+            artifact: builtwith-linux-x64
+          - target: bun-linux-arm64
+            os: ubuntu-latest
+            artifact: builtwith-linux-arm64
+          - target: bun-darwin-x64
+            os: macos-latest
+            artifact: builtwith-darwin-x64
+          - target: bun-darwin-arm64
+            os: macos-latest
+            artifact: builtwith-darwin-arm64
+          - target: bun-windows-x64
+            os: ubuntu-latest
+            artifact: builtwith-windows-x64.exe
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+
+      - name: Compile binary
+        run: bun build ./src/cli.ts --compile --target ${{ matrix.target }} --outfile ${{ matrix.artifact }}
+
+      - name: Upload to release
+        run: gh release upload "${{ needs.release.outputs.tag }}" "${{ matrix.artifact }}" --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

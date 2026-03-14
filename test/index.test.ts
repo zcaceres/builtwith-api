@@ -1,7 +1,5 @@
 import { describe, it, expect } from "bun:test";
-
-// Use require() because src/index.ts uses `export =` (CJS pattern)
-const createClient = require("../src/index");
+import { createClient } from "../src/index";
 
 const EXPECTED_METHODS = [
   "free",
@@ -28,10 +26,7 @@ describe("createClient", () => {
   });
 
   it("throws for invalid responseFormat", () => {
-    // @ts-expect-error testing invalid responseFormat
-    expect(() => createClient("key", { responseFormat: "yaml" })).toThrow(
-      /Invalid 'responseFormat'.*yaml/,
-    );
+    expect(() => createClient("key", { responseFormat: "yaml" as any })).toThrow();
   });
 
   it("returns an object with all 13 method names", () => {
