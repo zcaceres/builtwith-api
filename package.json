@@ -20,10 +20,10 @@
     "smoke": "bun test.ts",
     "clean": "rm -rf dist"
   },
-  "homepage": "https://github.com/builtwith/builtwith-node-api",
+  "homepage": "https://github.com/zcaceres/builtwith-api",
   "repository": {
     "type": "git",
-    "url": "https://github.com/builtwith/builtwith-node-api.git"
+    "url": "https://github.com/zcaceres/builtwith-api.git"
   },
   "keywords": [
     "utilities",
@@ -41,7 +41,7 @@
     "node": ">=18.0.0"
   },
   "devDependencies": {
-    "@types/bun": "latest",
+    "@types/bun": "^1.3.9",
     "typescript": "^5"
   },
   "dependencies": {
