@@ -13,7 +13,7 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
   "mcpServers": {
     "builtwith": {
       "command": "npx",
-      "args": ["-y", "builtwith-api"],
+      "args": ["-y", "--package", "builtwith-api", "builtwith-mcp"],
       "env": {
         "BUILTWITH_API_KEY": "your-key-here"
       }
@@ -31,7 +31,7 @@ Add to your Claude Code settings:
   "mcpServers": {
     "builtwith": {
       "command": "npx",
-      "args": ["-y", "builtwith-api"],
+      "args": ["-y", "--package", "builtwith-api", "builtwith-mcp"],
       "env": {
         "BUILTWITH_API_KEY": "your-key-here"
       }
@@ -49,7 +49,7 @@ You can also pass the API key as a flag instead of an env var:
   "mcpServers": {
     "builtwith": {
       "command": "npx",
-      "args": ["-y", "builtwith-api", "--api-key", "your-key-here"]
+      "args": ["-y", "--package", "builtwith-api", "builtwith-mcp", "--api-key", "your-key-here"]
     }
   }
 }

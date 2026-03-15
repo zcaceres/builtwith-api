@@ -32,6 +32,7 @@
   --vp-c-text-2: #8A8A80;
   --vp-c-text-3: #5A5A54;
   --vp-c-divider: #3a3a36;
+  --vp-home-hero-name-background: linear-gradient(135deg, #F0EFEB 40%, #C45D3E);
 }
 
 /* Headings use Space Grotesk */

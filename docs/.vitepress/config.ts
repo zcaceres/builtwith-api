@@ -51,6 +51,7 @@ export default defineConfig({
 
     footer: {
       message: "Released under the MIT License.",
+      copyright: 'Built by <a href="https://zach.dev">zach.dev</a>. Not affiliated with <a href="https://builtwith.com">builtwith.com</a>.',
     },
   },
 });

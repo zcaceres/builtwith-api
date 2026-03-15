@@ -9,7 +9,7 @@ The `builtwith` CLI lets you query the BuiltWith API from your terminal. Output 
 npm install -g builtwith-api
 
 # Or run without installing
-npx builtwith-api free example.com --api-key YOUR_KEY
+npx --package builtwith-api builtwith free example.com --api-key YOUR_KEY
 ```
 
 Standalone binaries are also available on the [GitHub Releases](https://github.com/zcaceres/builtwith-api/releases) page.
