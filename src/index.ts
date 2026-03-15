@@ -1,38 +1,37 @@
 import { VALID_RESPONSE_TYPES } from "./config.js";
-import { buildURL, booleanParams, cleanWords, validateLookup } from "./params.js";
+import { booleanParams, buildURL, cleanWords, validateLookup } from "./params.js";
 import { request, requestSafe } from "./request.js";
-import {
-  ResponseFormatSchema,
-  ClientOptionsSchema,
-  DomainParamsSchema,
-  ListsParamsSchema,
-  TrendsParamsSchema,
-  CompanyToUrlParamsSchema,
-  TrustParamsSchema,
-  FreeResponseSchema,
-  DomainResponseSchema,
-  ListsResponseSchema,
-  RelationshipsResponseSchema,
-  KeywordsResponseSchema,
-  TrendsResponseSchema,
-  CompanyToUrlResponseSchema,
-  TrustResponseSchema,
-  TagsResponseSchema,
-  RecommendationsResponseSchema,
-  RedirectsResponseSchema,
-  ProductResponseSchema,
-} from "./schemas.js";
 import type {
-  ResponseFormat,
+  BooleanMapping,
+  BuiltWithClient,
   ClientOptions,
+  CompanyToUrlParams,
   DomainParams,
   ListsParams,
-  TrendsParams,
-  CompanyToUrlParams,
-  TrustParams,
-  BuiltWithClient,
-  BooleanMapping,
   QueryParams,
+  ResponseFormat,
+  TrendsParams,
+  TrustParams,
+} from "./schemas.js";
+import {
+  ClientOptionsSchema,
+  CompanyToUrlParamsSchema,
+  CompanyToUrlResponseSchema,
+  DomainParamsSchema,
+  DomainResponseSchema,
+  FreeResponseSchema,
+  KeywordsResponseSchema,
+  ListsParamsSchema,
+  ListsResponseSchema,
+  ProductResponseSchema,
+  RecommendationsResponseSchema,
+  RedirectsResponseSchema,
+  RelationshipsResponseSchema,
+  TagsResponseSchema,
+  TrendsParamsSchema,
+  TrendsResponseSchema,
+  TrustParamsSchema,
+  TrustResponseSchema,
 } from "./schemas.js";
 
 const DOMAIN_BOOLEANS: BooleanMapping = {
@@ -44,10 +43,7 @@ const DOMAIN_BOOLEANS: BooleanMapping = {
   noPII: "NOPII",
 };
 
-export function createClient(
-  apiKey: string,
-  moduleParams: ClientOptions = {},
-): BuiltWithClient {
+export function createClient(apiKey: string, moduleParams: ClientOptions = {}): BuiltWithClient {
   if (!apiKey) {
     throw new Error("You must initialize the BuiltWith module with an api key");
   }
@@ -61,12 +57,9 @@ export function createClient(
     );
   }
 
-  const url = (path: string, params: QueryParams) =>
-    buildURL(apiKey, format, path, params);
-  const get = <T>(bwURL: string, schema: import("zod/v4").ZodType<T>) =>
-    request(bwURL, format, schema);
-  const getSafe = <T>(bwURL: string, schema: import("zod/v4").ZodType<T>) =>
-    requestSafe(bwURL, format, schema);
+  const url = (path: string, params: QueryParams) => buildURL(apiKey, format, path, params);
+  const get = <T>(bwURL: string, schema: import("zod/v4").ZodType<T>) => request(bwURL, format, schema);
+  const getSafe = <T>(bwURL: string, schema: import("zod/v4").ZodType<T>) => requestSafe(bwURL, format, schema);
 
   return {
     free: async (lookup: string) => {
@@ -184,14 +177,14 @@ export function createClient(
 }
 
 export type {
-  ResponseFormat,
+  BooleanMapping,
+  BuiltWithClient,
   ClientOptions,
+  CompanyToUrlParams,
   DomainParams,
   ListsParams,
-  TrendsParams,
-  CompanyToUrlParams,
-  TrustParams,
-  BuiltWithClient,
-  BooleanMapping,
   QueryParams,
+  ResponseFormat,
+  TrendsParams,
+  TrustParams,
 } from "./schemas.js";

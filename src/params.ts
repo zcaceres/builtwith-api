@@ -1,5 +1,5 @@
-import { SingleLookupSchema, MultiLookupSchema } from "./schemas.js";
 import type { BooleanMapping, QueryParams } from "./schemas.js";
+import { MultiLookupSchema, SingleLookupSchema } from "./schemas.js";
 
 export const toQueryString = (params: QueryParams): string =>
   Object.entries(params)
@@ -7,19 +7,13 @@ export const toQueryString = (params: QueryParams): string =>
     .map(([k, v]) => `${k}=${encodeURIComponent(v).replace(/%2C/gi, ",")}`)
     .join("&");
 
-const booleanFlag = (value: unknown): "yes" | undefined =>
-  value ? "yes" : undefined;
+const booleanFlag = (value: unknown): "yes" | undefined => (value ? "yes" : undefined);
 
 export const booleanParams = (
   params: Record<string, unknown> | null | undefined,
   mapping: BooleanMapping,
 ): QueryParams =>
-  Object.fromEntries(
-    Object.entries(mapping).map(([jsKey, apiKey]) => [
-      apiKey,
-      booleanFlag(params?.[jsKey]),
-    ]),
-  );
+  Object.fromEntries(Object.entries(mapping).map(([jsKey, apiKey]) => [apiKey, booleanFlag(params?.[jsKey])]));
 
 export const cleanWords = (words: string | undefined): string | undefined =>
   words
@@ -41,10 +35,7 @@ export const buildURL = (
   return qs ? `${base}&${qs}` : base;
 };
 
-export const validateLookup = (
-  url: string | string[],
-  { multi = false }: { multi?: boolean } = {},
-): void => {
+export const validateLookup = (url: string | string[], { multi = false }: { multi?: boolean } = {}): void => {
   if (multi) {
     MultiLookupSchema.parse(url);
   } else {

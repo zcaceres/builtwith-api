@@ -1,11 +1,5 @@
-import { describe, it, expect } from "bun:test";
-import {
-  toQueryString,
-  booleanParams,
-  cleanWords,
-  buildURL,
-  validateLookup,
-} from "../src/params";
+import { describe, expect, it } from "bun:test";
+import { booleanParams, buildURL, cleanWords, toQueryString, validateLookup } from "../src/params";
 
 describe("toQueryString", () => {
   it("filters out undefined values", () => {
@@ -17,9 +11,7 @@ describe("toQueryString", () => {
   });
 
   it("preserves commas (does not encode as %2C)", () => {
-    expect(toQueryString({ LOOKUP: "a.com,b.com" })).toBe(
-      "LOOKUP=a.com,b.com",
-    );
+    expect(toQueryString({ LOOKUP: "a.com,b.com" })).toBe("LOOKUP=a.com,b.com");
   });
 
   it("returns empty string for all-undefined params", () => {
@@ -82,9 +74,7 @@ describe("buildURL", () => {
     const result = buildURL("KEY123", "json", "v22", {
       LOOKUP: "example.com",
     });
-    expect(result).toBe(
-      "https://api.builtwith.com/v22/api.json?KEY=KEY123&LOOKUP=example.com",
-    );
+    expect(result).toBe("https://api.builtwith.com/v22/api.json?KEY=KEY123&LOOKUP=example.com");
   });
 
   it("no trailing & when params are all undefined", () => {
@@ -94,9 +84,7 @@ describe("buildURL", () => {
 
   it("supports custom subdomain", () => {
     const result = buildURL("KEY123", "json", "lists12", {}, "pro");
-    expect(result).toBe(
-      "https://pro.builtwith.com/lists12/api.json?KEY=KEY123",
-    );
+    expect(result).toBe("https://pro.builtwith.com/lists12/api.json?KEY=KEY123");
   });
 });
 

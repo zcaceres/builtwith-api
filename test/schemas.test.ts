@@ -1,17 +1,17 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import {
-  FreeResponseSchema,
-  DomainResponseSchema,
-  ListsResponseSchema,
-  RelationshipsResponseSchema,
-  KeywordsResponseSchema,
-  TrendsResponseSchema,
   CompanyToUrlResponseSchema,
-  TrustResponseSchema,
-  TagsResponseSchema,
+  DomainResponseSchema,
+  FreeResponseSchema,
+  KeywordsResponseSchema,
+  ListsResponseSchema,
+  ProductResponseSchema,
   RecommendationsResponseSchema,
   RedirectsResponseSchema,
-  ProductResponseSchema,
+  RelationshipsResponseSchema,
+  TagsResponseSchema,
+  TrendsResponseSchema,
+  TrustResponseSchema,
 } from "../src/schemas";
 
 describe("FreeResponseSchema", () => {
@@ -131,6 +131,7 @@ describe("DomainResponseSchema", () => {
 
   it("rejects IsDB as boolean", () => {
     const bad = structuredClone(valid);
+    // biome-ignore lint/suspicious/noExplicitAny: intentionally setting wrong type to test schema rejection
     (bad.Results[0].Result as any).IsDB = true;
     expect(() => DomainResponseSchema.parse(bad)).toThrow();
   });
@@ -148,6 +149,7 @@ describe("DomainResponseSchema", () => {
 
   it("rejects Errors containing non-strings", () => {
     const bad = structuredClone(valid);
+    // biome-ignore lint/suspicious/noExplicitAny: intentionally setting wrong type to test schema rejection
     (bad as any).Errors = [{ code: 1 }];
     expect(() => DomainResponseSchema.parse(bad)).toThrow();
   });
@@ -202,9 +204,7 @@ describe("RelationshipsResponseSchema", () => {
             Type: "GoogleAnalytics",
             First: 1609459200,
             Last: 1704067200,
-            Matches: [
-              { Domain: "related.com", First: 1609459200, Last: 1704067200, Overlap: true },
-            ],
+            Matches: [{ Domain: "related.com", First: 1609459200, Last: 1704067200, Overlap: true }],
           },
         ],
       },
@@ -226,6 +226,7 @@ describe("RelationshipsResponseSchema", () => {
 
   it("rejects Matches as plain objects without required fields", () => {
     const bad = structuredClone(valid);
+    // biome-ignore lint/suspicious/noExplicitAny: intentionally setting wrong type to test schema rejection
     (bad.Relationships[0].Identifiers[0].Matches as any) = [{ Domain: "x.com" }];
     expect(() => RelationshipsResponseSchema.parse(bad)).toThrow();
   });
@@ -271,6 +272,7 @@ describe("TrendsResponseSchema", () => {
 
   it("rejects missing coverage", () => {
     const bad = structuredClone(valid);
+    // biome-ignore lint/suspicious/noExplicitAny: intentionally deleting field to test schema rejection
     delete (bad.Tech as any).coverage;
     expect(() => TrendsResponseSchema.parse(bad)).toThrow();
   });
@@ -344,9 +346,7 @@ describe("TagsResponseSchema", () => {
   const valid = [
     {
       Value: "GTM-XXXX",
-      Matches: [
-        { Domain: "example.com", First: "2021-01-01T00:00:00Z", Last: "2024-01-01T00:00:00Z" },
-      ],
+      Matches: [{ Domain: "example.com", First: "2021-01-01T00:00:00Z", Last: "2024-01-01T00:00:00Z" }],
     },
   ];
 
@@ -356,9 +356,7 @@ describe("TagsResponseSchema", () => {
   });
 
   it("rejects First/Last as numbers", () => {
-    const bad = [
-      { Value: "GTM-XXXX", Matches: [{ Domain: "x.com", First: 123, Last: 456 }] },
-    ];
+    const bad = [{ Value: "GTM-XXXX", Matches: [{ Domain: "x.com", First: 123, Last: 456 }] }];
     expect(() => TagsResponseSchema.parse(bad)).toThrow();
   });
 });
@@ -392,12 +390,8 @@ describe("RecommendationsResponseSchema", () => {
 describe("RedirectsResponseSchema", () => {
   const valid = {
     Lookup: "example.com",
-    Inbound: [
-      { Domain: "old.com", FirstDetected: "2021-01-01T00:00:00Z", LastDetected: "2024-01-01T00:00:00Z" },
-    ],
-    Outbound: [
-      { Domain: "new.com", FirstDetected: "2023-06-01T00:00:00Z", LastDetected: "2024-01-01T00:00:00Z" },
-    ],
+    Inbound: [{ Domain: "old.com", FirstDetected: "2021-01-01T00:00:00Z", LastDetected: "2024-01-01T00:00:00Z" }],
+    Outbound: [{ Domain: "new.com", FirstDetected: "2023-06-01T00:00:00Z", LastDetected: "2024-01-01T00:00:00Z" }],
   };
 
   it("parses valid response with string dates", () => {
@@ -456,6 +450,7 @@ describe("ProductResponseSchema", () => {
 
   it("rejects missing shop_count", () => {
     const bad = structuredClone(valid);
+    // biome-ignore lint/suspicious/noExplicitAny: intentionally deleting field to test schema rejection
     delete (bad as any).shop_count;
     expect(() => ProductResponseSchema.parse(bad)).toThrow();
   });

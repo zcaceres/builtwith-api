@@ -1,20 +1,23 @@
 #!/usr/bin/env node
 import { createRequire } from "node:module";
+import { parseArgs } from "node:util";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod/v4";
-import { createClient } from "./index.js";
 import { commands } from "./commands.js";
 import { formatError } from "./errors.js";
+import { createClient } from "./index.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json");
 
 // Accept --api-key flag or BUILTWITH_API_KEY env var
-const keyFlagIndex = process.argv.indexOf("--api-key");
-const apiKey =
-  (keyFlagIndex !== -1 ? process.argv[keyFlagIndex + 1] : undefined) ||
-  process.env.BUILTWITH_API_KEY;
+const { values } = parseArgs({
+  args: process.argv.slice(2),
+  options: { "api-key": { type: "string" } },
+  strict: false,
+});
+const apiKey = (values["api-key"] as string) || process.env.BUILTWITH_API_KEY;
 if (!apiKey) {
   console.error("Error: pass --api-key or set BUILTWITH_API_KEY environment variable.");
   process.exit(1);
@@ -46,24 +49,19 @@ for (const cmd of commands) {
     shape[arg.name] = arg.required ? schema : schema.optional();
   }
 
-  server.tool(
-    `builtwith_${cmd.name}`,
-    cmd.description,
-    shape,
-    async (params) => {
-      try {
-        const result = await cmd.execute(client, params);
-        return {
-          content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }],
-        };
-      } catch (err) {
-        return {
-          content: [{ type: "text" as const, text: formatError(err) }],
-          isError: true,
-        };
-      }
-    },
-  );
+  server.tool(`builtwith_${cmd.name}`, cmd.description, shape, async (params) => {
+    try {
+      const result = await cmd.execute(client, params);
+      return {
+        content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (err) {
+      return {
+        content: [{ type: "text" as const, text: formatError(err) }],
+        isError: true,
+      };
+    }
+  });
 }
 
 const transport = new StdioServerTransport();

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import { createClient } from "../src/index";
 
 const EXPECTED_METHODS = [
@@ -20,12 +20,11 @@ const EXPECTED_METHODS = [
 describe("createClient", () => {
   it("throws when apiKey is missing", () => {
     // @ts-expect-error testing missing required argument
-    expect(() => createClient()).toThrow(
-      "You must initialize the BuiltWith module with an api key",
-    );
+    expect(() => createClient()).toThrow("You must initialize the BuiltWith module with an api key");
   });
 
   it("throws for invalid responseFormat", () => {
+    // biome-ignore lint/suspicious/noExplicitAny: intentionally passing invalid value to test validation
     expect(() => createClient("key", { responseFormat: "yaml" as any })).toThrow();
   });
 

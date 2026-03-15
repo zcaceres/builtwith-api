@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import { createRequire } from "node:module";
 import { parseArgs } from "node:util";
-import { createClient } from "./index.js";
 import { commands } from "./commands.js";
 import { formatError } from "./errors.js";
+import { createClient } from "./index.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json");
