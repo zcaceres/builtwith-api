@@ -131,6 +131,7 @@ describe("DomainResponseSchema", () => {
 
   it("rejects IsDB as boolean", () => {
     const bad = structuredClone(valid);
+    // biome-ignore lint/suspicious/noExplicitAny: intentionally setting wrong type to test schema rejection
     (bad.Results[0].Result as any).IsDB = true;
     expect(() => DomainResponseSchema.parse(bad)).toThrow();
   });
@@ -148,6 +149,7 @@ describe("DomainResponseSchema", () => {
 
   it("rejects Errors containing non-strings", () => {
     const bad = structuredClone(valid);
+    // biome-ignore lint/suspicious/noExplicitAny: intentionally setting wrong type to test schema rejection
     (bad as any).Errors = [{ code: 1 }];
     expect(() => DomainResponseSchema.parse(bad)).toThrow();
   });
@@ -224,6 +226,7 @@ describe("RelationshipsResponseSchema", () => {
 
   it("rejects Matches as plain objects without required fields", () => {
     const bad = structuredClone(valid);
+    // biome-ignore lint/suspicious/noExplicitAny: intentionally setting wrong type to test schema rejection
     (bad.Relationships[0].Identifiers[0].Matches as any) = [{ Domain: "x.com" }];
     expect(() => RelationshipsResponseSchema.parse(bad)).toThrow();
   });
@@ -269,6 +272,7 @@ describe("TrendsResponseSchema", () => {
 
   it("rejects missing coverage", () => {
     const bad = structuredClone(valid);
+    // biome-ignore lint/suspicious/noExplicitAny: intentionally deleting field to test schema rejection
     delete (bad.Tech as any).coverage;
     expect(() => TrendsResponseSchema.parse(bad)).toThrow();
   });
@@ -446,6 +450,7 @@ describe("ProductResponseSchema", () => {
 
   it("rejects missing shop_count", () => {
     const bad = structuredClone(valid);
+    // biome-ignore lint/suspicious/noExplicitAny: intentionally deleting field to test schema rejection
     delete (bad as any).shop_count;
     expect(() => ProductResponseSchema.parse(bad)).toThrow();
   });

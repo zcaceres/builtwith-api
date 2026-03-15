@@ -6,7 +6,7 @@ function cli(
 ): Promise<{ stdout: string; stderr: string; exitCode: number }> {
   return new Promise((resolve) => {
     const proc = Bun.spawn(["bun", "run", "src/cli.ts", ...args], {
-      cwd: import.meta.dir + "/..",
+      cwd: `${import.meta.dir}/..`,
       env: { ...process.env, ...env },
       stdout: "pipe",
       stderr: "pipe",

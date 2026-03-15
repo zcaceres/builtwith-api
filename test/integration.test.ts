@@ -7,7 +7,6 @@ describe.if(!!apiKey)("integration (live API)", () => {
   // Lazy init — createClient throws without a key, and describe.if still evaluates the body
   let client: ReturnType<typeof createClient>;
   function getClient() {
-    // biome-ignore lint/style/noNonNullAssertion: guarded by describe.if
     if (!client) client = createClient(apiKey!);
     return client;
   }

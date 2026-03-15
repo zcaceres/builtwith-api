@@ -1,10 +1,10 @@
 import { describe, expect, it } from "bun:test";
 
 function mcp(messages: object[], env: Record<string, string> = {}): Promise<{ lines: string[]; exitCode: number }> {
-  const input = messages.map((m) => JSON.stringify(m)).join("\n") + "\n";
+  const input = `${messages.map((m) => JSON.stringify(m)).join("\n")}\n`;
   return new Promise((resolve) => {
     const proc = Bun.spawn(["bun", "run", "src/mcp.ts", "--api-key", "test"], {
-      cwd: import.meta.dir + "/..",
+      cwd: `${import.meta.dir}/..`,
       env: { ...process.env, ...env },
       stdin: new Blob([input]),
       stdout: "pipe",
@@ -48,8 +48,9 @@ describe("MCP server", () => {
     const response = JSON.parse(lines[lines.length - 1]);
     const tools = response.result.tools;
     expect(tools).toHaveLength(13);
-    expect(tools.map((t: any) => t.name)).toContain("builtwith_free");
-    expect(tools.map((t: any) => t.name)).toContain("builtwith_domain");
+    const names = tools.map((t: Record<string, unknown>) => t.name);
+    expect(names).toContain("builtwith_free");
+    expect(names).toContain("builtwith_domain");
   });
 
   it("tool names are all prefixed with builtwith_", async () => {
@@ -89,7 +90,7 @@ describe("MCP server", () => {
 
   it("exits 1 when no API key provided", async () => {
     const proc = Bun.spawn(["bun", "run", "src/mcp.ts"], {
-      cwd: import.meta.dir + "/..",
+      cwd: `${import.meta.dir}/..`,
       env: { ...process.env, BUILTWITH_API_KEY: "" },
       stdout: "pipe",
       stderr: "pipe",

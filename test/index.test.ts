@@ -24,6 +24,7 @@ describe("createClient", () => {
   });
 
   it("throws for invalid responseFormat", () => {
+    // biome-ignore lint/suspicious/noExplicitAny: intentionally passing invalid value to test validation
     expect(() => createClient("key", { responseFormat: "yaml" as any })).toThrow();
   });
 

@@ -78,6 +78,11 @@ describe("command registry", () => {
   });
 });
 
+interface MockResult {
+  method: string;
+  args: unknown[];
+}
+
 describe("command execute", () => {
   function mockClient(methodName: string): BuiltWithClient {
     const handler = (...args: unknown[]) => Promise.resolve({ method: methodName, args });
@@ -87,14 +92,14 @@ describe("command execute", () => {
   it("free passes lookup string", async () => {
     const cmd = commands.find((c) => c.name === "free")!;
     const client = mockClient("free");
-    const result = (await cmd.execute(client, { lookup: "example.com" })) as any;
+    const result = (await cmd.execute(client, { lookup: "example.com" })) as MockResult;
     expect(result.args[0]).toBe("example.com");
   });
 
   it("domain splits comma-separated lookups", async () => {
     const cmd = commands.find((c) => c.name === "domain")!;
     const client = mockClient("domain");
-    const result = (await cmd.execute(client, { lookup: "a.com,b.com" })) as any;
+    const result = (await cmd.execute(client, { lookup: "a.com,b.com" })) as MockResult;
     expect(result.args[0]).toEqual(["a.com", "b.com"]);
   });
 
@@ -105,7 +110,7 @@ describe("command execute", () => {
       lookup: "example.com",
       hideAll: true,
       onlyLiveTechnologies: true,
-    })) as any;
+    })) as MockResult;
     expect(result.args[0]).toBe("example.com");
     expect(result.args[1]).toMatchObject({
       hideAll: true,
@@ -116,7 +121,7 @@ describe("command execute", () => {
   it("domain passes undefined params when none given", async () => {
     const cmd = commands.find((c) => c.name === "domain")!;
     const client = mockClient("domain");
-    const result = (await cmd.execute(client, { lookup: "example.com" })) as any;
+    const result = (await cmd.execute(client, { lookup: "example.com" })) as MockResult;
     expect(result.args[1]).toBeUndefined();
   });
 
@@ -126,7 +131,7 @@ describe("command execute", () => {
     const result = (await cmd.execute(client, {
       technology: "Shopify",
       since: "2024-01-01",
-    })) as any;
+    })) as MockResult;
     expect(result.args[0]).toBe("Shopify");
     expect(result.args[1]).toMatchObject({ since: "2024-01-01" });
   });
@@ -134,7 +139,7 @@ describe("command execute", () => {
   it("relationships splits comma-separated lookups", async () => {
     const cmd = commands.find((c) => c.name === "relationships")!;
     const client = mockClient("relationships");
-    const result = (await cmd.execute(client, { lookup: "a.com,b.com" })) as any;
+    const result = (await cmd.execute(client, { lookup: "a.com,b.com" })) as MockResult;
     expect(result.args[0]).toEqual(["a.com", "b.com"]);
   });
 
@@ -145,7 +150,7 @@ describe("command execute", () => {
       companyName: "Acme",
       amount: 5,
       tld: "com",
-    })) as any;
+    })) as MockResult;
     expect(result.args[0]).toBe("Acme");
     expect(result.args[1]).toMatchObject({ amount: 5, tld: "com" });
   });
@@ -157,7 +162,7 @@ describe("command execute", () => {
       lookup: "example.com",
       words: "shop,buy",
       live: true,
-    })) as any;
+    })) as MockResult;
     expect(result.args[0]).toBe("example.com");
     expect(result.args[1]).toMatchObject({ words: "shop,buy", live: true });
   });
@@ -168,7 +173,7 @@ describe("command execute", () => {
     const result = (await cmd.execute(client, {
       technology: "React",
       date: "2024-06-01",
-    })) as any;
+    })) as MockResult;
     expect(result.args[0]).toBe("React");
     expect(result.args[1]).toMatchObject({ date: "2024-06-01" });
   });
@@ -176,7 +181,7 @@ describe("command execute", () => {
   it("product passes query string", async () => {
     const cmd = commands.find((c) => c.name === "product")!;
     const client = mockClient("product");
-    const result = (await cmd.execute(client, { query: "shoes" })) as any;
+    const result = (await cmd.execute(client, { query: "shoes" })) as MockResult;
     expect(result.args[0]).toBe("shoes");
   });
 });

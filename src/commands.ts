@@ -1,4 +1,11 @@
-import type { BuiltWithClient } from "./schemas.js";
+import type {
+  BuiltWithClient,
+  CompanyToUrlParams,
+  DomainParams,
+  ListsParams,
+  TrendsParams,
+  TrustParams,
+} from "./schemas.js";
 
 export interface ArgDefinition {
   name: string;
@@ -58,7 +65,7 @@ export const commands: CommandDefinition[] = [
     execute: (client, args) => {
       const lookup = splitLookup(args.lookup);
       const { lookup: _, ...params } = args;
-      return client.domain(lookup, Object.keys(params).length > 0 ? (params as any) : undefined);
+      return client.domain(lookup, Object.keys(params).length > 0 ? (params as DomainParams) : undefined);
     },
   },
   {
@@ -72,7 +79,7 @@ export const commands: CommandDefinition[] = [
     ],
     execute: (client, args) => {
       const { technology, ...params } = args;
-      return client.lists(String(technology), Object.keys(params).length > 0 ? (params as any) : undefined);
+      return client.lists(String(technology), Object.keys(params).length > 0 ? (params as ListsParams) : undefined);
     },
   },
   {
@@ -110,7 +117,7 @@ export const commands: CommandDefinition[] = [
     ],
     execute: (client, args) => {
       const { technology, ...params } = args;
-      return client.trends(String(technology), Object.keys(params).length > 0 ? (params as any) : undefined);
+      return client.trends(String(technology), Object.keys(params).length > 0 ? (params as TrendsParams) : undefined);
     },
   },
   {
@@ -123,7 +130,10 @@ export const commands: CommandDefinition[] = [
     ],
     execute: (client, args) => {
       const { companyName, ...params } = args;
-      return client.companyToUrl(String(companyName), Object.keys(params).length > 0 ? (params as any) : undefined);
+      return client.companyToUrl(
+        String(companyName),
+        Object.keys(params).length > 0 ? (params as CompanyToUrlParams) : undefined,
+      );
     },
   },
   {
@@ -142,7 +152,7 @@ export const commands: CommandDefinition[] = [
     ],
     execute: (client, args) => {
       const { lookup, ...params } = args;
-      return client.trust(String(lookup), Object.keys(params).length > 0 ? (params as any) : undefined);
+      return client.trust(String(lookup), Object.keys(params).length > 0 ? (params as TrustParams) : undefined);
     },
   },
   {
