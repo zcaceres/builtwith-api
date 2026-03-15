@@ -23,29 +23,42 @@ export const commands: CommandDefinition[] = [
   {
     name: "free",
     description: "Free lookup — basic technology profile for a domain",
-    args: [
-      { name: "lookup", description: "Domain to look up", type: "string", required: true },
-    ],
+    args: [{ name: "lookup", description: "Domain to look up", type: "string", required: true }],
     execute: (client, args) => client.free(String(args.lookup)),
   },
   {
     name: "domain",
     description: "Detailed technology profile for one or more domains (comma-separated)",
     args: [
-      { name: "lookup", description: "Domain(s) to look up (comma-separated for multiple)", type: "string", required: true },
+      {
+        name: "lookup",
+        description: "Domain(s) to look up (comma-separated for multiple)",
+        type: "string",
+        required: true,
+      },
       { name: "hideAll", description: "Hide description text and links", type: "boolean", required: false },
-      { name: "hideDescriptionAndLinks", description: "Hide description and links only", type: "boolean", required: false },
+      {
+        name: "hideDescriptionAndLinks",
+        description: "Hide description and links only",
+        type: "boolean",
+        required: false,
+      },
       { name: "onlyLiveTechnologies", description: "Only return live technologies", type: "boolean", required: false },
       { name: "noMetaData", description: "Exclude metadata", type: "boolean", required: false },
       { name: "noAttributeData", description: "Exclude attribute data", type: "boolean", required: false },
       { name: "noPII", description: "Exclude personally identifiable information", type: "boolean", required: false },
-      { name: "firstDetectedRange", description: "Filter by first detected date range", type: "string", required: false },
+      {
+        name: "firstDetectedRange",
+        description: "Filter by first detected date range",
+        type: "string",
+        required: false,
+      },
       { name: "lastDetectedRange", description: "Filter by last detected date range", type: "string", required: false },
     ],
     execute: (client, args) => {
       const lookup = splitLookup(args.lookup);
       const { lookup: _, ...params } = args;
-      return client.domain(lookup, Object.keys(params).length > 0 ? params as any : undefined);
+      return client.domain(lookup, Object.keys(params).length > 0 ? (params as any) : undefined);
     },
   },
   {
@@ -59,14 +72,19 @@ export const commands: CommandDefinition[] = [
     ],
     execute: (client, args) => {
       const { technology, ...params } = args;
-      return client.lists(String(technology), Object.keys(params).length > 0 ? params as any : undefined);
+      return client.lists(String(technology), Object.keys(params).length > 0 ? (params as any) : undefined);
     },
   },
   {
     name: "relationships",
     description: "Find related domains via shared identifiers",
     args: [
-      { name: "lookup", description: "Domain(s) to look up (comma-separated for multiple)", type: "string", required: true },
+      {
+        name: "lookup",
+        description: "Domain(s) to look up (comma-separated for multiple)",
+        type: "string",
+        required: true,
+      },
     ],
     execute: (client, args) => client.relationships(splitLookup(args.lookup)),
   },
@@ -74,7 +92,12 @@ export const commands: CommandDefinition[] = [
     name: "keywords",
     description: "Get keywords for one or more domains",
     args: [
-      { name: "lookup", description: "Domain(s) to look up (comma-separated for multiple)", type: "string", required: true },
+      {
+        name: "lookup",
+        description: "Domain(s) to look up (comma-separated for multiple)",
+        type: "string",
+        required: true,
+      },
     ],
     execute: (client, args) => client.keywords(splitLookup(args.lookup)),
   },
@@ -87,7 +110,7 @@ export const commands: CommandDefinition[] = [
     ],
     execute: (client, args) => {
       const { technology, ...params } = args;
-      return client.trends(String(technology), Object.keys(params).length > 0 ? params as any : undefined);
+      return client.trends(String(technology), Object.keys(params).length > 0 ? (params as any) : undefined);
     },
   },
   {
@@ -100,15 +123,13 @@ export const commands: CommandDefinition[] = [
     ],
     execute: (client, args) => {
       const { companyName, ...params } = args;
-      return client.companyToUrl(String(companyName), Object.keys(params).length > 0 ? params as any : undefined);
+      return client.companyToUrl(String(companyName), Object.keys(params).length > 0 ? (params as any) : undefined);
     },
   },
   {
     name: "domainLive",
     description: "Live technology lookup for a domain",
-    args: [
-      { name: "lookup", description: "Domain to look up", type: "string", required: true },
-    ],
+    args: [{ name: "lookup", description: "Domain to look up", type: "string", required: true }],
     execute: (client, args) => client.domainLive(String(args.lookup)),
   },
   {
@@ -121,39 +142,31 @@ export const commands: CommandDefinition[] = [
     ],
     execute: (client, args) => {
       const { lookup, ...params } = args;
-      return client.trust(String(lookup), Object.keys(params).length > 0 ? params as any : undefined);
+      return client.trust(String(lookup), Object.keys(params).length > 0 ? (params as any) : undefined);
     },
   },
   {
     name: "tags",
     description: "Get tracking/analytics tags for a domain",
-    args: [
-      { name: "lookup", description: "Domain to look up", type: "string", required: true },
-    ],
+    args: [{ name: "lookup", description: "Domain to look up", type: "string", required: true }],
     execute: (client, args) => client.tags(String(args.lookup)),
   },
   {
     name: "recommendations",
     description: "Get technology recommendations for a domain",
-    args: [
-      { name: "lookup", description: "Domain to look up", type: "string", required: true },
-    ],
+    args: [{ name: "lookup", description: "Domain to look up", type: "string", required: true }],
     execute: (client, args) => client.recommendations(String(args.lookup)),
   },
   {
     name: "redirects",
     description: "Get redirect chains for a domain",
-    args: [
-      { name: "lookup", description: "Domain to look up", type: "string", required: true },
-    ],
+    args: [{ name: "lookup", description: "Domain to look up", type: "string", required: true }],
     execute: (client, args) => client.redirects(String(args.lookup)),
   },
   {
     name: "product",
     description: "Search for products across e-commerce sites",
-    args: [
-      { name: "query", description: "Product search query", type: "string", required: true },
-    ],
+    args: [{ name: "query", description: "Product search query", type: "string", required: true }],
     execute: (client, args) => client.product(String(args.query)),
   },
 ];

@@ -1,9 +1,6 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 
-function mcp(
-  messages: object[],
-  env: Record<string, string> = {},
-): Promise<{ lines: string[]; exitCode: number }> {
+function mcp(messages: object[], env: Record<string, string> = {}): Promise<{ lines: string[]; exitCode: number }> {
   const input = messages.map((m) => JSON.stringify(m)).join("\n") + "\n";
   return new Promise((resolve) => {
     const proc = Bun.spawn(["bun", "run", "src/mcp.ts", "--api-key", "test"], {
@@ -47,10 +44,7 @@ describe("MCP server", () => {
   });
 
   it("lists all 13 tools", async () => {
-    const { lines } = await mcp([
-      ...initMessages(),
-      { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} },
-    ]);
+    const { lines } = await mcp([...initMessages(), { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }]);
     const response = JSON.parse(lines[lines.length - 1]);
     const tools = response.result.tools;
     expect(tools).toHaveLength(13);
@@ -59,10 +53,7 @@ describe("MCP server", () => {
   });
 
   it("tool names are all prefixed with builtwith_", async () => {
-    const { lines } = await mcp([
-      ...initMessages(),
-      { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} },
-    ]);
+    const { lines } = await mcp([...initMessages(), { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }]);
     const response = JSON.parse(lines[lines.length - 1]);
     for (const tool of response.result.tools) {
       expect(tool.name).toMatch(/^builtwith_/);
@@ -70,10 +61,7 @@ describe("MCP server", () => {
   });
 
   it("each tool has inputSchema with required fields", async () => {
-    const { lines } = await mcp([
-      ...initMessages(),
-      { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} },
-    ]);
+    const { lines } = await mcp([...initMessages(), { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }]);
     const response = JSON.parse(lines[lines.length - 1]);
     for (const tool of response.result.tools) {
       expect(tool.inputSchema).toBeDefined();

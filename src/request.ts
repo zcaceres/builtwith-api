@@ -9,11 +9,7 @@ const TEXT_FORMATS: readonly ResponseFormat[] = [
   VALID_RESPONSE_TYPES.TSV,
 ];
 
-export const request = async <T>(
-  url: string,
-  format: ResponseFormat,
-  schema: z.ZodType<T>,
-): Promise<T | string> => {
+export const request = async <T>(url: string, format: ResponseFormat, schema: z.ZodType<T>): Promise<T | string> => {
   const res = await fetch(url);
   if (!res.ok) {
     const body = await res.text();
@@ -44,9 +40,7 @@ export const requestSafe = async <T>(
   try {
     data = JSON.parse(raw);
   } catch {
-    console.warn(
-      "BuiltWith sent an invalid JSON payload. Falling back to text parsing.",
-    );
+    console.warn("BuiltWith sent an invalid JSON payload. Falling back to text parsing.");
     return raw;
   }
   return schema.parse(data);

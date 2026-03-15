@@ -47,10 +47,7 @@ export const TrustParamsSchema = z.strictObject({
 export type TrustParams = z.infer<typeof TrustParamsSchema>;
 
 export const SingleLookupSchema = z.string().min(1);
-export const MultiLookupSchema = z.union([
-  z.string().min(1),
-  z.array(z.string().min(1)).min(1).max(16),
-]);
+export const MultiLookupSchema = z.union([z.string().min(1), z.array(z.string().min(1)).min(1).max(16)]);
 
 // ─── Response Schemas ────────────────────────────────────────────────────────
 // Use z.object() (loose/passthrough) to tolerate extra fields from the API

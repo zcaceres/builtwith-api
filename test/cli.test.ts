@@ -1,6 +1,9 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 
-function cli(args: string[], env: Record<string, string> = {}): Promise<{ stdout: string; stderr: string; exitCode: number }> {
+function cli(
+  args: string[],
+  env: Record<string, string> = {},
+): Promise<{ stdout: string; stderr: string; exitCode: number }> {
   return new Promise((resolve) => {
     const proc = Bun.spawn(["bun", "run", "src/cli.ts", ...args], {
       cwd: import.meta.dir + "/..",
@@ -69,7 +72,7 @@ describe("CLI", () => {
 
     it("accepts --api-key flag", async () => {
       // Will fail at the API level but should not fail at the arg-parsing level
-      const { stderr, exitCode } = await cli(["free", "example.com", "--api-key", "test-key"]);
+      const { stderr } = await cli(["free", "example.com", "--api-key", "test-key"]);
       // Should get past arg parsing — any error is from the API, not missing key
       expect(stderr).not.toContain("BUILTWITH_API_KEY");
     });

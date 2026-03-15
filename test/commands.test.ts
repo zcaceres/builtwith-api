@@ -1,4 +1,4 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import { commands, splitLookup } from "../src/commands";
 import type { BuiltWithClient } from "../src/schemas";
 
@@ -28,11 +28,7 @@ describe("splitLookup", () => {
   });
 
   it("trims whitespace around comma-separated values", () => {
-    expect(splitLookup("a.com , b.com , c.com")).toEqual([
-      "a.com",
-      "b.com",
-      "c.com",
-    ]);
+    expect(splitLookup("a.com , b.com , c.com")).toEqual(["a.com", "b.com", "c.com"]);
   });
 
   it("coerces non-string values via String()", () => {
@@ -85,9 +81,7 @@ describe("command registry", () => {
 describe("command execute", () => {
   function mockClient(methodName: string): BuiltWithClient {
     const handler = (...args: unknown[]) => Promise.resolve({ method: methodName, args });
-    return Object.fromEntries(
-      ALL_COMMAND_NAMES.map((n) => [n, handler]),
-    ) as unknown as BuiltWithClient;
+    return Object.fromEntries(ALL_COMMAND_NAMES.map((n) => [n, handler])) as unknown as BuiltWithClient;
   }
 
   it("free passes lookup string", async () => {
