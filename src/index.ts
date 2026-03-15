@@ -43,6 +43,31 @@ const DOMAIN_BOOLEANS: BooleanMapping = {
   noPII: "NOPII",
 };
 
+/**
+ * Create a BuiltWith API client.
+ *
+ * @param apiKey - Your BuiltWith API key.
+ * @param moduleParams - Optional client configuration (e.g. response format).
+ * @returns A {@link BuiltWithClient} with methods for each BuiltWith API endpoint.
+ *
+ * @example
+ * ```ts
+ * import { createClient } from "builtwith-api";
+ *
+ * const client = createClient(process.env.BUILTWITH_API_KEY!);
+ *
+ * // Free lookup
+ * const profile = await client.free("example.com");
+ *
+ * // Domain lookup with filters
+ * const details = await client.domain("example.com", {
+ *   onlyLiveTechnologies: true,
+ * });
+ *
+ * // Multi-domain lookup
+ * const multi = await client.domain(["example.com", "other.com"]);
+ * ```
+ */
 export function createClient(apiKey: string, moduleParams: ClientOptions = {}): BuiltWithClient {
   if (!apiKey) {
     throw new Error("You must initialize the BuiltWith module with an api key");
