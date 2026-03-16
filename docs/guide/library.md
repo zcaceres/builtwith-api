@@ -1,14 +1,24 @@
-# Library Usage
+# Library
+
+A typed TypeScript wrapper for the BuiltWith API with Zod-validated responses and full ESM support.
 
 ## Quick Start
+
+Create a client with your API key. All methods return typed, Zod-validated responses.
 
 ```ts
 import { createClient } from "builtwith-api";
 
 const client = createClient(process.env.BUILTWITH_API_KEY!);
-```
 
-All client methods return typed, Zod-validated responses. If the API returns unexpected data, a `ZodError` is thrown with details about which fields failed validation.
+// Free lookup — no API key required
+const profile = await client.free("google.com");
+
+// Full domain lookup with options
+const details = await client.domain("example.com", {
+  onlyLiveTechnologies: true,
+});
+```
 
 ## Methods
 

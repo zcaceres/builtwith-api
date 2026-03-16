@@ -2,7 +2,7 @@ import { defineConfig } from "vitepress";
 
 export default defineConfig({
   title: "builtwith-api",
-  description: "Typed Node.js client, CLI, and MCP server for the BuiltWith API",
+  description: "A typed TypeScript wrapper for the BuiltWith API — library, CLI, and MCP server",
   base: "/builtwith-api/",
 
   head: [
@@ -19,9 +19,9 @@ export default defineConfig({
 
   themeConfig: {
     nav: [
-      { text: "Guide", link: "/guide/" },
+      { text: "Library", link: "/guide/library" },
       { text: "CLI", link: "/cli" },
-      { text: "MCP", link: "/mcp" },
+      { text: "MCP Server", link: "/mcp" },
       { text: "API Reference", link: "/api/" },
     ],
 

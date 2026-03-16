@@ -1,6 +1,6 @@
-# CLI
+# Command Line
 
-The `builtwith` CLI lets you query the BuiltWith API from your terminal. Output is JSON, ready for piping to `jq`, scripts, or dashboards.
+Query the BuiltWith API from your terminal. All 13 methods with flags for every parameter.
 
 ## Installation
 

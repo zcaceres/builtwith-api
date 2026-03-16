@@ -1,6 +1,6 @@
 # MCP Server
 
-The `builtwith-mcp` server exposes all 13 BuiltWith API endpoints as tools via the [Model Context Protocol](https://modelcontextprotocol.io/), making them available to Claude, Cursor, and other MCP-compatible AI tools.
+Expose BuiltWith API lookups as MCP tools for Claude Desktop, Cursor, and any MCP-compatible AI client.
 
 ## Setup
 
