@@ -3,7 +3,7 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
   title: "builtwith-api",
   description: "A typed TypeScript wrapper for the BuiltWith API — library, CLI, and MCP server",
-  base: "/builtwith-api/",
+  base: "/",
 
   head: [
     ["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],

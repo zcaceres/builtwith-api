@@ -17,8 +17,8 @@
             <span class="dollar">$</span>
             <span>npm install builtwith-api</span>
           </div>
-          <a class="btn btn-outline" href="/builtwith-api/guide/">Get Started</a>
-          <a class="btn btn-outline" href="/builtwith-api/api/">API Reference</a>
+          <a class="btn btn-outline" href="/guide/">Get Started</a>
+          <a class="btn btn-outline" href="/api/">API Reference</a>
         </div>
       </div>
     </section>
@@ -31,7 +31,7 @@
           <h2 class="features-title">One package, three interfaces.</h2>
         </div>
         <div class="features-grid">
-          <a class="feature-card" href="/builtwith-api/guide/library">
+          <a class="feature-card" href="/guide/library">
             <span class="feature-tag">LIBRARY</span>
             <h3>TypeScript SDK</h3>
             <p>
@@ -40,7 +40,7 @@
             </p>
             <div class="feature-code">const data = await client.free("google.com")</div>
           </a>
-          <a class="feature-card" href="/builtwith-api/cli">
+          <a class="feature-card" href="/cli">
             <span class="feature-tag">CLI</span>
             <h3>Command Line</h3>
             <p>
@@ -49,7 +49,7 @@
             </p>
             <div class="feature-code">$ builtwith domain example.com</div>
           </a>
-          <a class="feature-card" href="/builtwith-api/mcp">
+          <a class="feature-card" href="/mcp">
             <span class="feature-tag">MCP</span>
             <h3>AI Assistant</h3>
             <p>
