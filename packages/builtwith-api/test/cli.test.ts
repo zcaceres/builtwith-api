@@ -78,6 +78,26 @@ describe("CLI", () => {
     });
   });
 
+  describe("--table flag", () => {
+    it("shows --table in help output", async () => {
+      const { stdout } = await cli(["--help"]);
+      expect(stdout).toContain("--table");
+      expect(stdout).toContain("Pretty-print");
+    });
+
+    it("shows --table example in help", async () => {
+      const { stdout } = await cli(["--help"]);
+      expect(stdout).toContain("--table");
+    });
+
+    it("--table flag does not cause arg parse error", async () => {
+      // Will fail at the API level, but should not fail at arg parsing
+      const { stderr } = await cli(["free", "example.com", "--table", "--api-key", "test-key"]);
+      expect(stderr).not.toContain("BUILTWITH_API_KEY");
+      expect(stderr).not.toContain("missing required argument");
+    });
+  });
+
   describe("error formatting", () => {
     it("formats API errors cleanly, not raw JSON", async () => {
       const { stderr } = await cli(["free", "example.com", "--api-key", "badkey"]);

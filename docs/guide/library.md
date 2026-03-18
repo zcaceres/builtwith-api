@@ -208,3 +208,26 @@ try {
   }
 }
 ```
+
+## Rate Limits
+
+BuiltWith enforces two types of limits:
+
+**Per-second throttle** — Maximum 1 request per second. Exceeding this returns HTTP 429. Space out concurrent calls or add a delay between requests:
+
+```ts
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+for (const domain of domains) {
+  const result = await client.free(domain);
+  await delay(1000);
+}
+```
+
+**Credit-based quota** — Each API plan has a credit allocation. Every call consumes credits from your plan balance. Check your remaining credits via the [BuiltWith dashboard](https://api.builtwith.com/) or in Product API responses (`credits`, `used`, `remaining` fields).
+
+::: tip
+The `free` endpoint has a separate, more generous rate limit. Use it for basic lookups when you don't need full domain data.
+:::

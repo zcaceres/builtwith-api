@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks",
     "build": "bun run --filter '*' build",
     "lint": "biome check packages/",
     "lint:fix": "biome check --write packages/",

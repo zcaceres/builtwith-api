@@ -32,6 +32,27 @@ describe("request", () => {
     expect(result).toBe("id,name\n1,test");
   });
 
+  it("returns raw text for TSV format", async () => {
+    globalThis.fetch = mock(() => Promise.resolve(new Response("id\tname\n1\ttest", { status: 200 })));
+    const result = await request("https://api.example.com/test", "tsv", TestSchema);
+    expect(result).toBe("id\tname\n1\ttest");
+  });
+
+  it("returns raw text for TXT format", async () => {
+    globalThis.fetch = mock(() => Promise.resolve(new Response("example.com\nother.com", { status: 200 })));
+    const result = await request("https://api.example.com/test", "txt", TestSchema);
+    expect(result).toBe("example.com\nother.com");
+  });
+
+  it("skips schema validation for all text formats", async () => {
+    const invalidJson = "not valid json at all";
+    for (const format of ["xml", "csv", "tsv", "txt"] as const) {
+      globalThis.fetch = mock(() => Promise.resolve(new Response(invalidJson, { status: 200 })));
+      const result = await request("https://api.example.com/test", format, TestSchema);
+      expect(result).toBe(invalidJson);
+    }
+  });
+
   it("throws on HTTP 400", async () => {
     globalThis.fetch = mock(() => Promise.resolve(new Response("Bad Request", { status: 400 })));
     await expect(request("https://api.example.com/test", "json", TestSchema)).rejects.toThrow(
@@ -92,6 +113,33 @@ describe("requestSafe", () => {
     globalThis.fetch = mock(() => Promise.resolve(new Response("id\tname\n1\ttest", { status: 200 })));
     const result = await requestSafe("https://api.example.com/test", "tsv", TestSchema);
     expect(result).toBe("id\tname\n1\ttest");
+  });
+
+  it("returns raw text for XML format", async () => {
+    globalThis.fetch = mock(() => Promise.resolve(new Response("<root><id>1</id></root>", { status: 200 })));
+    const result = await requestSafe("https://api.example.com/test", "xml", TestSchema);
+    expect(result).toBe("<root><id>1</id></root>");
+  });
+
+  it("returns raw text for CSV format", async () => {
+    globalThis.fetch = mock(() => Promise.resolve(new Response("id,name\n1,test", { status: 200 })));
+    const result = await requestSafe("https://api.example.com/test", "csv", TestSchema);
+    expect(result).toBe("id,name\n1,test");
+  });
+
+  it("returns raw text for TXT format", async () => {
+    globalThis.fetch = mock(() => Promise.resolve(new Response("example.com\nother.com", { status: 200 })));
+    const result = await requestSafe("https://api.example.com/test", "txt", TestSchema);
+    expect(result).toBe("example.com\nother.com");
+  });
+
+  it("skips schema validation for all text formats", async () => {
+    const invalidJson = "not valid json at all";
+    for (const format of ["xml", "csv", "tsv", "txt"] as const) {
+      globalThis.fetch = mock(() => Promise.resolve(new Response(invalidJson, { status: 200 })));
+      const result = await requestSafe("https://api.example.com/test", format, TestSchema);
+      expect(result).toBe(invalidJson);
+    }
   });
 
   it("throws ZodError on valid JSON that doesn't match schema", async () => {
