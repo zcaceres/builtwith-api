@@ -26,6 +26,9 @@ export const ClientOptionsSchema = z.strictObject({
  */
 export type ClientOptions = z.infer<typeof ClientOptionsSchema>;
 
+/** Matches YYYY-MM-DD or YYYY-MM-DD-YYYY-MM-DD date range format. */
+const dateRangePattern = /^\d{4}-\d{2}-\d{2}(-\d{4}-\d{2}-\d{2})?$/;
+
 /** Validation schema for {@link DomainParams}. */
 export const DomainParamsSchema = z.strictObject({
   hideAll: z.boolean().optional(),
@@ -34,8 +37,8 @@ export const DomainParamsSchema = z.strictObject({
   noMetaData: z.boolean().optional(),
   noAttributeData: z.boolean().optional(),
   noPII: z.boolean().optional(),
-  firstDetectedRange: z.string().optional(),
-  lastDetectedRange: z.string().optional(),
+  firstDetectedRange: z.string().regex(dateRangePattern, "Expected YYYY-MM-DD or YYYY-MM-DD-YYYY-MM-DD").optional(),
+  lastDetectedRange: z.string().regex(dateRangePattern, "Expected YYYY-MM-DD or YYYY-MM-DD-YYYY-MM-DD").optional(),
 });
 /**
  * Optional parameters for the Domain API endpoint.
@@ -114,22 +117,23 @@ export const SingleLookupSchema = z.string().min(1);
 export const MultiLookupSchema = z.union([z.string().min(1), z.array(z.string().min(1)).min(1).max(16)]);
 
 // ─── Response Schemas ────────────────────────────────────────────────────────
-// Use z.object() (loose/passthrough) to tolerate extra fields from the API
+// Use z.strictObject() to catch upstream API drift — if BuiltWith adds or
+// removes fields, the parse will fail, signaling the schema needs updating.
 
 /** Validation schema for {@link FreeResponse}. */
-export const FreeResponseSchema = z.object({
+export const FreeResponseSchema = z.strictObject({
   domain: z.string(),
   first: z.number(),
   last: z.number(),
   groups: z.array(
-    z.object({
+    z.strictObject({
       name: z.string(),
       live: z.number(),
       dead: z.number(),
       latest: z.number(),
       oldest: z.number(),
       categories: z.array(
-        z.object({
+        z.strictObject({
           live: z.number(),
           dead: z.number(),
           latest: z.number(),
@@ -143,7 +147,7 @@ export const FreeResponseSchema = z.object({
 /** Response from the Free API — basic technology profile for a single domain. */
 export type FreeResponse = z.infer<typeof FreeResponseSchema>;
 
-const TechnologySchema = z.object({
+const TechnologySchema = z.strictObject({
   Name: z.string(),
   Description: z.string(),
   Link: z.string(),
@@ -155,7 +159,7 @@ const TechnologySchema = z.object({
   Categories: z.array(z.string()).optional(),
 });
 
-const PathSchema = z.object({
+const PathSchema = z.strictObject({
   Technologies: z.array(TechnologySchema),
   FirstIndexed: z.number(),
   LastIndexed: z.number(),
@@ -164,7 +168,7 @@ const PathSchema = z.object({
   SubDomain: z.string(),
 });
 
-const MetaSchema = z.object({
+const MetaSchema = z.strictObject({
   Majestic: z.number(),
   Vertical: z.string(),
   Social: z.array(z.string()),
@@ -176,7 +180,7 @@ const MetaSchema = z.object({
   Postcode: z.string(),
   Country: z.string(),
   Names: z.array(
-    z.object({
+    z.strictObject({
       Name: z.string(),
       Type: z.number(),
       Level: z.string(),
@@ -187,7 +191,7 @@ const MetaSchema = z.object({
   QRank: z.number(),
 });
 
-const AttributesSchema = z.object({
+const AttributesSchema = z.strictObject({
   MJRank: z.number(),
   MJTLDRank: z.number(),
   RefSN: z.number(),
@@ -203,12 +207,12 @@ const AttributesSchema = z.object({
 });
 
 /** Validation schema for {@link DomainResponse}. */
-export const DomainResponseSchema = z.object({
+export const DomainResponseSchema = z.strictObject({
   Results: z.array(
-    z.object({
-      Result: z.object({
+    z.strictObject({
+      Result: z.strictObject({
         SpendHistory: z.array(
-          z.object({
+          z.strictObject({
             D: z.number(),
             S: z.number(),
           }),
@@ -231,10 +235,10 @@ export const DomainResponseSchema = z.object({
 export type DomainResponse = z.infer<typeof DomainResponseSchema>;
 
 /** Validation schema for {@link ListsResponse}. */
-export const ListsResponseSchema = z.object({
+export const ListsResponseSchema = z.strictObject({
   NextOffset: z.string(),
   Results: z.array(
-    z.object({
+    z.strictObject({
       D: z.string(),
       FI: z.number().optional(),
       LI: z.number().optional(),
@@ -258,18 +262,18 @@ export const ListsResponseSchema = z.object({
 export type ListsResponse = z.infer<typeof ListsResponseSchema>;
 
 /** Validation schema for {@link RelationshipsResponse}. */
-export const RelationshipsResponseSchema = z.object({
+export const RelationshipsResponseSchema = z.strictObject({
   Relationships: z.array(
-    z.object({
+    z.strictObject({
       Domain: z.string(),
       Identifiers: z.array(
-        z.object({
+        z.strictObject({
           Value: z.string(),
           Type: z.string(),
           First: z.number(),
           Last: z.number(),
           Matches: z.array(
-            z.object({
+            z.strictObject({
               Domain: z.string(),
               First: z.number(),
               Last: z.number(),
@@ -290,9 +294,9 @@ export const RelationshipsResponseSchema = z.object({
 export type RelationshipsResponse = z.infer<typeof RelationshipsResponseSchema>;
 
 /** Validation schema for {@link KeywordsResponse}. */
-export const KeywordsResponseSchema = z.object({
+export const KeywordsResponseSchema = z.strictObject({
   Keywords: z.array(
-    z.object({
+    z.strictObject({
       Domain: z.string(),
       Keywords: z.array(z.string()),
     }),
@@ -302,8 +306,8 @@ export const KeywordsResponseSchema = z.object({
 export type KeywordsResponse = z.infer<typeof KeywordsResponseSchema>;
 
 /** Validation schema for {@link TrendsResponse}. */
-export const TrendsResponseSchema = z.object({
-  Tech: z.object({
+export const TrendsResponseSchema = z.strictObject({
+  Tech: z.strictObject({
     icon: z.string(),
     categories: z.array(z.string()),
     tag: z.string(),
@@ -312,7 +316,7 @@ export const TrendsResponseSchema = z.object({
     description: z.string(),
     link: z.string(),
     trends_link: z.string(),
-    coverage: z.object({
+    coverage: z.strictObject({
       ten_k: z.number(),
       hundred_k: z.number(),
       milly: z.number(),
@@ -326,7 +330,7 @@ export type TrendsResponse = z.infer<typeof TrendsResponseSchema>;
 
 /** Validation schema for {@link CompanyToUrlResponse}. */
 export const CompanyToUrlResponseSchema = z.array(
-  z.object({
+  z.strictObject({
     Domain: z.string(),
     CompanyName: z.string(),
     Spend: z.number(),
@@ -344,9 +348,9 @@ export const CompanyToUrlResponseSchema = z.array(
 export type CompanyToUrlResponse = z.infer<typeof CompanyToUrlResponseSchema>;
 
 /** Validation schema for {@link TrustResponse}. */
-export const TrustResponseSchema = z.object({
+export const TrustResponseSchema = z.strictObject({
   Domain: z.string(),
-  DBRecord: z.object({
+  DBRecord: z.strictObject({
     EarliestRecord: z.number(),
     LatestUpdate: z.number(),
     PremiumTechs: z.number(),
@@ -367,10 +371,10 @@ export type TrustResponse = z.infer<typeof TrustResponseSchema>;
 
 /** Validation schema for {@link TagsResponse}. */
 export const TagsResponseSchema = z.array(
-  z.object({
+  z.strictObject({
     Value: z.string(),
     Matches: z.array(
-      z.object({
+      z.strictObject({
         Domain: z.string(),
         First: z.string(),
         Last: z.string(),
@@ -383,11 +387,11 @@ export type TagsResponse = z.infer<typeof TagsResponseSchema>;
 
 /** Validation schema for {@link RecommendationsResponse}. */
 export const RecommendationsResponseSchema = z.array(
-  z.object({
+  z.strictObject({
     Domain: z.string(),
     Compiled: z.string(),
     Recommendations: z.array(
-      z.object({
+      z.strictObject({
         link: z.string(),
         name: z.string(),
         tag: z.string(),
@@ -402,17 +406,17 @@ export const RecommendationsResponseSchema = z.array(
 export type RecommendationsResponse = z.infer<typeof RecommendationsResponseSchema>;
 
 /** Validation schema for {@link RedirectsResponse}. */
-export const RedirectsResponseSchema = z.object({
+export const RedirectsResponseSchema = z.strictObject({
   Lookup: z.string(),
   Inbound: z.array(
-    z.object({
+    z.strictObject({
       Domain: z.string(),
       FirstDetected: z.string(),
       LastDetected: z.string(),
     }),
   ),
   Outbound: z.array(
-    z.object({
+    z.strictObject({
       Domain: z.string(),
       FirstDetected: z.string(),
       LastDetected: z.string(),
@@ -423,7 +427,7 @@ export const RedirectsResponseSchema = z.object({
 export type RedirectsResponse = z.infer<typeof RedirectsResponseSchema>;
 
 /** Validation schema for {@link ProductResponse}. */
-export const ProductResponseSchema = z.object({
+export const ProductResponseSchema = z.strictObject({
   query: z.string(),
   is_more: z.boolean(),
   page: z.number(),
@@ -436,10 +440,10 @@ export const ProductResponseSchema = z.object({
   used_this_query: z.number(),
   next_page: z.string(),
   shops: z.array(
-    z.object({
+    z.strictObject({
       Domain: z.string(),
       Products: z.array(
-        z.object({
+        z.strictObject({
           Title: z.string(),
           Url: z.string(),
           Indexed: z.string(),
