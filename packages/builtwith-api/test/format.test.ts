@@ -155,6 +155,26 @@ describe("formatTable", () => {
       expect(result).toContain("dead");
     });
 
+    it("does not render [object Object] for nested arrays", () => {
+      const response = {
+        groups: [
+          {
+            name: "Analytics",
+            live: 2,
+            categories: [
+              { name: "Tracking", live: 1 },
+              { name: "Ads", live: 1 },
+            ],
+          },
+        ],
+      };
+      const result = formatTable(response);
+      expect(result).not.toContain("[object Object]");
+      expect(result).toContain("Analytics");
+      expect(result).toContain("Tracking");
+      expect(result).toContain("Ads");
+    });
+
     it("formats a companyToUrl response", () => {
       const response = {
         Results: [

@@ -132,31 +132,23 @@ describe("CLI", () => {
       // Should contain key-value pairs for top-level fields
       expect(stdout).toContain("domain");
       expect(stdout).toContain("example.com");
-      // Should contain table headers for the groups array
-      expect(stdout).toContain("name");
-      expect(stdout).toContain("categories");
-      expect(stdout).toContain("live");
-      expect(stdout).toContain("dead");
-      // Should contain separator line
-      expect(stdout).toContain("─");
-      // Should contain actual data rows
+      // Groups have nested categories, so they render recursively (not as a flat table)
       expect(stdout).toContain("Analytics");
       expect(stdout).toContain("Widgets");
+      // Nested categories should be expanded, not [object Object]
+      expect(stdout).not.toContain("[object Object]");
+      expect(stdout).toContain("Tracking");
+      expect(stdout).toContain("Ads");
     });
 
-    it("--table aligns columns for array data", async () => {
+    it("--table renders nested categories with aligned columns", async () => {
       const { stdout } = await cliMocked(["free", "example.com", "--table"]);
-      const lines = stdout.split("\n");
-      // Find the header line for groups (contains "name" and "categories")
-      const headerLine = lines.find((l) => l.includes("name") && l.includes("categories"));
-      expect(headerLine).toBeDefined();
-      // Find separator line (all ─ characters)
-      const sepLine = lines.find((l) => l.includes("─") && !l.includes("name"));
-      expect(sepLine).toBeDefined();
-      // Data rows should follow the separator
-      const sepIdx = lines.indexOf(sepLine!);
-      expect(lines[sepIdx + 1]).toContain("Analytics");
-      expect(lines[sepIdx + 2]).toContain("Widgets");
+      // Categories are flat objects (name + primitives), so they should render as tables
+      expect(stdout).toContain("Tracking");
+      expect(stdout).toContain("Ads");
+      expect(stdout).toContain("Live Chat");
+      // Should have separator lines for the category tables
+      expect(stdout).toContain("─");
     });
   });
 

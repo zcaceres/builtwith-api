@@ -5,8 +5,15 @@ export function formatTable(data: unknown, indent = 0): string {
 
   if (Array.isArray(data)) {
     if (data.length === 0) return `${pad}(empty)`;
-    // If array of flat objects, render as aligned columns
-    if (data.every((item) => typeof item === "object" && item !== null && !Array.isArray(item))) {
+    // If array of flat objects (all values are primitives), render as aligned columns
+    const allFlatObjects = data.every(
+      (item) =>
+        typeof item === "object" &&
+        item !== null &&
+        !Array.isArray(item) &&
+        Object.values(item as Record<string, unknown>).every((v) => v === null || typeof v !== "object"),
+    );
+    if (allFlatObjects) {
       const keys = [...new Set(data.flatMap((item) => Object.keys(item as Record<string, unknown>)))];
       const widths = keys.map((k) =>
         Math.max(k.length, ...data.map((item) => String((item as Record<string, unknown>)[k] ?? "").length)),
