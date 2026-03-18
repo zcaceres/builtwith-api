@@ -98,6 +98,68 @@ describe("CLI", () => {
     });
   });
 
+  describe("output formatting (mocked API)", () => {
+    function cliMocked(args: string[]): Promise<{ stdout: string; stderr: string; exitCode: number }> {
+      return new Promise((resolve) => {
+        const proc = Bun.spawn(["bun", "--preload", "./test/fixtures/mock-free-response.ts", "src/cli.ts", ...args], {
+          cwd: `${import.meta.dir}/..`,
+          env: { ...process.env, BUILTWITH_API_KEY: "mock-key" },
+          stdout: "pipe",
+          stderr: "pipe",
+        });
+        proc.exited.then(async (exitCode) => {
+          const stdout = await new Response(proc.stdout).text();
+          const stderr = await new Response(proc.stderr).text();
+          resolve({ stdout, stderr, exitCode });
+        });
+      });
+    }
+
+    it("outputs valid JSON by default", async () => {
+      const { stdout, exitCode } = await cliMocked(["free", "example.com"]);
+      expect(exitCode).toBe(0);
+      const parsed = JSON.parse(stdout);
+      expect(parsed.domain).toBe("example.com");
+      expect(parsed.groups).toHaveLength(2);
+      expect(parsed.groups[0].name).toBe("Analytics");
+    });
+
+    it("outputs table format with --table flag", async () => {
+      const { stdout, exitCode } = await cliMocked(["free", "example.com", "--table"]);
+      expect(exitCode).toBe(0);
+      // Should NOT be valid JSON
+      expect(() => JSON.parse(stdout)).toThrow();
+      // Should contain key-value pairs for top-level fields
+      expect(stdout).toContain("domain");
+      expect(stdout).toContain("example.com");
+      // Should contain table headers for the groups array
+      expect(stdout).toContain("name");
+      expect(stdout).toContain("categories");
+      expect(stdout).toContain("live");
+      expect(stdout).toContain("dead");
+      // Should contain separator line
+      expect(stdout).toContain("─");
+      // Should contain actual data rows
+      expect(stdout).toContain("Analytics");
+      expect(stdout).toContain("Widgets");
+    });
+
+    it("--table aligns columns for array data", async () => {
+      const { stdout } = await cliMocked(["free", "example.com", "--table"]);
+      const lines = stdout.split("\n");
+      // Find the header line for groups (contains "name" and "categories")
+      const headerLine = lines.find((l) => l.includes("name") && l.includes("categories"));
+      expect(headerLine).toBeDefined();
+      // Find separator line (all ─ characters)
+      const sepLine = lines.find((l) => l.includes("─") && !l.includes("name"));
+      expect(sepLine).toBeDefined();
+      // Data rows should follow the separator
+      const sepIdx = lines.indexOf(sepLine!);
+      expect(lines[sepIdx + 1]).toContain("Analytics");
+      expect(lines[sepIdx + 2]).toContain("Widgets");
+    });
+  });
+
   describe("error formatting", () => {
     it("formats API errors cleanly, not raw JSON", async () => {
       const { stderr } = await cli(["free", "example.com", "--api-key", "badkey"]);
