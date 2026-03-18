@@ -5,7 +5,7 @@
       <div class="hero-inner">
         <div class="hero-badge">
           <span class="version-tag">V3.1</span>
-          <span class="tech-tags">TypeScript / ESM-only / Zero config</span>
+          <span class="tech-tags">TypeScript Library / CLI / MCP</span>
         </div>
         <h1 class="hero-title">builtwith-api</h1>
         <p class="hero-tagline">
