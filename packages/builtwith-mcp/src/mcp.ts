@@ -3,10 +3,10 @@ import { createRequire } from "node:module";
 import { parseArgs } from "node:util";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { createClient } from "builtwith-api";
+import { commands } from "builtwith-api/commands";
+import { formatError } from "builtwith-api/errors";
 import { z } from "zod/v4";
-import { commands } from "./commands.js";
-import { formatError } from "./errors.js";
-import { createClient } from "./index.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json");

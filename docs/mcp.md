@@ -23,7 +23,7 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
   "mcpServers": {
     "builtwith": {
       "command": "npx",
-      "args": ["-y", "--package", "builtwith-api", "builtwith-mcp"],
+      "args": ["-y", "builtwith-mcp"],
       "env": {
         "BUILTWITH_API_KEY": "your-key-here"
       }
@@ -41,7 +41,7 @@ Add to your Cursor MCP config (`.cursor/mcp.json` in your project or `~/.cursor/
   "mcpServers": {
     "builtwith": {
       "command": "npx",
-      "args": ["-y", "--package", "builtwith-api", "builtwith-mcp"],
+      "args": ["-y", "builtwith-mcp"],
       "env": {
         "BUILTWITH_API_KEY": "your-key-here"
       }
@@ -59,7 +59,7 @@ Add to your Claude Code settings:
   "mcpServers": {
     "builtwith": {
       "command": "npx",
-      "args": ["-y", "--package", "builtwith-api", "builtwith-mcp"],
+      "args": ["-y", "builtwith-mcp"],
       "env": {
         "BUILTWITH_API_KEY": "your-key-here"
       }
@@ -73,7 +73,7 @@ Add to your Claude Code settings:
 Any MCP-compatible client can use the server. The general pattern:
 
 - **Command:** `npx`
-- **Args:** `["-y", "--package", "builtwith-api", "builtwith-mcp"]`
+- **Args:** `["-y", "builtwith-mcp"]`
 - **Env:** `BUILTWITH_API_KEY=your-key-here`
 
 Or pass the key as a flag:
@@ -83,7 +83,7 @@ Or pass the key as a flag:
   "mcpServers": {
     "builtwith": {
       "command": "npx",
-      "args": ["-y", "--package", "builtwith-api", "builtwith-mcp", "--api-key", "your-key-here"]
+      "args": ["-y", "builtwith-mcp", "--api-key", "your-key-here"]
     }
   }
 }
@@ -92,7 +92,7 @@ Or pass the key as a flag:
 For a local install instead of `npx`:
 
 ```bash
-npm install -g builtwith-api
+npm install -g builtwith-mcp
 ```
 
 Then use `builtwith-mcp` as the command directly.

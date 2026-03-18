@@ -56,7 +56,7 @@
               Give Claude, Cursor, or any MCP-compatible tool direct access to
               BuiltWith lookups. Just add the config and ask.
             </p>
-            <div class="feature-code">npx -p builtwith-api builtwith-mcp</div>
+            <div class="feature-code">npx -y builtwith-mcp</div>
           </a>
         </div>
       </div>

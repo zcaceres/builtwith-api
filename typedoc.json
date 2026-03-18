@@ -1,5 +1,5 @@
 {
-  "entryPoints": ["src/index.ts", "src/schemas.ts"],
+  "entryPoints": ["packages/builtwith-api/src/index.ts", "packages/builtwith-api/src/schemas.ts"],
   "out": "docs/api",
   "plugin": ["typedoc-plugin-markdown"],
   "outputFileStrategy": "modules",

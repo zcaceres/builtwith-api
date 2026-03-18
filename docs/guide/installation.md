@@ -20,12 +20,18 @@ pnpm add builtwith-api
 bun add builtwith-api
 ```
 
+## Homebrew
+
+```bash
+brew install zcaceres/tap/builtwith
+```
+
 ## CLI (no install)
 
 Run the CLI directly with `npx`:
 
 ```bash
-npx builtwith-api free example.com --api-key YOUR_KEY
+npx --package builtwith-api builtwith free example.com --api-key YOUR_KEY
 ```
 
 Or install globally:
@@ -33,6 +39,20 @@ Or install globally:
 ```bash
 npm install -g builtwith-api
 builtwith free example.com
+```
+
+## MCP Server
+
+The MCP server is a separate package. Install standalone:
+
+```bash
+npm install -g builtwith-mcp
+```
+
+Or use directly with `npx`:
+
+```bash
+npx -y builtwith-mcp
 ```
 
 ## Standalone binaries

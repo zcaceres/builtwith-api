@@ -1,18 +1,19 @@
 {
-  "references": [
-    { "path": "packages/builtwith-api" },
-    { "path": "packages/builtwith-mcp" }
-  ],
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
     "lib": ["ES2022"],
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "rootDir": "src",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "bundler"
   },
-  "include": [],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "test"]
 }

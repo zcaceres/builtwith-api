@@ -6,7 +6,11 @@ Available as a **library**, **CLI**, and **MCP server**.
 
 ## Installation
 
-```
+```bash
+# Homebrew
+brew install zcaceres/tap/builtwith
+
+# npm
 npm install builtwith-api
 ```
 
@@ -183,7 +187,7 @@ builtwith --version
 
 ## MCP Server
 
-The package includes an [MCP](https://modelcontextprotocol.io) server that exposes all 13 API methods as tools for LLM clients (Claude Desktop, etc.).
+The MCP server is available as a separate package: [`builtwith-mcp`](https://www.npmjs.com/package/builtwith-mcp). It exposes all 13 API methods as tools for LLM clients (Claude Desktop, Cursor, etc.).
 
 ### Claude Desktop Configuration
 
@@ -194,7 +198,7 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
   "mcpServers": {
     "builtwith": {
       "command": "npx",
-      "args": ["-y", "-p", "builtwith-api", "builtwith-mcp"],
+      "args": ["-y", "builtwith-mcp"],
       "env": {
         "BUILTWITH_API_KEY": "YOUR_KEY"
       }
@@ -210,7 +214,7 @@ Or passing the key directly:
   "mcpServers": {
     "builtwith": {
       "command": "npx",
-      "args": ["-y", "-p", "builtwith-api", "builtwith-mcp", "--api-key", "YOUR_KEY"]
+      "args": ["-y", "builtwith-mcp", "--api-key", "YOUR_KEY"]
     }
   }
 }
