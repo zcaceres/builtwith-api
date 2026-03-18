@@ -27,7 +27,6 @@
     <section class="features">
       <div class="features-inner">
         <div class="features-header">
-          <span class="features-label">THREE WAYS TO USE IT</span>
           <h2 class="features-title">One package, three interfaces.</h2>
         </div>
         <div class="features-grid">
@@ -36,7 +35,7 @@
             <h3>TypeScript SDK</h3>
             <p>
               Import createClient and call any of 13 endpoints. Typed responses
-              validated with Zod — no guessing at API shapes.
+              validated with Zod.
             </p>
             <div class="feature-code">const data = await client.free("google.com")</div>
           </a>
