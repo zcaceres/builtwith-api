@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+echo "Running lint..."
+bun run lint
+
+echo "Running build..."
+bun run build
+
+echo "Running tests..."
+bun run test
+
+echo "All checks passed."

@@ -5,7 +5,7 @@
       <div class="hero-inner">
         <div class="hero-badge">
           <span class="version-tag">V3.1</span>
-          <span class="tech-tags">TypeScript / ESM-only / Zero config</span>
+          <span class="tech-tags">TypeScript Library / CLI / MCP</span>
         </div>
         <h1 class="hero-title">builtwith-api</h1>
         <p class="hero-tagline">
@@ -27,7 +27,6 @@
     <section class="features">
       <div class="features-inner">
         <div class="features-header">
-          <span class="features-label">THREE WAYS TO USE IT</span>
           <h2 class="features-title">One package, three interfaces.</h2>
         </div>
         <div class="features-grid">
@@ -36,7 +35,7 @@
             <h3>TypeScript SDK</h3>
             <p>
               Import createClient and call any of 13 endpoints. Typed responses
-              validated with Zod — no guessing at API shapes.
+              validated with Zod.
             </p>
             <div class="feature-code">const data = await client.free("google.com")</div>
           </a>
@@ -56,7 +55,7 @@
               Give Claude, Cursor, or any MCP-compatible tool direct access to
               BuiltWith lookups. Just add the config and ask.
             </p>
-            <div class="feature-code">npx -p builtwith-api builtwith-mcp</div>
+            <div class="feature-code">npx -y builtwith-mcp</div>
           </a>
         </div>
       </div>

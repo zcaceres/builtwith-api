@@ -37,7 +37,7 @@ Connect BuiltWith to AI tools that support the Model Context Protocol.
   "mcpServers": {
     "builtwith": {
       "command": "npx",
-      "args": ["-y", "--package", "builtwith-api", "builtwith-mcp"],
+      "args": ["-y", "builtwith-mcp"],
       "env": { "BUILTWITH_API_KEY": "your-key" }
     }
   }

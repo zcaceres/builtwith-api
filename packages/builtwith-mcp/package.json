@@ -1,0 +1,53 @@
+{
+  "name": "builtwith-mcp",
+  "version": "3.1.0",
+  "description": "BuiltWith API as an MCP server for Claude Desktop, Cursor, and other AI clients",
+  "type": "module",
+  "main": "dist/mcp.js",
+  "types": "dist/mcp.d.ts",
+  "bin": {
+    "builtwith-mcp": "./dist/mcp.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/mcp.d.ts",
+      "import": "./dist/mcp.js"
+    }
+  },
+  "scripts": {
+    "build": "bun run build:js && bun run build:types && chmod +x dist/mcp.js",
+    "build:js": "bun build ./src/mcp.ts --outdir dist --target node --format esm --sourcemap=external --external zod --external @modelcontextprotocol/sdk --external builtwith-api",
+    "build:types": "tsc --emitDeclarationOnly",
+    "mcp": "bun run src/mcp.ts",
+    "mcp:inspect": "npx @modelcontextprotocol/inspector node dist/mcp.js",
+    "prepublishOnly": "bun run build",
+    "test": "bun test"
+  },
+  "homepage": "https://github.com/zcaceres/builtwith-api",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zcaceres/builtwith-api.git",
+    "directory": "packages/builtwith-mcp"
+  },
+  "keywords": [
+    "builtwith",
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "claude",
+    "cursor"
+  ],
+  "files": [
+    "dist"
+  ],
+  "author": "Zach Caceres (@zachcaceres)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "builtwith-api": "workspace:*",
+    "zod": "^4.3.6"
+  }
+}

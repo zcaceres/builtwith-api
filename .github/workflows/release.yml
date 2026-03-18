@@ -18,7 +18,7 @@ jobs:
 
       - name: Read version from package.json
         id: version
-        run: echo "version=v$(jq -r .version package.json)" >> "$GITHUB_OUTPUT"
+        run: echo "version=v$(jq -r .version packages/builtwith-api/package.json)" >> "$GITHUB_OUTPUT"
 
       - name: Check if tag already exists
         id: check_tag
@@ -76,7 +76,7 @@ jobs:
       - run: bun install --frozen-lockfile
 
       - name: Compile binary
-        run: bun build ./src/cli.ts --compile --target ${{ matrix.target }} --outfile ${{ matrix.artifact }}
+        run: bun build ./packages/builtwith-api/src/cli.ts --compile --target ${{ matrix.target }} --outfile ${{ matrix.artifact }}
 
       - name: Upload to release
         run: gh release upload "${{ needs.release.outputs.tag }}" "${{ matrix.artifact }}" --clobber

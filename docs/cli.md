@@ -5,7 +5,10 @@ Query the BuiltWith API from your terminal. All 13 methods with flags for every 
 ## Installation
 
 ```bash
-# Via npm (global)
+# Homebrew
+brew install zcaceres/tap/builtwith
+
+# npm (global)
 npm install -g builtwith-api
 
 # Or run without installing

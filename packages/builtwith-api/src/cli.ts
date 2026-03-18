@@ -3,6 +3,7 @@ import { createRequire } from "node:module";
 import { parseArgs } from "node:util";
 import { commands } from "./commands.js";
 import { formatError } from "./errors.js";
+import { formatTable } from "./format.js";
 import { createClient } from "./index.js";
 
 const require = createRequire(import.meta.url);
@@ -15,11 +16,13 @@ ${commands.map((c) => `  ${c.name.padEnd(16)} ${c.description}`).join("\n")}
 
 Options:
   --api-key <key>  BuiltWith API key (or set BUILTWITH_API_KEY env var)
+  --table          Pretty-print output as a readable table instead of JSON
   --version        Show version number
   --help           Show help
 
 Examples:
   builtwith free example.com
+  builtwith free example.com --table
   builtwith domain example.com --hideAll --onlyLiveTechnologies
   builtwith domain "example.com,other.com"
   builtwith lists Shopify --since 2024-01-01
@@ -78,6 +81,7 @@ function run(): void {
   const flagArgs = cmd.args.filter((a) => !a.required);
   const options: Record<string, { type: "string" | "boolean" }> = {
     "api-key": { type: "string" },
+    table: { type: "boolean" },
   };
   for (const f of flagArgs) {
     options[f.name] = { type: f.type === "boolean" ? "boolean" : "string" };
@@ -89,6 +93,7 @@ function run(): void {
     strict: false,
   });
 
+  const useTable = Boolean(values.table);
   const apiKey = (values["api-key"] as string) || process.env.BUILTWITH_API_KEY;
   if (!apiKey) {
     console.error("Error: pass --api-key or set BUILTWITH_API_KEY environment variable.");
@@ -115,7 +120,11 @@ function run(): void {
   cmd
     .execute(client, args)
     .then((result) => {
-      console.log(JSON.stringify(result, null, 2));
+      if (useTable) {
+        console.log(formatTable(result));
+      } else {
+        console.log(JSON.stringify(result, null, 2));
+      }
     })
     .catch((err) => {
       console.error(formatError(err));
