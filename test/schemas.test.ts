@@ -48,9 +48,9 @@ describe("FreeResponseSchema", () => {
     expect(() => FreeResponseSchema.parse(bad)).toThrow();
   });
 
-  it("tolerates extra fields", () => {
+  it("rejects extra fields", () => {
     const extra = { ...valid, extraField: true };
-    expect(() => FreeResponseSchema.parse(extra)).not.toThrow();
+    expect(() => FreeResponseSchema.parse(extra)).toThrow();
   });
 });
 

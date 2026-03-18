@@ -1,0 +1,12 @@
+{
+  "entryPoints": ["src/index.ts", "src/schemas.ts"],
+  "out": "docs/api",
+  "plugin": ["typedoc-plugin-markdown"],
+  "outputFileStrategy": "modules",
+  "excludeInternal": true,
+  "excludePrivate": true,
+  "readme": "none",
+  "hidePageHeader": true,
+  "hideBreadcrumbs": true,
+  "useCodeBlocks": true
+}

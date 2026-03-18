@@ -1,5 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { booleanParams, buildURL, cleanWords, toQueryString, validateLookup } from "../src/params";
+import { DomainParamsSchema } from "../src/schemas";
 
 describe("toQueryString", () => {
   it("filters out undefined values", () => {
@@ -105,5 +106,31 @@ describe("validateLookup", () => {
   it("throws when array length > 16", () => {
     const domains = Array.from({ length: 17 }, (_, i) => `d${i}.com`);
     expect(() => validateLookup(domains, { multi: true })).toThrow();
+  });
+});
+
+describe("date range validation", () => {
+  it("accepts YYYY-MM-DD format", () => {
+    expect(() => DomainParamsSchema.parse({ firstDetectedRange: "2024-01-15" })).not.toThrow();
+  });
+
+  it("accepts YYYY-MM-DD-YYYY-MM-DD range format", () => {
+    expect(() => DomainParamsSchema.parse({ firstDetectedRange: "2020-01-01-2024-12-31" })).not.toThrow();
+  });
+
+  it("accepts lastDetectedRange with valid format", () => {
+    expect(() => DomainParamsSchema.parse({ lastDetectedRange: "2023-06-15" })).not.toThrow();
+  });
+
+  it("rejects invalid date range format", () => {
+    expect(() => DomainParamsSchema.parse({ firstDetectedRange: "January 2024" })).toThrow();
+  });
+
+  it("rejects partial date", () => {
+    expect(() => DomainParamsSchema.parse({ firstDetectedRange: "2024-01" })).toThrow();
+  });
+
+  it("rejects random string", () => {
+    expect(() => DomainParamsSchema.parse({ lastDetectedRange: "not-a-date" })).toThrow();
   });
 });
