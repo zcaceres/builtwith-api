@@ -363,6 +363,8 @@ export const TrustResponseSchema = z.strictObject({
     Established: z.boolean(),
     DBIndexed: z.boolean(),
   }),
+  // Intentionally loose — BuiltWith does not document the LiveRecord shape.
+  // Populated only when `live: true` is passed; otherwise null.
   LiveRecord: z.object({}).passthrough().nullable(),
   Status: z.number(),
 });
