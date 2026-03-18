@@ -151,6 +151,48 @@ Search e-commerce products.
 builtwith product "wireless headphones"
 ```
 
+## Examples
+
+**Free lookup**
+```bash
+builtwith free google.com
+```
+
+**Domain with flags**
+```bash
+builtwith domain example.com \
+  --onlyLiveTechnologies
+```
+
+**Multi-domain lookup**
+```bash
+builtwith domain "a.com,b.com"
+```
+
+**Technology lists**
+```bash
+builtwith lists Shopify \
+  --since 2024-01-01
+```
+
+## All Commands
+
+| Command | Description |
+|---------|-------------|
+| `free` | Basic technology profile for a domain |
+| `domain` | Detailed technology profile with spend history |
+| `domainLive` | Real-time technology scan |
+| `lists` | List domains using a specific technology |
+| `trust` | Trust and verification score |
+| `trends` | Technology adoption trends |
+| `keywords` | Get keywords for domains |
+| `relationships` | Find related domains via shared identifiers |
+| `companyToUrl` | Find domains for a company name |
+| `tags` | Tracking and analytics tags |
+| `recommendations` | Technology recommendations |
+| `redirects` | Redirect chain history |
+| `product` | E-commerce product search |
+
 ## Piping and scripting
 
 ```bash
