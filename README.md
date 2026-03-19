@@ -1,8 +1,6 @@
 # BuiltWith API
 
-`builtwith-api` is a utility wrapper for the BuiltWith API suite. Find out what any website is built with!
-
-Available as a **library**, **CLI**, and **MCP server**.
+Query the BuiltWith API from your app, terminal, or AI agent.
 
 ## Installation
 
