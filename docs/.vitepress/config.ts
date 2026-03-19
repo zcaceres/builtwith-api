@@ -105,10 +105,17 @@ export default defineConfig({
           items: [
             { text: "builtwith_free", link: "/mcp#available-tools" },
             { text: "builtwith_domain", link: "/mcp#available-tools" },
+            { text: "builtwith_domainLive", link: "/mcp#available-tools" },
             { text: "builtwith_lists", link: "/mcp#available-tools" },
-            { text: "builtwith_trust", link: "/mcp#available-tools" },
             { text: "builtwith_trends", link: "/mcp#available-tools" },
+            { text: "builtwith_relationships", link: "/mcp#available-tools" },
             { text: "builtwith_keywords", link: "/mcp#available-tools" },
+            { text: "builtwith_trust", link: "/mcp#available-tools" },
+            { text: "builtwith_companyToUrl", link: "/mcp#available-tools" },
+            { text: "builtwith_tags", link: "/mcp#available-tools" },
+            { text: "builtwith_recommendations", link: "/mcp#available-tools" },
+            { text: "builtwith_redirects", link: "/mcp#available-tools" },
+            { text: "builtwith_product", link: "/mcp#available-tools" },
           ],
         },
         {

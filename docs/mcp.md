@@ -122,7 +122,7 @@ All tools are prefixed with `builtwith_` and accept typed input schemas validate
 Use the MCP Inspector to test the server:
 
 ```bash
-npx @modelcontextprotocol/inspector node dist/mcp.js --api-key YOUR_KEY
+npx @modelcontextprotocol/inspector -- npx -y builtwith-mcp --api-key YOUR_KEY
 ```
 
 ## Example prompts

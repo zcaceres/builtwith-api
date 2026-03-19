@@ -224,7 +224,7 @@
   flex: 1;
 }
 .feature-code {
-  margin-top: 20px;
+  margin-top: auto;
   background: var(--vp-c-text-1);
   color: var(--vp-c-bg);
   font-family: "JetBrains Mono", monospace;
