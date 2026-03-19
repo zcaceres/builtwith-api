@@ -85,6 +85,29 @@ describe("request", () => {
     globalThis.fetch = mock(() => Promise.reject(new TypeError("fetch failed")));
     await expect(request("https://api.example.com/test", "json", TestSchema)).rejects.toThrow("fetch failed");
   });
+
+  it("throws clear error for API error returned as HTTP 200", async () => {
+    const apiError = { Errors: [{ Message: "API Key is incorrect" }] };
+    globalThis.fetch = mock(() => Promise.resolve(new Response(JSON.stringify(apiError), { status: 200 })));
+    await expect(request("https://api.example.com/test", "json", TestSchema)).rejects.toThrow(
+      "BuiltWith API error: API Key is incorrect",
+    );
+  });
+
+  it("throws clear error for multiple API errors as HTTP 200", async () => {
+    const apiError = { Errors: [{ Message: "Error one" }, { Message: "Error two" }] };
+    globalThis.fetch = mock(() => Promise.resolve(new Response(JSON.stringify(apiError), { status: 200 })));
+    await expect(request("https://api.example.com/test", "json", TestSchema)).rejects.toThrow(
+      "BuiltWith API error: Error one; Error two",
+    );
+  });
+
+  it("throws on invalid JSON with descriptive message", async () => {
+    globalThis.fetch = mock(() => Promise.resolve(new Response("this is not json {{{", { status: 200 })));
+    await expect(request("https://api.example.com/test", "json", TestSchema)).rejects.toThrow(
+      "BuiltWith returned invalid JSON",
+    );
+  });
 });
 
 describe("requestSafe", () => {
@@ -151,6 +174,14 @@ describe("requestSafe", () => {
     globalThis.fetch = mock(() => Promise.reject(new Error("DNS resolution failed")));
     await expect(requestSafe("https://api.example.com/test", "json", TestSchema)).rejects.toThrow(
       "DNS resolution failed",
+    );
+  });
+
+  it("throws clear error for API error returned as HTTP 200", async () => {
+    const apiError = { Errors: [{ Message: "API Key is incorrect" }] };
+    globalThis.fetch = mock(() => Promise.resolve(new Response(JSON.stringify(apiError), { status: 200 })));
+    await expect(requestSafe("https://api.example.com/test", "json", TestSchema)).rejects.toThrow(
+      "BuiltWith API error: API Key is incorrect",
     );
   });
 });

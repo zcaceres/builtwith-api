@@ -15,6 +15,7 @@ export function formatTable(data: unknown, indent = 0): string {
     );
     if (allFlatObjects) {
       const keys = [...new Set(data.flatMap((item) => Object.keys(item as Record<string, unknown>)))];
+      if (keys.length === 0) return `${pad}(${data.length} empty items)`;
       const widths = keys.map((k) =>
         Math.max(k.length, ...data.map((item) => String((item as Record<string, unknown>)[k] ?? "").length)),
       );

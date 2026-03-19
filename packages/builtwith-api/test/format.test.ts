@@ -95,6 +95,18 @@ describe("formatTable", () => {
     });
   });
 
+  describe("arrays of empty objects (Bug 7)", () => {
+    it("renders count instead of blank output", () => {
+      const result = formatTable([{}, {}, {}]);
+      expect(result).toContain("3 empty items");
+    });
+
+    it("renders count for single empty object", () => {
+      const result = formatTable([{}]);
+      expect(result).toContain("1 empty items");
+    });
+  });
+
   describe("arrays of non-objects", () => {
     it("renders indexed entries for mixed arrays", () => {
       const result = formatTable(["hello", "world"]);
