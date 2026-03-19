@@ -227,7 +227,7 @@
   flex: 1;
 }
 .feature-code {
-  margin-top: auto;
+  margin-top: 20px;
   width: 100%;
   box-sizing: border-box;
   background: var(--vp-c-text-1);
