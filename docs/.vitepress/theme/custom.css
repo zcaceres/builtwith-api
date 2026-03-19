@@ -68,3 +68,96 @@
   background-color: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
 }
+
+/* ── zach.dev Footer Logo ── */
+.zach-footer-logo {
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  z-index: 50;
+}
+
+.zach-footer-logo a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  gap: 8px;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+.zach-footer-logo a:hover {
+  opacity: 1;
+}
+
+.zach-footer-dismiss {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: var(--vp-c-bg-alt);
+  border: 1px solid var(--vp-c-divider);
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+  padding: 0;
+}
+
+.zach-footer-logo:hover .zach-footer-dismiss {
+  opacity: 1;
+}
+
+.zach-footer-dismiss:hover {
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-bg-elv);
+}
+
+.zach-footer-statue {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.zach-footer-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .zach-footer-logo {
+    bottom: 12px;
+    right: 12px;
+  }
+
+  .zach-footer-statue {
+    width: 36px;
+    height: 36px;
+  }
+
+  .zach-footer-text {
+    font-size: 10px;
+  }
+
+  .zach-footer-dismiss {
+    opacity: 1;
+    top: -10px;
+    right: -10px;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+  }
+}
