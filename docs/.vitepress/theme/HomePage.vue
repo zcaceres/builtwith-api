@@ -225,6 +225,8 @@
 }
 .feature-code {
   margin-top: auto;
+  align-self: stretch;
+  box-sizing: border-box;
   background: var(--vp-c-text-1);
   color: var(--vp-c-bg);
   font-family: "JetBrains Mono", monospace;
