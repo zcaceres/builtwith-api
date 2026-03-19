@@ -52,8 +52,8 @@
             <span class="feature-tag">MCP</span>
             <h3>AI Assistant</h3>
             <p>
-              Give Claude, Cursor, or any MCP-compatible tool direct access to
-              BuiltWith lookups. Just add the config and ask.
+              Give Claude, Cursor, or any MCP client direct access to
+              BuiltWith lookups. Add the config and ask.
             </p>
             <div class="feature-code">npx -y builtwith-mcp</div>
           </a>
@@ -184,8 +184,9 @@
 }
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 16px;
+  max-width: 640px;
 }
 .feature-card {
   background: var(--vp-c-bg-soft);
@@ -194,6 +195,8 @@
   padding: 28px 24px 24px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
   text-decoration: none;
   color: inherit;
   transition: border-color 0.2s;
