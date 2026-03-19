@@ -1,5 +1,26 @@
 # Changelog
 
+## 3.2.0
+
+### Added
+
+- **Monorepo split** — MCP server is now a separate npm package (`builtwith-mcp`), installable standalone via `npx -y builtwith-mcp`
+- **CLI `--table` flag** — human-readable pretty-print output instead of raw JSON
+- **Strict response schemas** — all response schemas use `z.strictObject()` to catch upstream API drift
+- **Date range validation** — `firstDetectedRange` and `lastDetectedRange` params validated with regex
+- **Homebrew distribution** — `brew install zcaceres/tap/builtwith`
+- **Pre-commit hook** — lint, build, and test run automatically on every commit
+- **VitePress docs site** — deployed to [builtwith.zach.dev](https://builtwith.zach.dev) with TypeDoc API reference
+- **Rate limit documentation** — per-second throttle and credit-based quota guidance
+- Biome linter for consistent code formatting
+- Comprehensive test coverage for non-JSON response formats (XML, CSV, TSV, TXT)
+- Network error and HTTP status code tests
+
+### Changed
+
+- `builtwith-api` now depends only on `zod` (removed `@modelcontextprotocol/sdk` from runtime deps)
+- Library users no longer pull MCP SDK as a transitive dependency
+
 ## 3.1.0
 
 ### Added
