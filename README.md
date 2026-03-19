@@ -7,11 +7,14 @@ Available as a **library**, **CLI**, and **MCP server**.
 ## Installation
 
 ```bash
-# Homebrew
+# Homebrew (CLI only)
 brew install zcaceres/tap/builtwith
 
-# npm
+# npm (library + CLI)
 npm install builtwith-api
+
+# MCP server (separate package)
+npm install -g builtwith-mcp
 ```
 
 Requires Node.js >= 18 (uses native `fetch`).
@@ -49,15 +52,13 @@ Requires Node.js >= 18 (uses native `fetch`).
 | `redirects` | Redirect chain history |
 | `product` | E-commerce product search |
 
-________________
-
 ## Library Usage
 
 ```js
 import { createClient } from 'builtwith-api'
 
 // Initialize with your API key
-const builtwith = createClient(process.env.YOUR_BUILTWITH_API_KEY, {
+const builtwith = createClient(process.env.BUILTWITH_API_KEY, {
   responseFormat: 'json' // 'json' 'xml' 'csv' 'tsv' 'txt' (txt only for lists API)
 })
 
@@ -169,6 +170,7 @@ builtwith free example.com
 
 ```bash
 builtwith free example.com
+builtwith free example.com --table
 builtwith domain example.com --hideAll --onlyLiveTechnologies
 builtwith domain "example.com,other.com"
 builtwith lists Shopify --since 2024-01-01
@@ -243,7 +245,7 @@ All tools are prefixed with `builtwith_`:
 ### Testing with MCP Inspector
 
 ```bash
-npx @modelcontextprotocol/inspector node dist/mcp.js
+npx @modelcontextprotocol/inspector -- npx -y builtwith-mcp --api-key YOUR_KEY
 ```
 
 ## Learn More

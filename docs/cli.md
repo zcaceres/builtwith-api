@@ -17,6 +17,16 @@ npx --package builtwith-api builtwith free example.com --api-key YOUR_KEY
 
 Standalone binaries are also available on the [GitHub Releases](https://github.com/zcaceres/builtwith-api/releases) page.
 
+## Output Format
+
+By default, output is JSON. Use `--table` for a human-readable format:
+
+```bash
+builtwith free example.com --table
+```
+
+The `--table` flag renders nested data as aligned columns and key-value pairs instead of raw JSON. JSON output is still the default for piping and scripting.
+
 ## Authentication
 
 Set your API key as an environment variable:
