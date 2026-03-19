@@ -152,6 +152,46 @@ describe("CLI", () => {
     });
   });
 
+  describe("strict flag parsing (Bug 3)", () => {
+    it("rejects unknown flags (typos)", async () => {
+      const { stderr, exitCode } = await cli(["domain", "x.com", "--onlyLiveTechnologes", "--api-key", "test"]);
+      expect(stderr).toContain("Error:");
+      expect(exitCode).toBe(1);
+    });
+
+    it("rejects string flags without a value (Bug 5)", async () => {
+      const { stderr, exitCode } = await cli(["domain", "x.com", "--api-key"]);
+      expect(stderr).toContain("Error:");
+      expect(exitCode).toBe(1);
+    });
+  });
+
+  describe("--version only at position 0 (Bug 4)", () => {
+    it("does not treat --version as a version flag when after a command", async () => {
+      const { stdout, exitCode } = await cli(["domain", "x.com", "--version", "--api-key", "test"]);
+      // Should NOT print version string — should either error or attempt the command
+      expect(stdout.trim()).not.toMatch(/^\d+\.\d+\.\d+$/);
+      expect(exitCode).not.toBe(0);
+    });
+  });
+
+  describe("single-dash args rejected as primary value (Bug 6)", () => {
+    it("rejects -x as a primary argument", async () => {
+      const { stderr, exitCode } = await cli(["free", "-x", "--api-key", "test"]);
+      expect(stderr).toContain("missing required argument");
+      expect(exitCode).toBe(1);
+    });
+  });
+
+  describe("per-command help shows global flags (Bug 8)", () => {
+    it("shows --api-key and --table in command help", async () => {
+      const { stdout } = await cli(["domain", "--help"]);
+      expect(stdout).toContain("Global options:");
+      expect(stdout).toContain("--api-key");
+      expect(stdout).toContain("--table");
+    });
+  });
+
   describe("error formatting", () => {
     it("formats API errors cleanly, not raw JSON", async () => {
       const { stderr } = await cli(["free", "example.com", "--api-key", "badkey"]);

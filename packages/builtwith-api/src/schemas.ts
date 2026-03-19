@@ -204,6 +204,9 @@ const AttributesSchema = z.strictObject({
   CDimensions: z.number(),
   CGoals: z.number(),
   CMetrics: z.number(),
+  Followers: z.number(),
+  Employees: z.number(),
+  ProductCount: z.number().optional(),
 });
 
 /** Validation schema for {@link DomainResponse}. */

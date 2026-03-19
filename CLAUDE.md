@@ -44,7 +44,7 @@ packages/
       schemas.ts    — Zod schemas for inputs + responses, BuiltWithClient interface
       commands.ts   — Command registry shared by CLI and MCP
       params.ts     — URL building, query string, boolean flag mapping
-      request.ts    — HTTP request + Zod validation
+      request.ts    — HTTP request, API error detection + Zod validation
       errors.ts     — Error formatting (Zod + generic)
       config.ts     — Constants (response format enum)
       cli.ts        — CLI entry point

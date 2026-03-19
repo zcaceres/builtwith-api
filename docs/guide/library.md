@@ -202,12 +202,17 @@ try {
   const result = await client.free("example.com");
 } catch (err) {
   if (err instanceof Error) {
-    // API errors: "BuiltWith API error 401: ..."
+    // HTTP errors: "BuiltWith API error 401: ..."
+    // BuiltWith errors (e.g. bad key): "BuiltWith API error: API Key is incorrect"
     // Validation errors: ZodError with detailed field info
     console.error(err.message);
   }
 }
 ```
+
+::: tip
+BuiltWith sometimes returns errors as HTTP 200 with a JSON `{"Errors":[...]}` body. The client detects this and throws a clear error message instead of a confusing Zod validation failure.
+:::
 
 ## Rate Limits
 

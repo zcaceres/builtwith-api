@@ -39,13 +39,17 @@ function printCommandHelp(cmd: (typeof commands)[number]): void {
     for (const f of flags) {
       console.log(`  --${f.name.padEnd(28)} ${f.description} (${f.type})`);
     }
+    console.log();
   }
+  console.log("Global options:");
+  console.log(`  --api-key <key>              BuiltWith API key (or set BUILTWITH_API_KEY env var)`);
+  console.log(`  --table                      Pretty-print output as a readable table instead of JSON`);
 }
 
 function run(): void {
   const argv = process.argv.slice(2);
 
-  if (argv.includes("--version") || argv.includes("-V")) {
+  if (argv[0] === "--version" || argv[0] === "-V") {
     console.log(version);
     process.exit(0);
   }
@@ -72,7 +76,7 @@ function run(): void {
   const primaryArg = cmd.args.find((a) => a.required);
   const primaryValue = argv[1];
 
-  if (primaryArg && (!primaryValue || primaryValue.startsWith("--"))) {
+  if (primaryArg && (!primaryValue || primaryValue.startsWith("-"))) {
     console.error(`Error: missing required argument <${primaryArg.name}>`);
     process.exit(1);
   }
@@ -87,11 +91,17 @@ function run(): void {
     options[f.name] = { type: f.type === "boolean" ? "boolean" : "string" };
   }
 
-  const { values } = parseArgs({
-    args: argv.slice(2), // skip command + primary arg
-    options,
-    strict: false,
-  });
+  let values: Record<string, unknown>;
+  try {
+    ({ values } = parseArgs({
+      args: argv.slice(2), // skip command + primary arg
+      options,
+      strict: true,
+    }));
+  } catch (err) {
+    console.error(`Error: ${err instanceof Error ? err.message : err}`);
+    process.exit(1);
+  }
 
   const useTable = Boolean(values.table);
   const apiKey = (values["api-key"] as string) || process.env.BUILTWITH_API_KEY;

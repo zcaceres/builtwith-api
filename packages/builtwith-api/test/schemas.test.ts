@@ -111,6 +111,8 @@ describe("DomainResponseSchema", () => {
           CDimensions: 5,
           CGoals: 2,
           CMetrics: 3,
+          Followers: 50000,
+          Employees: 200,
         },
         FirstIndexed: 1609459200,
         LastIndexed: 1704067200,
