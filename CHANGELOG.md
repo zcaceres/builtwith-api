@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.2.1
+
+### Fixed
+
+- `domain` and `domainLive` endpoints broken by schema drift — added `Followers`, `Employees`, and `ProductCount` fields
+- API errors returned as HTTP 200 (e.g. invalid API key) now throw clear messages instead of confusing Zod validation errors
+- CLI flag typos (e.g. `--onlyLiveTechnologes`) silently ignored — now rejected with an error
+- `--version` flag anywhere in argv hijacked the command (e.g. `builtwith domain x.com --version` printed version instead of running the command)
+- Single-dash args like `-x` accepted as the primary value — now correctly rejected as missing argument
+- `--table` output blank for arrays of empty objects
+- Per-command `--help` missing `--api-key` and `--table` global flags
+
 ## 3.2.0
 
 ### Added

@@ -1,6 +1,6 @@
 {
   "name": "builtwith-api",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "TypeScript library and CLI for the BuiltWith API",
   "type": "module",
   "main": "dist/index.js",

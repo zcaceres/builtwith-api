@@ -1,6 +1,6 @@
 {
   "name": "builtwith-mcp",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "BuiltWith API as an MCP server for Claude Desktop, Cursor, and other AI clients",
   "type": "module",
   "main": "dist/mcp.js",
