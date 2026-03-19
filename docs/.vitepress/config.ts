@@ -15,6 +15,13 @@ export default defineConfig({
         rel: "stylesheet",
       },
     ],
+    ["meta", { property: "og:type", content: "website" }],
+    ["meta", { property: "og:title", content: "builtwith-api" }],
+    ["meta", { property: "og:description", content: "Query the BuiltWith API from your app, terminal, or AI agent." }],
+    ["meta", { property: "og:image", content: "https://builtwith.zach.dev/og-main.png" }],
+    ["meta", { property: "og:url", content: "https://builtwith.zach.dev" }],
+    ["meta", { name: "twitter:card", content: "summary_large_image" }],
+    ["meta", { name: "twitter:image", content: "https://builtwith.zach.dev/og-main.png" }],
   ],
 
   themeConfig: {
