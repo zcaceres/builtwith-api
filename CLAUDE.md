@@ -48,6 +48,7 @@ packages/
       errors.ts     — Error formatting (Zod + generic)
       config.ts     — Constants (response format enum)
       cli.ts        — CLI entry point
+      format.ts     — Table formatter for --table CLI output
     test/
       *.test.ts     — Unit + integration tests (Bun test runner)
   builtwith-mcp/
@@ -62,4 +63,4 @@ docs/                 — VitePress docs site (deployed to builtwith.zach.dev)
 
 - `.github/workflows/ci.yml` — lint + build + test on push/PR to main
 - `.github/workflows/docs.yml` — build and deploy VitePress docs to GitHub Pages
-- `.github/workflows/release.yml` — auto-create GitHub release, compile cross-platform binaries, publish both packages to npm
+- `.github/workflows/release.yml` — auto-create GitHub release, compile cross-platform binaries (npm publish is manual via `/release` command)

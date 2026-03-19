@@ -11,7 +11,7 @@ import { createClient } from "builtwith-api";
 
 const client = createClient(process.env.BUILTWITH_API_KEY!);
 
-// Free lookup — no API key required
+// Free lookup — basic tech profile
 const profile = await client.free("google.com");
 
 // Full domain lookup with options
