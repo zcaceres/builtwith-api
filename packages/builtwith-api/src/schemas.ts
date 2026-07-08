@@ -172,7 +172,7 @@ const PathSchema = z.strictObject({
 
 const MetaSchema = z.strictObject({
   Majestic: z.number(),
-  Umbrella: z.number(),
+  Umbrella: z.number().optional(),
   Vertical: z.string(),
   Social: z.array(z.string()),
   CompanyName: z.string(),
@@ -207,8 +207,8 @@ const AttributesSchema = z.strictObject({
   CDimensions: z.number(),
   CGoals: z.number(),
   CMetrics: z.number(),
-  Followers: z.number(),
-  Employees: z.number(),
+  Followers: z.number().optional(),
+  Employees: z.number().optional(),
   ProductCount: z.number().optional(),
   Revenue: z.number().optional(),
   PageRank: z.number().optional(),
