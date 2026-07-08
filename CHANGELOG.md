@@ -1,5 +1,20 @@
 # Changelog
 
+## 3.3.0
+
+### Added
+
+- **Domain API v23** support — new response fields: `Meta.Umbrella`, `Attributes.EcommerceCategory`, `Attributes.TTFB`, `Attributes.SourceBytes`
+- `domain` / `domainLive` `includeTrust` option (CLI `--includeTrust`) — inlines Trust API data in the response (uses an additional API credit)
+
+### Changed
+
+- `firstDetectedRange` / `lastDetectedRange` now use the v23 pipe separator (`YYYY-MM-DD|YYYY-MM-DD`); the previous dash-joined range format is rejected
+
+### Fixed
+
+- `domain` / `domainLive` no longer throw on domains that omit optional fields — `Meta.Umbrella`, `Meta.Social`, `Attributes.Employees`, and `Attributes.Followers` marked optional after validation against live v23 payloads across 35 domains
+
 ## 3.2.1
 
 ### Fixed
