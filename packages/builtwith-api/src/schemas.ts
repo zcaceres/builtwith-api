@@ -174,7 +174,7 @@ const MetaSchema = z.strictObject({
   Majestic: z.number(),
   Umbrella: z.number().optional(),
   Vertical: z.string(),
-  Social: z.array(z.string()),
+  Social: z.array(z.string()).optional(),
   CompanyName: z.string(),
   Telephones: z.array(z.string()),
   Emails: z.array(z.string()),
