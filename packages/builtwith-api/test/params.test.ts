@@ -114,8 +114,12 @@ describe("date range validation", () => {
     expect(() => DomainParamsSchema.parse({ firstDetectedRange: "2024-01-15" })).not.toThrow();
   });
 
-  it("accepts YYYY-MM-DD-YYYY-MM-DD range format", () => {
-    expect(() => DomainParamsSchema.parse({ firstDetectedRange: "2020-01-01-2024-12-31" })).not.toThrow();
+  it("accepts pipe-joined YYYY-MM-DD|YYYY-MM-DD range format", () => {
+    expect(() => DomainParamsSchema.parse({ firstDetectedRange: "2020-01-01|2024-12-31" })).not.toThrow();
+  });
+
+  it("rejects the legacy dash-joined range format", () => {
+    expect(() => DomainParamsSchema.parse({ firstDetectedRange: "2020-01-01-2024-12-31" })).toThrow();
   });
 
   it("accepts lastDetectedRange with valid format", () => {

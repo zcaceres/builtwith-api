@@ -26,8 +26,8 @@ export const ClientOptionsSchema = z.strictObject({
  */
 export type ClientOptions = z.infer<typeof ClientOptionsSchema>;
 
-/** Matches YYYY-MM-DD or YYYY-MM-DD-YYYY-MM-DD date range format. */
-const dateRangePattern = /^\d{4}-\d{2}-\d{2}(-\d{4}-\d{2}-\d{2})?$/;
+/** Matches YYYY-MM-DD or a pipe-joined YYYY-MM-DD|YYYY-MM-DD range (v23 FDRANGE/LDRANGE format). */
+const dateRangePattern = /^\d{4}-\d{2}-\d{2}(\|\d{4}-\d{2}-\d{2})?$/;
 
 /** Validation schema for {@link DomainParams}. */
 export const DomainParamsSchema = z.strictObject({
@@ -37,8 +37,9 @@ export const DomainParamsSchema = z.strictObject({
   noMetaData: z.boolean().optional(),
   noAttributeData: z.boolean().optional(),
   noPII: z.boolean().optional(),
-  firstDetectedRange: z.string().regex(dateRangePattern, "Expected YYYY-MM-DD or YYYY-MM-DD-YYYY-MM-DD").optional(),
-  lastDetectedRange: z.string().regex(dateRangePattern, "Expected YYYY-MM-DD or YYYY-MM-DD-YYYY-MM-DD").optional(),
+  includeTrust: z.boolean().optional(),
+  firstDetectedRange: z.string().regex(dateRangePattern, "Expected YYYY-MM-DD or YYYY-MM-DD|YYYY-MM-DD").optional(),
+  lastDetectedRange: z.string().regex(dateRangePattern, "Expected YYYY-MM-DD or YYYY-MM-DD|YYYY-MM-DD").optional(),
 });
 /**
  * Optional parameters for the Domain API endpoint.
@@ -171,6 +172,7 @@ const PathSchema = z.strictObject({
 
 const MetaSchema = z.strictObject({
   Majestic: z.number(),
+  Umbrella: z.number(),
   Vertical: z.string(),
   Social: z.array(z.string()),
   CompanyName: z.string(),
@@ -213,6 +215,9 @@ const AttributesSchema = z.strictObject({
   BWRank: z.number().optional(),
   Tranco: z.number().optional(),
   BWS: z.number().optional(),
+  EcommerceCategory: z.number().optional(),
+  TTFB: z.number().optional(),
+  SourceBytes: z.number().optional(),
   AIMaturity: z.number().optional(),
   AIOpenness: z.number().optional(),
   AIReadiness: z.number().optional(),
