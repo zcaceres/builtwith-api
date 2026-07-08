@@ -55,12 +55,23 @@ export const commands: CommandDefinition[] = [
       { name: "noAttributeData", description: "Exclude attribute data", type: "boolean", required: false },
       { name: "noPII", description: "Exclude personally identifiable information", type: "boolean", required: false },
       {
+        name: "includeTrust",
+        description: "Include Trust API data (uses an additional API credit)",
+        type: "boolean",
+        required: false,
+      },
+      {
         name: "firstDetectedRange",
-        description: "Filter by first detected date range",
+        description: "Filter by first detected date range (YYYY-MM-DD|YYYY-MM-DD)",
         type: "string",
         required: false,
       },
-      { name: "lastDetectedRange", description: "Filter by last detected date range", type: "string", required: false },
+      {
+        name: "lastDetectedRange",
+        description: "Filter by last detected date range (YYYY-MM-DD|YYYY-MM-DD)",
+        type: "string",
+        required: false,
+      },
     ],
     execute: (client, args) => {
       const lookup = splitLookup(args.lookup);

@@ -41,6 +41,7 @@ const DOMAIN_BOOLEANS: BooleanMapping = {
   noMetaData: "NOMETA",
   noAttributeData: "NOATTR",
   noPII: "NOPII",
+  includeTrust: "TRUST",
 };
 
 /**

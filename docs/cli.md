@@ -69,8 +69,9 @@ builtwith domain "example.com,other.com"
 | `--noMetaData` | Exclude metadata |
 | `--noAttributeData` | Exclude attribute data |
 | `--noPII` | Exclude personally identifiable information |
-| `--firstDetectedRange` | Filter by first detected date range |
-| `--lastDetectedRange` | Filter by last detected date range |
+| `--includeTrust` | Include Trust API data (uses an additional API credit) |
+| `--firstDetectedRange` | Filter by first detected date range (`YYYY-MM-DD` or `YYYY-MM-DD\|YYYY-MM-DD`) |
+| `--lastDetectedRange` | Filter by last detected date range (`YYYY-MM-DD` or `YYYY-MM-DD\|YYYY-MM-DD`) |
 
 ### `domainLive`
 

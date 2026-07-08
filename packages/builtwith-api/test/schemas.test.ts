@@ -86,6 +86,7 @@ describe("DomainResponseSchema", () => {
         },
         Meta: {
           Majestic: 12345,
+          Umbrella: 6423,
           Vertical: "Technology",
           Social: ["https://twitter.com/example"],
           CompanyName: "Example Inc",

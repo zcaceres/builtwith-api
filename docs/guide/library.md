@@ -60,8 +60,9 @@ const filtered = await client.domain("example.com", {
 | `noMetaData` | `boolean` | Exclude company metadata |
 | `noAttributeData` | `boolean` | Exclude attribute data |
 | `noPII` | `boolean` | Exclude personally identifiable information |
-| `firstDetectedRange` | `string` | Filter by first detected date range |
-| `lastDetectedRange` | `string` | Filter by last detected date range |
+| `includeTrust` | `boolean` | Include Trust API data (uses an additional API credit) |
+| `firstDetectedRange` | `string` | Filter by first detected date range (`YYYY-MM-DD` or `YYYY-MM-DD\|YYYY-MM-DD`) |
+| `lastDetectedRange` | `string` | Filter by last detected date range (`YYYY-MM-DD` or `YYYY-MM-DD\|YYYY-MM-DD`) |
 
 ### `domainLive(lookup)`
 
