@@ -96,7 +96,7 @@ export function createClient(apiKey: string, moduleParams: ClientOptions = {}): 
       validateLookup(lookup, { multi: true });
       if (params) DomainParamsSchema.parse(params);
       return get(
-        url("v22", {
+        url("v23", {
           LOOKUP: Array.isArray(lookup) ? lookup.join(",") : lookup,
           ...booleanParams(params, DOMAIN_BOOLEANS),
           FDRANGE: params?.firstDetectedRange,

@@ -148,6 +148,7 @@ export const FreeResponseSchema = z.strictObject({
 export type FreeResponse = z.infer<typeof FreeResponseSchema>;
 
 const TechnologySchema = z.strictObject({
+  Id: z.number(),
   Name: z.string(),
   Description: z.string(),
   Link: z.string(),
@@ -207,6 +208,15 @@ const AttributesSchema = z.strictObject({
   Followers: z.number(),
   Employees: z.number(),
   ProductCount: z.number().optional(),
+  Revenue: z.number().optional(),
+  PageRank: z.number().optional(),
+  BWRank: z.number().optional(),
+  Tranco: z.number().optional(),
+  BWS: z.number().optional(),
+  AIMaturity: z.number().optional(),
+  AIOpenness: z.number().optional(),
+  AIReadiness: z.number().optional(),
+  AIVisibility: z.number().optional(),
 });
 
 /** Validation schema for {@link DomainResponse}. */

@@ -66,6 +66,7 @@ describe("DomainResponseSchema", () => {
             {
               Technologies: [
                 {
+                  Id: 1515848251,
                   Name: "jQuery",
                   Description: "JS library",
                   Link: "https://jquery.com",

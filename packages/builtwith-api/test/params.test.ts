@@ -72,10 +72,10 @@ describe("buildURL", () => {
   });
 
   it("appends query string when params have values", () => {
-    const result = buildURL("KEY123", "json", "v22", {
+    const result = buildURL("KEY123", "json", "v23", {
       LOOKUP: "example.com",
     });
-    expect(result).toBe("https://api.builtwith.com/v22/api.json?KEY=KEY123&LOOKUP=example.com");
+    expect(result).toBe("https://api.builtwith.com/v23/api.json?KEY=KEY123&LOOKUP=example.com");
   });
 
   it("no trailing & when params are all undefined", () => {
