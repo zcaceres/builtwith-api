@@ -2,7 +2,7 @@ import { defineConfig } from "vitepress";
 
 export default defineConfig({
   title: "builtwith-api",
-  description: "Query the BuiltWith API from your app, terminal, or AI agent.",
+  description: "Query the BuiltWith API from TypeScript, the command line, or an MCP client.",
   base: "/",
 
   head: [
@@ -17,7 +17,7 @@ export default defineConfig({
     ],
     ["meta", { property: "og:type", content: "website" }],
     ["meta", { property: "og:title", content: "builtwith-api" }],
-    ["meta", { property: "og:description", content: "Query the BuiltWith API from your app, terminal, or AI agent." }],
+    ["meta", { property: "og:description", content: "Query the BuiltWith API from TypeScript, the command line, or an MCP client." }],
     ["meta", { property: "og:image", content: "https://builtwith.zach.dev/og-main.png" }],
     ["meta", { property: "og:url", content: "https://builtwith.zach.dev" }],
     ["meta", { name: "twitter:card", content: "summary_large_image" }],

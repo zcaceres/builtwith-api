@@ -28,7 +28,7 @@ brew install zcaceres/tap/builtwith
 
 ## CLI (no install)
 
-Run the CLI directly with `npx`:
+Run the CLI with `npx`:
 
 ```bash
 npx --package builtwith-api builtwith free example.com --api-key YOUR_KEY
@@ -43,13 +43,13 @@ builtwith free example.com
 
 ## MCP Server
 
-The MCP server is a separate package. Install standalone:
+The MCP server uses the separate `builtwith-mcp` package. Install it globally:
 
 ```bash
 npm install -g builtwith-mcp
 ```
 
-Or use directly with `npx`:
+Or run it with `npx`:
 
 ```bash
 npx -y builtwith-mcp
@@ -57,7 +57,7 @@ npx -y builtwith-mcp
 
 ## Standalone binaries
 
-Pre-compiled binaries are available on the [GitHub Releases](https://github.com/zcaceres/builtwith-api/releases) page for:
+[GitHub Releases](https://github.com/zcaceres/builtwith-api/releases) provides precompiled binaries for:
 
 - Linux x64 / ARM64
 - macOS x64 / ARM64 (Apple Silicon)
@@ -65,7 +65,7 @@ Pre-compiled binaries are available on the [GitHub Releases](https://github.com/
 
 ## API Key
 
-You need a BuiltWith API key. Get one at [api.builtwith.com](https://api.builtwith.com/).
+Get a BuiltWith API key at [api.builtwith.com](https://api.builtwith.com/).
 
 Set it as an environment variable:
 
@@ -73,4 +73,4 @@ Set it as an environment variable:
 export BUILTWITH_API_KEY=your-key-here
 ```
 
-Or pass it directly via `--api-key` (CLI/MCP) or as the first argument to `createClient()` (library).
+You can also use `--api-key` with the CLI or MCP server, or pass the key to `createClient()`.

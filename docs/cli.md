@@ -1,6 +1,6 @@
 # Command Line
 
-Query the BuiltWith API from your terminal. All 13 methods with flags for every parameter.
+Call all 13 BuiltWith API methods from your terminal. Each parameter has a flag.
 
 ## Installation
 
@@ -11,21 +11,21 @@ brew install zcaceres/tap/builtwith
 # npm (global)
 npm install -g builtwith-api
 
-# Or run without installing
+# Run without installing
 npx --package builtwith-api builtwith free example.com --api-key YOUR_KEY
 ```
 
-Standalone binaries are also available on the [GitHub Releases](https://github.com/zcaceres/builtwith-api/releases) page.
+[GitHub Releases](https://github.com/zcaceres/builtwith-api/releases) also provides standalone binaries.
 
 ## Output Format
 
-By default, output is JSON. Use `--table` for a human-readable format:
+Output defaults to JSON. Use `--table` for readable terminal output:
 
 ```bash
 builtwith free example.com --table
 ```
 
-The `--table` flag renders nested data as aligned columns and key-value pairs instead of raw JSON. JSON output is still the default for piping and scripting.
+`--table` renders nested data as columns and key-value pairs. Use the default JSON for pipes and scripts.
 
 ## Authentication
 

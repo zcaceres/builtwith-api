@@ -1,16 +1,16 @@
 # Introduction
 
-**builtwith-api** is a typed wrapper around the [BuiltWith API](https://api.builtwith.com/) that works as a library, CLI, and MCP server.
+**builtwith-api** provides typed access to the [BuiltWith API](https://api.builtwith.com/) through a library, CLI, and MCP server.
 
 ## What is BuiltWith?
 
-BuiltWith tracks the technologies used by websites across the internet — frameworks, analytics, CMS platforms, e-commerce tools, CDNs, and more. Their API gives you programmatic access to this intelligence.
+BuiltWith tracks the frameworks, analytics, CMS platforms, e-commerce tools, CDNs, and other technologies used by websites. Its API makes this data available to code.
 
 ## Three ways to use it
 
 ### Library
 
-Import `createClient` and call methods directly. Responses are validated with Zod and fully typed.
+Import `createClient` and call any of the 13 methods. Zod validates each typed response.
 
 ```ts
 import { createClient } from "builtwith-api";
@@ -21,7 +21,7 @@ const profile = await client.free("example.com");
 
 ### CLI
 
-Query from your terminal. Output is JSON, ready for piping.
+Run lookups from your terminal. JSON output works with pipes and scripts.
 
 ```bash
 builtwith free example.com
@@ -30,7 +30,7 @@ builtwith domain example.com --onlyLiveTechnologies
 
 ### MCP Server
 
-Connect BuiltWith to AI tools that support the Model Context Protocol.
+Add BuiltWith tools to any MCP client.
 
 ```json
 {
