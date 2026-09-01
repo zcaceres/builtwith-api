@@ -1,17 +1,17 @@
 # Library
 
-A typed TypeScript wrapper for the BuiltWith API with Zod-validated responses and full ESM support.
+Use the BuiltWith API from TypeScript with typed, Zod-validated responses. The package supports ESM.
 
 ## Quick Start
 
-Create a client with your API key. All methods return typed, Zod-validated responses.
+Create a client with your API key, then call any method.
 
 ```ts
 import { createClient } from "builtwith-api";
 
 const client = createClient(process.env.BUILTWITH_API_KEY!);
 
-// Free lookup — basic tech profile
+// Free lookup: basic tech profile
 const profile = await client.free("google.com");
 
 // Full domain lookup with options
@@ -24,7 +24,7 @@ const details = await client.domain("example.com", {
 
 ### `free(lookup)`
 
-Basic technology profile for a single domain. Available on free API plans.
+A basic technology profile for one domain. This method works with free API plans.
 
 ```ts
 const profile = await client.free("stripe.com");
@@ -66,7 +66,7 @@ const filtered = await client.domain("example.com", {
 
 ### `domainLive(lookup)`
 
-Real-time technology scan. Same response shape as `domain()`, but scans the site live.
+Scans a site in real time and returns the same response shape as `domain()`.
 
 ```ts
 const live = await client.domainLive("example.com");
@@ -93,7 +93,7 @@ const recent = await client.lists("React", {
 
 ### `trends(technology, params?)`
 
-Technology adoption trends and coverage data.
+Returns adoption trends and coverage data for a technology.
 
 ```ts
 const trends = await client.trends("jQuery");
@@ -102,7 +102,7 @@ const trends = await client.trends("jQuery");
 
 ### `relationships(lookup)`
 
-Find related domains that share identifiers (analytics IDs, ad accounts, etc.).
+Find domains that share identifiers such as analytics IDs or ad accounts.
 
 ```ts
 const related = await client.relationships("example.com");
@@ -111,7 +111,7 @@ const related = await client.relationships("example.com");
 
 ### `keywords(lookup)`
 
-Get SEO keywords associated with domains.
+Get SEO keywords for a domain.
 
 ```ts
 const kw = await client.keywords("example.com");
@@ -120,7 +120,7 @@ const kw = await client.keywords("example.com");
 
 ### `trust(lookup, params?)`
 
-Domain trust and verification scoring.
+Get trust and verification scores for a domain.
 
 ```ts
 const trust = await client.trust("example.com");
@@ -149,7 +149,7 @@ const comOnly = await client.companyToUrl("Google", {
 
 ### `tags(lookup)`
 
-Get tracking and analytics tags found on a domain.
+Get tracking and analytics tags for a domain.
 
 ```ts
 const tags = await client.tags("example.com");
@@ -165,7 +165,7 @@ const recs = await client.recommendations("example.com");
 
 ### `redirects(lookup)`
 
-Get inbound and outbound redirect chains.
+Get a domain's inbound and outbound redirect chains.
 
 ```ts
 const redirects = await client.redirects("example.com");
@@ -183,7 +183,7 @@ const products = await client.product("wireless headphones");
 
 ## Response Format
 
-By default, responses are JSON (parsed and validated). You can request other formats:
+Responses default to parsed, validated JSON. To request another format:
 
 ```ts
 const client = createClient(API_KEY, { responseFormat: "xml" });
@@ -212,14 +212,14 @@ try {
 ```
 
 ::: tip
-BuiltWith sometimes returns errors as HTTP 200 with a JSON `{"Errors":[...]}` body. The client detects this and throws a clear error message instead of a confusing Zod validation failure.
+BuiltWith sometimes returns a JSON `{"Errors":[...]}` body with HTTP 200. The client detects it and throws the API error instead of a Zod validation error.
 :::
 
 ## Rate Limits
 
 BuiltWith enforces two types of limits:
 
-**Per-second throttle** — Maximum 1 request per second. Exceeding this returns HTTP 429. Space out concurrent calls or add a delay between requests:
+**Per-second throttle:** One request per second. Extra requests return HTTP 429. Space out calls or add a delay:
 
 ```ts
 function delay(ms: number) {
@@ -232,8 +232,8 @@ for (const domain of domains) {
 }
 ```
 
-**Credit-based quota** — Each API plan has a credit allocation. Every call consumes credits from your plan balance. Check your remaining credits via the [BuiltWith dashboard](https://api.builtwith.com/) or in Product API responses (`credits`, `used`, `remaining` fields).
+**Credit quota:** Each call uses credits from your API plan. Check the [BuiltWith dashboard](https://api.builtwith.com/) or the Product API's `credits`, `used`, and `remaining` fields.
 
 ::: tip
-The `free` endpoint has a separate, more generous rate limit. Use it for basic lookups when you don't need full domain data.
+The `free` endpoint has its own, higher rate limit. Use it when you don't need full domain data.
 :::

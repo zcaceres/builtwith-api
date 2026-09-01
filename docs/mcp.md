@@ -1,16 +1,10 @@
 # MCP Server
 
-Expose BuiltWith API lookups as MCP tools for Claude Desktop, Cursor, and any MCP-compatible AI client.
+Add BuiltWith API tools to Claude Desktop, Cursor, or any MCP client.
 
 ## How It Works
 
-The MCP server exposes all 13 BuiltWith API methods as tools. Your AI assistant can call them directly during conversation.
-
-**1. Configure** — Add the server config to your AI client's settings file.
-
-**2. Ask** — "What technologies does stripe.com use?" — your assistant calls the right tool.
-
-**3. Get Results** — Structured data returned inline. No copy-pasting from browser tabs.
+The server turns all 13 BuiltWith API methods into tools your MCP client can call.
 
 ## Setup
 
@@ -70,7 +64,7 @@ Add to your Claude Code settings:
 
 ### Other Clients
 
-Any MCP-compatible client can use the server. The general pattern:
+For other MCP clients, use:
 
 - **Command:** `npx`
 - **Args:** `["-y", "builtwith-mcp"]`
@@ -95,11 +89,11 @@ For a local install instead of `npx`:
 npm install -g builtwith-mcp
 ```
 
-Then use `builtwith-mcp` as the command directly.
+Then set the command to `builtwith-mcp`.
 
 ## Available Tools
 
-All tools are prefixed with `builtwith_` and accept typed input schemas validated by Zod.
+Tool names start with `builtwith_`. Zod validates their inputs.
 
 | Tool | Input | Description |
 |------|-------|-------------|
@@ -127,7 +121,7 @@ npx @modelcontextprotocol/inspector -- npx -y builtwith-mcp --api-key YOUR_KEY
 
 ## Example prompts
 
-Once configured, you can ask your AI assistant things like:
+Example prompts:
 
 - "What technologies does stripe.com use?"
 - "Find all domains using Shopify"

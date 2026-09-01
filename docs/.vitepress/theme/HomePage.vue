@@ -9,15 +9,14 @@
         </div>
         <h1 class="hero-title">builtwith-api</h1>
         <p class="hero-tagline">
-          A typed TypeScript wrapper for the BuiltWith API. Query technology
-          data from your code, your terminal, or your AI assistant.
+          Typed BuiltWith data for TypeScript, the command line, and MCP clients.
         </p>
         <div class="hero-actions">
           <div class="install-pill">
             <span class="dollar">$</span>
             <span>npm install builtwith-api</span>
           </div>
-          <a class="btn btn-outline" href="/guide/">Get Started</a>
+          <a class="btn btn-outline" href="/guide/">Read the Guide</a>
           <a class="btn btn-outline" href="/api/">API Reference</a>
         </div>
       </div>
@@ -27,15 +26,14 @@
     <section class="features">
       <div class="features-inner">
         <div class="features-header">
-          <h2 class="features-title">One package, three interfaces.</h2>
+          <h2 class="features-title">BuiltWith, three ways.</h2>
         </div>
         <div class="features-grid">
           <a class="feature-card" href="/guide/library">
             <span class="feature-tag">LIBRARY</span>
             <h3>TypeScript SDK</h3>
             <p>
-              Import createClient and call any of 13 endpoints. Typed responses
-              validated with Zod.
+              Call all 13 endpoints with typed, Zod-validated responses.
             </p>
             <div class="feature-code">const data = await client.free("google.com")</div>
           </a>
@@ -43,8 +41,7 @@
             <span class="feature-tag">CLI</span>
             <h3>Command Line</h3>
             <p>
-              Query the BuiltWith API from your terminal. Supports all 13 methods
-              with flags for every parameter.
+              Call all 13 endpoints from your terminal, with a flag for each parameter.
             </p>
             <div class="feature-code">$ builtwith domain example.com</div>
           </a>
@@ -52,8 +49,7 @@
             <span class="feature-tag">MCP</span>
             <h3>AI Assistant</h3>
             <p>
-              Give Claude, Cursor, or any MCP client direct access to
-              BuiltWith lookups. Add the config and ask.
+              Run BuiltWith lookups from Claude, Cursor, or any MCP client.
             </p>
             <div class="feature-code">npx -y builtwith-mcp</div>
           </a>
