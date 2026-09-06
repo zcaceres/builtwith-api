@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/zcaceres-builtwith-api-badge.png)](https://mseep.ai/app/zcaceres-builtwith-api)
+
 # BuiltWith API
 
 Query the BuiltWith API from your app, terminal, or AI agent.
